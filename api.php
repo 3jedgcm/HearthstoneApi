@@ -1,52 +1,104 @@
 <?php
 require_once $_SERVER["DOCUMENT_ROOT"] . "/api/auto_load.php"; //Inclusion de le chargement de tout les fichiers
 
-//Implémentation des constantes
-const EXIT_CODE_OK = 0
-const EXIT_CODE_ACTION_MISSING = 1
-const EXIT_CODE_INCORRECT_PARAMETTER = 2
-const EXIT_CODE_ERROR_API_EXTERNAL = 3
-
 //Récuperation du premier POST Action
-var $postAction = $_POST["ACTION"];
+$postAction = $_POST["action"];
+
 //Initialisation de la variable code erreur
-var $errorCode = EXIT_CODE_OK;
+$errorCode = EXIT_CODE_OK;
 // Test de la variable
-if(isset($postAction))
-{
-  //Routage des Action
-  switch($postAction)
+$errorCode = checkIdUser();
+
+if(!$errorCode)
+  if(isset($postAction))
   {
-    case 'delete': //Supprimer une carte
+    //Routage des actions
+    switch($postAction)
+    {
+      case 'delete': //Supprimer une carte
+      $resultat = deleteOneCard();
+      break;
+      case 'random_card': //Action carte aléatoire
+      $resultat = randomCard();
+      break;
+      case 'fusion': //Fusion d’une carte
+      $resultat = fusion();
+      break;
+      case 'get_money': //Obtenir l’argent d’un utilisateur
+      $resultat = getMoney();
+      break;
+      case 'forge': // Forger une carte
+      $resultat = forge();
+      break;
+      case 'exchange': //Echanger une carte
+      $resultat = exchange();
+      break;
+      case 'get_answer': //Obtenir une question
 
-    break;
-    case 'random_card': //Action carte aléatoire
+      break;
+      default: //Si aucune action
+      $errorCode = EXIT_CODE_UNKNOW_ACTION;
 
-    break;
-    case 'fusion': //Fusion d’une carte
-
-    break;
-    case 'get_money': //Obtenir l’argent d’un utilisateur
-
-    break;
-    case 'forge': // Forger une carte
-
-    break;
-    case 'exchange': //Echanger une carte
-
-    break;
-    case 'get_answer': //Obtenir une question
-
-    break;
-
+    }
   }
-}
-else
+  else
+  {
+    $errorCode = EXIT_CODE_ACTION_MISSING;
+  }
+
+function checkIdUser()
 {
-  $errorCode = EXIT_CODE_ACTION_MISSING;
+  $postIdUser = $_POST["id_user"];
+  if(isset($postIdUser))
+  {
+    if(true)//Checking de l'id user coté serveur
+    {
+      $errorCode = EXIT_CODE_OK;
+    }
+    else
+    {
+      $errorCode = EXIT_CODE_INCORRECT_ID_USER;
+    }
+  }
+  else
+  {
+    $errorCode = EXIT_CODE_UNKNOW_ID_USER;
+  }
+  return $errorCode;
 }
 
 
+function deleteOneCard($idUser,$cards)
+{
 
+}
 
-//{}
+function randomCard($idUser)
+{
+
+}
+
+function fusion($idUser,$cards)
+{
+
+}
+
+function getMoney($idUser)
+{
+
+}
+
+function forge($idUser,$cards)
+{
+
+}
+
+function exchange($idUser,$idUser_secondary,$cards,$cards_secondary)
+{
+
+}
+
+function getAnswer()
+{
+
+}

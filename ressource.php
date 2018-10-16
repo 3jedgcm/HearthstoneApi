@@ -1,0 +1,9 @@
+<?php
+//Implémentation des constantes
+const EXIT_CODE_OK = 0;
+const EXIT_CODE_ACTION_MISSING = 1;
+const EXIT_CODE_INCORRECT_PARAMETTER = 2;
+const EXIT_CODE_ERROR_API_EXTERNAL = 3;
+const EXIT_CODE_UNKNOW_ACTION = 4;
+const EXIT_CODE_UNKNOW_ID_USER = 5;
+const EXIT_CODE_INCORRECT_ID_USER = 6;

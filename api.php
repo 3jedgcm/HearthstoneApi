@@ -6,13 +6,15 @@ $postAction = $_POST["action"];
 
 //Initialisation de la variable code erreur
 $errorCode = EXIT_CODE_OK;
-// Test de la variable
-$errorCode = checkIdUser();
 
 //Initialisation de chaque DAO
 $CardDAO = new CardDAO(DB::getInstance());
 $ParamDAO = new ParamDAO(DB::getInstance());
 $UserDAO = new UserDAO(DB::getInstance());
+$DAO = ["Card"=>$CardDAO,"Param"=>$ParamDAO,"User"=>$UserDAO];
+
+// Test de la variable
+$errorCode = checkIdUser($DAO);
 
 
 if(!$errorCode)
@@ -23,25 +25,25 @@ if(!$errorCode)
     switch($postAction)
     {
       case 'delete': //Supprimer une carte
-      $resultat = deleteOneCard(null,null);
+      $errorCode = deleteOneCard($DAO,$_POST["id_user"],$_POST["cards"]);
       break;
       case 'random_card': //Action carte aléatoire
-      $resultat = randomCard(null);
+      $errorCode = randomCard($DAO,$_POST["id_user"]);
       break;
       case 'fusion': //Fusion d’une carte
-      $resultat = fusion(null,null);
+      $errorCode = fusion($DAO,$_POST["id_user"],$_POST["cards"]);
       break;
       case 'get_money': //Obtenir l’argent d’un utilisateur
-      $resultat = getMoney(null);
+      $errorCode = getMoney($DAO,$_POST["id_user"]);
       break;
       case 'forge': // Forger une carte
-      $resultat = forge(null,null);
+      $errorCode = forge($DAO,$_POST["id_user"],$_POST["cards"]);
       break;
       case 'exchange': //Echanger une carte
-      $resultat = exchange(null,null,null,null);
+      $errorCode = exchange($DAO,$_POST["id_user"],$_POST["cards"],$_POST["second_id_user"],$_POST["second_cards"]);
       break;
       case 'get_answer': //Obtenir une question
-      $resultat = getAnswer();
+      $errorCode = getAnswer();
       break;
       default: //Si aucune action
       $errorCode = EXIT_CODE_UNKNOW_ACTION;
@@ -54,14 +56,13 @@ if(!$errorCode)
   }
 }
 
-echo json_encode(["test",$errorCode]);
-function checkIdUser()
+echo json_encode(["Code Retour",$errorCode]);
+function checkIdUser($pDAO)
 {
   $postIdUser = $_POST["id_user"];
   if(isset($postIdUser))
   {
-    echo($UserDAO->toString());
-    if($UserDAO->checkOneById())//Checking de l'id user coté serveur
+    if($pDAO["User"]->checkOneById(null))//Checking de l'id user coté serveur
     {
       return EXIT_CODE_OK;
     }
@@ -76,38 +77,46 @@ function checkIdUser()
   }
 }
 
+function deleteOneCard($pDAO,$idUser,$cards)
+{
+  if(isset($cards))
+  {
 
-function deleteOneCard($idUser,$cards)
+
+
+  }
+  else
+  {
+      return EXIT_CODE_CARDS_MISSING;
+  }
+}
+
+function randomCard($pDAO,$idUser)
 {
 
 }
 
-function randomCard($idUser)
+function fusion($pDAO,$idUser,$cards)
 {
 
 }
 
-function fusion($idUser,$cards)
+function getMoney($pDAO,$idUser)
 {
 
 }
 
-function getMoney($idUser)
+function forge($pDAO,$idUser,$cards)
 {
 
 }
 
-function forge($idUser,$cards)
+function exchange($pDAO,$idUser,$idUser_secondary,$cards,$cards_secondary)
 {
 
 }
 
-function exchange($idUser,$idUser_secondary,$cards,$cards_secondary)
-{
-
-}
-
-function getAnswer()
+function getAnswer($pDAO)
 {
 
 }

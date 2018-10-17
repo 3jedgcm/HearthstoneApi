@@ -9,62 +9,71 @@ $errorCode = EXIT_CODE_OK;
 // Test de la variable
 $errorCode = checkIdUser();
 
+//Initialisation de chaque DAO
+$CardDAO = new CardDAO(DB::getInstance());
+$ParamDAO = new ParamDAO(DB::getInstance());
+$UserDAO = new UserDAO(DB::getInstance());
+
+
 if(!$errorCode)
+{
   if(isset($postAction))
   {
     //Routage des actions
     switch($postAction)
     {
       case 'delete': //Supprimer une carte
-      $resultat = deleteOneCard();
+      $resultat = deleteOneCard(null,null);
       break;
       case 'random_card': //Action carte aléatoire
-      $resultat = randomCard();
+      $resultat = randomCard(null);
       break;
       case 'fusion': //Fusion d’une carte
-      $resultat = fusion();
+      $resultat = fusion(null,null);
       break;
       case 'get_money': //Obtenir l’argent d’un utilisateur
-      $resultat = getMoney();
+      $resultat = getMoney(null);
       break;
       case 'forge': // Forger une carte
-      $resultat = forge();
+      $resultat = forge(null,null);
       break;
       case 'exchange': //Echanger une carte
-      $resultat = exchange();
+      $resultat = exchange(null,null,null,null);
       break;
       case 'get_answer': //Obtenir une question
-
+      $resultat = getAnswer();
       break;
       default: //Si aucune action
       $errorCode = EXIT_CODE_UNKNOW_ACTION;
-
+      break;
     }
   }
   else
   {
     $errorCode = EXIT_CODE_ACTION_MISSING;
   }
+}
 
+echo json_encode(["test",$errorCode]);
 function checkIdUser()
 {
   $postIdUser = $_POST["id_user"];
   if(isset($postIdUser))
   {
-    if(true)//Checking de l'id user coté serveur
+    echo($UserDAO->toString());
+    if($UserDAO->checkOneById())//Checking de l'id user coté serveur
     {
-      $errorCode = EXIT_CODE_OK;
+      return EXIT_CODE_OK;
     }
     else
     {
-      $errorCode = EXIT_CODE_INCORRECT_ID_USER;
+      return EXIT_CODE_INCORRECT_ID_USER;
     }
   }
   else
   {
-    $errorCode = EXIT_CODE_UNKNOW_ID_USER;
+    return EXIT_CODE_UNKNOW_ID_USER;
   }
-  return $errorCode;
 }
 
 

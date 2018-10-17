@@ -1,7 +1,7 @@
 <?php
 // Classe de connexion à une base de données
 // Design pattern singleton pour ouvrir qu'une seule connexion
-class MaBD {
+class DB {
 
    static private $pdo = null; // Le singleton
 

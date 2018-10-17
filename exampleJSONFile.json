@@ -1,0 +1,11 @@
+{
+  "exitCode":1,
+  "data":{
+    "user":{"id_user":1,"key"},
+    "cards":[
+      {"id_user":1,"id_card":42,"desc_card":"is one card"},
+      {"id_user":18,"id_card":65,"desc_card":"is another card"},
+      {"id_user":13,"id_card":325,"desc_card":"fake card"}
+    ]
+  }
+}

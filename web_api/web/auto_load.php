@@ -9,3 +9,5 @@ include 'classes/CardDAO.php';
 include 'classes/ParamDAO.php';
 include 'classes/UserDAO.php';
 include 'ressource.php';
+include 'controller.php';
+include 'loader.php';

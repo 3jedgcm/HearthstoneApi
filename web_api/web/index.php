@@ -1,15 +1,7 @@
 <?php
-require_once $_SERVER["DOCUMENT_ROOT"] . "/auto_load.php"; //Inclusion de le chargement de tout les fichiers
+require_once $_SERVER["DOCUMENT_ROOT"] . "/auto_load.php"; //Inclusion du chargement de tout les fichiers
 
-
-//Initialisation de la variable code erreur
 $errorCode = EXIT_CODE_OK;
-
-//Initialisation de chaque DAO
-$CardDAO = new CardDAO(DB::getInstance());
-$ParamDAO = new ParamDAO(DB::getInstance());
-$UserDAO = new UserDAO(DB::getInstance());
-$DAO = ["Card"=>$CardDAO,"Param"=>$ParamDAO,"User"=>$UserDAO];
 
 $arrayUri = getArrayUri();
 // Test de la variable
@@ -17,13 +9,20 @@ $errorCode = checkIdUser($DAO,$arrayUri);
 $returnData = getTypeOfRequestHttp();
 $errorCode = $returnData["exitCode"];
 $typeReqHttp = $returnData["type"];
+
 if(!$errorCode)
 {
   switch($typeReqHttp)
   {
     case'DELETE':
-
+    switch($arrayUri[1])
+    {
+      default:
+      $errorCode = EXIT_CODE_INVALID_URI;
+      break;
+    }
     break;
+
     case'POST':
     switch($arrayUri[1])
     {
@@ -62,17 +61,20 @@ if(!$errorCode)
       $errorCode = EXIT_CODE_INVALID_URI;
     }
     break;
+
     case'GET':
       switch($arrayUri[1])
       {
         case'user':
-          if(empty($arrayUri[2]))
+          if($arrayUri[3] == "")
           {
-            //GET ALL USER
+            $resultat = getUser($DAO,$arrayUri[2]);
+            $errorCode = $resultat["error"];
+            $user = $resultat["user"];
           }
           else
           {
-            //GET ONE USER
+            $errorCode = EXIT_CODE_TOO_LONG_URI;
           }
         break;
         case'money':
@@ -94,51 +96,14 @@ if(!$errorCode)
         $errorCode = EXIT_CODE_INVALID_URI;
       }
     break;
+
     default:
     $errorCode = EXIT_CODE_INCORRECT_TYPE_REQUEST;
     break;
   }
-
-/*
-    //Routage des actions
-    switch($arrayUri[1])
-    {
-      case 'delete': //Supprimer une carte
-        $errorCode = deleteOneCard($DAO,$arrayUri[2],$_POST["cards"]);
-        $inventory = getInventory($DAO,$arrayUri[2]);
-      break;
-      case 'random_card': //Action carte aléatoire
-        $errorCode = randomCard($DAO,$arrayUri[2]);
-        $inventory = getInventory($DAO,$arrayUri[2]);
-      break;
-      case 'fusion': //Fusion d’une carte
-        $errorCode = fusion($DAO,$arrayUri[2],$_POST["cards"]);
-        $inventory = getInventory($DAO,$arrayUri[2]);
-      break;
-      case 'get_poney': //Obtenir l’argent d’un utilisateur
-      case 'money': //Obtenir l’argent d’un utilisateur
-
-      break;
-      case 'forge': // Forger une carte
-        $errorCode = forge($DAO,$arrayUri[2],$_POST["cards"]);
-        $inventory = getInventory($DAO,$arrayUri[2]);
-      break;
-      case 'exchange': //Echanger une carte
-        $errorCode = exchange($DAO,$arrayUri[2],$_POST["cards"],$_POST["second_id_user"],$_POST["second_cards"]);
-        $inventory = getInventory($DAO,$arrayUri[2]);
-      break;
-      case 'get_answer': //Obtenir une question
-        $errorCode = getAnswer();
-        $inventory = getInventory($DAO,$arrayUri[2]);
-      break;
-      default: //Si aucune action
-        $errorCode = EXIT_CODE_UNKNOW_ACTION;
-      break;
-    }
-*/
-
   $newInventory = getInventory($DAO,$arrayUri[2]);
 }
+
 sendHttpRespond($arrayUri[1],$DAO,$arrayUri[2],$money,$inventory,$errorCode,$typeReqHttp);
 
 
@@ -208,121 +173,6 @@ function checkIdUser($pDAO,$arrayUri)
   {
     return EXIT_CODE_UNKNOW_ID_USER;
   }
-}
-
-function deleteOneCard($pDAO,$idUser,$cards)
-{
-  if(isset($cards) && $cards != null)
-  {
-    $error = EXIT_CODE_OK;
-    foreach($cards as $card)
-    {
-      if($pDAO["Card"]->checkExist($card,$idUser))
-      {
-        $pDAO["Card"]->delete($card,$idUser);
-      }
-      else
-      {
-        $error = EXIT_CODE_CARDS_IS_MISSING_IN_DB;
-      }
-    }
-    return $error;
-  }
-  else
-  {
-      return EXIT_CODE_CARDS_MISSING_IN_PARAMETTER;
-  }
-}
-
-function randomCard($pDAO,$idUser)
-{
-  $card = getRandomCard();
-  if(isset($card))
-  {
-    if($pDAO["Card"]->insert($card,$idUser))
-    {
-      return EXIT_CODE_OK;
-    }
-    else
-    {
-      return EXIT_CODE_ERROR_INSERTION_IN_DB;
-    }
-  }
-  else
-  {
-    return EXIT_CODE_RANDOM_CARD_IS_NULL;
-  }
-}
-
-function fusion($pDAO,$idUser,$cards)
-{
-  return EXIT_CODE_OK;
-}
-
-function getMoney($pDAO,$idUser)
-{
-  if($idUser == "")
-  {
-    $resultat["money"] = $pDAO["User"]->getAllMoney();
-  }
-  else
-  {
-    $resultat["money"] = $pDAO["User"]->getMoney($idUser);
-  }
-  if($resultat["money"] == -1)
-  {
-    $resultat["error"] = EXIT_CODE_INCORRECT_MONEY_READ;
-  }
-  else
-  {
-    $resultat["error"] = EXIT_CODE_OK;
-  }
-  return $resultat;
-
-}
-
-function setMoney($pDAO,$idUser,$newValueMoney)
-{
-  if($idUser == "")
-  {
-    $resultat["money"] = $pDAO["User"]->setAllMoney(intval($newValueMoney));
-  }
-  else
-  {
-    $resultat["money"] = $pDAO["User"]->setMoney($idUser,intval($newValueMoney));
-  }
-  if($resultat["money"] == -1)
-  {
-    $resultat["error"] = EXIT_CODE_INCORRECT_MONEY_SETTER;
-  }
-  else
-  {
-    $resultat["error"] = EXIT_CODE_OK;
-  }
-  return $resultat;
-
-}
-
-function forge($pDAO,$idUser,$cards)
-{
-  return EXIT_CODE_OK;
-}
-
-function exchange($pDAO,$idUser,$idUser_secondary,$cards,$cards_secondary)
-{
-  return EXIT_CODE_OK;
-}
-
-function getAnswer($pDAO)
-{
-  return EXIT_CODE_OK;
-  //Voir API Goub
-}
-
-function getRandomCard()
-{
-  return EXIT_CODE_OK;
-  //Voir API Pokemon
 }
 
 function getArrayUri()

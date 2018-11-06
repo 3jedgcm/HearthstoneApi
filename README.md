@@ -1,1 +1,1 @@
-# PokeApi
+# Hearthstone API

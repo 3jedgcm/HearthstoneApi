@@ -131,9 +131,7 @@ function setUser($pDAO,$idUser)
 /* FUNCTION CARDS  */
 /******************/
 
-function getOneCardByUserId(){};
-
-function ggetAllCard(){};
+function getCard($pDAO,$idUser){};
 
 function setOneCardByUserId(){};
 
@@ -158,26 +156,23 @@ function getRandomCard(){
   }
 };
 
-function deleteOneCardByUserid($pDAO,$idUser,$cards){
-  if(isset($cards) && $cards != null)
+function deleteCardByUserid($pDAO,$idUser,$idCards){
+  if($idCards != "")
   {
-    $error = EXIT_CODE_OK;
-    foreach($cards as $card)
-    {
-      if($pDAO["Card"]->checkExist($card,$idUser))
+      if($pDAO["Card"]->checkExist($cidCard,$idUser))
       {
-        $pDAO["Card"]->delete($card,$idUser);
+        $pDAO["Card"]->delete($idCard,$idUser);
       }
       else
       {
         $error = EXIT_CODE_CARDS_IS_MISSING_IN_DB;
       }
-    }
+
     return $error;
   }
   else
   {
-      return EXIT_CODE_CARDS_MISSING_IN_PARAMETTER;
+      $pDAO["Card"]->deleteAll($idUser);
   }
 }
 
@@ -186,18 +181,29 @@ function deleteOneCardByUserid($pDAO,$idUser,$cards){
 /******************/
 
 
-function fusion($pDAO,$idUser,$cards)
+function craftOneCard($pDAO,$idUser,$cards)
 {
   return EXIT_CODE_OK;
 }
 
-function forge($pDAO,$idUser,$cards)
+function meltCards($pDAO,$idUser,$cards)
 {
   return EXIT_CODE_OK;
 }
 
-function getAnswer($pDAO)
+function getQuestion($pDAO)
 {
   return EXIT_CODE_OK;
   //Voir API Goub
+}
+
+function setAnswer($pDAO)
+{
+  return EXIT_CODE_OK;
+  //Voir API Goub
+}
+
+function getInventory($pDAO,$idUser)
+{
+  return $pDAO["Card"]->getAll($idUser);
 }

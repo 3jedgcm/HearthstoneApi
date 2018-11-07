@@ -28,6 +28,11 @@ class CardDAO extends DAO {
       return true;
     }
 
+    public function deleteAll($id_user)
+    {
+      return true;
+    }
+
 
     public function checkExist($id_card,$id_user)
     {

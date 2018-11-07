@@ -15,18 +15,36 @@ if(!$errorCode)
   switch($typeReqHttp)
   {
     case'DELETE':
-    switch($arrayUri[1])
-    {
-      default:
-      $errorCode = EXIT_CODE_INVALID_URI;
-      break;
-    }
+      switch($arrayUri[1])
+      {
+        case'CARD':
+          if($arrayUri[3] == "")
+          {
+              $errorCode = deleteCardByUserid($DAO,$arrayUri[2],$arrayUri[3]);
+          }
+          else
+          {
+          $errorCode = EXIT_CODE_TOO_LONG_URI;
+          }
+        default:
+        $errorCode = EXIT_CODE_INVALID_URI;
+        break;
+      }
     break;
 
     case'POST':
-    switch($arrayUri[1])
-    {
+      switch($arrayUri[1])
+      {
       case'user':
+      if(isset($_POST['value']))
+      {
+        
+      }
+
+
+
+
+
 
       break;
       case'money':
@@ -90,8 +108,42 @@ if(!$errorCode)
           }
         break;
         case'parametter':
-        //Get All Parametter
+          if($arrayUri[2] == "")
+          {
+            $resultat = getParam($DAO);
+          }
+          else
+          {
+            $errorCode = EXIT_CODE_TOO_LONG_URI;
+          }
         break;
+        case'cards':
+          if($arrayUri[3] != "")
+          {
+            $resultat = getCard($DAO,$arrayUri[2]);
+          }
+          else
+          {
+            $errorCode = EXIT_CODE_TOO_LONG_URI;
+          }
+        break;
+        case'other':
+        if($arrayUri[4] == "")
+        {
+          if($arrayUri[3] == "question")
+          {
+            $resultat = getQuestion($DAO);
+          }
+          else
+          {
+            $errorCode = EXIT_CODE_INVALID_URI;
+          }
+        }
+        else
+        {
+          $errorCode = EXIT_CODE_TOO_LONG_URI;
+        }
+
         default:
         $errorCode = EXIT_CODE_INVALID_URI;
       }
@@ -105,11 +157,6 @@ if(!$errorCode)
 }
 
 sendHttpRespond($arrayUri[1],$DAO,$arrayUri[2],$money,$inventory,$errorCode,$typeReqHttp);
-
-
-
-
-
 
 function sendHttpRespond($pRequest,$pDAO,$pUser,$pMoney,$pCards,$pErrorCode,$typeReqHttp)
 {
@@ -130,7 +177,6 @@ function sendHttpRespond($pRequest,$pDAO,$pUser,$pMoney,$pCards,$pErrorCode,$typ
             $data = ["money"=>$pMoney];
           }
         break;
-
         default:
           $data = ["user"=>$pUser,"cards"=>$cards];
         break;
@@ -148,11 +194,6 @@ function sendHttpRespond($pRequest,$pDAO,$pUser,$pMoney,$pCards,$pErrorCode,$typ
   }
 
 
-}
-
-function getInventory($pDAO,$idUser)
-{
-  return $pDAO["Card"]->getAll($idUser);
 }
 
 function checkIdUser($pDAO,$arrayUri)

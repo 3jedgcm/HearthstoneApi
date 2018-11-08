@@ -1,14 +1,12 @@
-package fr.coopuniverse.api.pokeapi;
+package fr.coopuniverse.api.pokeapi.activity;
 
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
-import android.support.v4.widget.TextViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,16 +24,15 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.shobhitpuri.custombuttons.GoogleSignInButton;
-import com.squareup.picasso.Picasso;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Arrays;
+import fr.coopuniverse.api.pokeapi.R;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -82,12 +79,13 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
 
-                        mail.setText("Mail : ");
-                        name.setText("Name : ");
-                        id.setText("Id : ");
-                        imageView.setVisibility(View.INVISIBLE);
+                        //mail.setText("Mail : ");
+                        //name.setText("Name : ");
+                        //id.setText("Id : ");
+                        //imageView.setVisibility(View.INVISIBLE);
                         disconnect.setEnabled(false);
                         signInButton.setEnabled(true);
+                        loginButton.setEnabled(true);
                     }
                 });
             }
@@ -98,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
         //updateUI(account);
         //Facebook connexion
         this.callbackManager = CallbackManager.Factory.create();
-        this.loginButton = (LoginButton) findViewById(R.id.login_button);
+        this.loginButton = findViewById(R.id.login_button);
         this.loginButton.setReadPermissions("email");
         this.loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -126,13 +124,23 @@ public class MainActivity extends AppCompatActivity {
                         GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
                             @Override
                             public void onCompleted(JSONObject object, GraphResponse response) {
-                                Log.d("Chaton",object.toString());
+                                try {
+
+                                    changeActivity(new UserData(object.get("id").toString(),object.get("name").toString(),""));
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
                             }
                         });
+                        connectEnable();
+
+
                         Bundle parameters = new Bundle();
                         parameters.putString("fields", "id,name,link");
                         request.setParameters(parameters);
                         request.executeAsync();
+
                     }
 
                     @Override
@@ -167,6 +175,23 @@ public class MainActivity extends AppCompatActivity {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, 1);
 
+    }
+
+
+
+    private void changeActivity(UserData ud)
+    {
+        Intent inventoryIntent = new Intent(this,InventoryActivity.class);
+        Log.d("Chaton",ud.toString());
+        inventoryIntent.putExtra("PERSONNAL_INFORMATION", ud.toString());
+        startActivityForResult(inventoryIntent,1);
+    }
+
+    private void connectEnable()
+    {
+        disconnect.setEnabled(true);
+        signInButton.setEnabled(false);
+        loginButton.setEnabled(false);
 
     }
 
@@ -175,21 +200,23 @@ public class MainActivity extends AppCompatActivity {
 
             GoogleSignInAccount acct = completedTask.getResult(ApiException.class);
             if (acct != null) {
-                disconnect.setEnabled(true);
-                imageView.setVisibility(View.VISIBLE);
+                connectEnable();
+                //imageView.setVisibility(View.VISIBLE);
                 String personName = acct.getDisplayName();
                 String personGivenName = acct.getGivenName();
                 String personFamilyName = acct.getFamilyName();
                 String personEmail = acct.getEmail();
                 String personId = acct.getId();
                 Uri personPhoto = acct.getPhotoUrl();
-                this.mail.setText("Mail : " + personEmail);
-                this.name.setText("Name : " + personName + " - " + personGivenName + " - " + personFamilyName + " -");
-                this.id.setText("Id : " + personId);
-                this.signInButton.setEnabled(false);
-                if (personPhoto != null) {
+                //this.mail.setText("Mail : " + personEmail);
+                //this.name.setText("Name : " + personName + " - " + personGivenName + " - " + personFamilyName + " -");
+                //this.id.setText("Id : " + personId);
+
+              /*  if (personPhoto != null) {
                     Picasso.get().load(personPhoto).into(imageView);
-                }
+                }*/
+                changeActivity(new UserData(acct.getId(),acct.getDisplayName(),acct.getFamilyName()));
+
             }
 
         } catch (ApiException e) {

@@ -11,12 +11,17 @@
     </style>
 
     <style name="FacebookLoginButton">
-    <item name="android:textSize">@dimen/com_facebook_auth_dialog_corner_radius</item>
-    <item name="android:background">@color/com_facebook_button_login_silver_background_color</item>
-    <item name="android:layout_marginTop">10dp</item>
-    <item name="android:layout_marginBottom">10dp</item>
-    <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:textSize">@dimen/com_facebook_auth_dialog_corner_radius</item>
+        <item name="android:background">@color/com_facebook_button_login_silver_background_color
+        </item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:layout_gravity">center_horizontal</item>
         <item name="android:layout_height"></item>
 
     </style>
+
+    <style name="AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

@@ -3,11 +3,20 @@
 /** MONEY FUNCTION ***/
 /********************/
 
-function setMoney($pDAO,$idUser,$newValueMoney)
+function setMoney($pDAO,$idUser,$newValueMoney) //OK
 {
+  $resultat["error"] = EXIT_CODE_OK;
   if($idUser == "")
   {
-    $resultat["money"] = $pDAO["User"]->setAllMoney(intval($newValueMoney));
+    $resultat["error"] = checkIdUser($pDAO,$idUser);
+    if($resultat["error"] == 0)
+    {
+      $resultat["money"] = $pDAO["User"]->setAllMoney(intval($newValueMoney));
+    }
+    else
+    {
+      $resultat["error"] = EXIT_CODE_INCORRECT_ID_USER;
+    }
   }
   else
   {
@@ -15,130 +24,172 @@ function setMoney($pDAO,$idUser,$newValueMoney)
   }
   if($resultat["money"] == -1)
   {
-    $resultat["error"] = EXIT_CODE_INCORRECT_MONEY_SETTER;
-  }
-  else
-  {
-    $resultat["error"] = EXIT_CODE_OK;
+    $resultat["error"] = EXIT_CODE_ERROR_SQL;
   }
   return $resultat;
 
-}
+};
 
-function getMoney($pDAO,$idUser)
+function getMoney($pDAO,$idUser) //OK
 {
+  $resultat["error"] = EXIT_CODE_OK;
   if($idUser == "")
   {
     $resultat["money"] = $pDAO["User"]->getAllMoney();
   }
   else
   {
-    $resultat["money"] = $pDAO["User"]->getMoney($idUser);
+    $resultat["error"] = checkIdUser($pDAO,$idUser);
+    if($resultat["error"] == 0)
+    {
+      $resultat["money"] = $pDAO["User"]->getMoney($idUser);
+    }
+    else
+    {
+      $resultat["error"] = EXIT_CODE_INCORRECT_ID_USER;
+    }
+
   }
   if($resultat["money"] == -1)
   {
-    $resultat["error"] = EXIT_CODE_INCORRECT_MONEY_READ;
-  }
-  else
-  {
-    $resultat["error"] = EXIT_CODE_OK;
+    $resultat["error"] = EXIT_CODE_ERROR_SQL;
   }
   return $resultat;
 
-}
+};
 
 /******************/
 /* FUNCTION PARAM  */
 /******************/
 
-function getParam($pDAO)
+function getParam($pDAO) //OK
 {
+  $resultat["error"] = EXIT_CODE_OK;
+
   $resultat["param"] = $pDAO["Param"]->getAll();
 
   if($resultat["param"] == -1)
   {
-    $resultat["error"] = EXIT_CODE_INCORRECT_USER_READ;
-  }
-  else
-  {
-    $resultat["error"] = EXIT_CODE_OK;
+    $resultat["error"] = EXIT_CODE_ERROR_SQL;
   }
   return $resultat;
-}
+};
 
-function setParam($pDAO)
+function setParam($pDAO) //OK
 {
+  $resultat["error"] = EXIT_CODE_OK;
   $resultat["param"] = $pDAO["Param"]->getAll();
 
   if($resultat["user"] == -1)
   {
-    $resultat["error"] = EXIT_CODE_INCORRECT_USER_READ;
-  }
-  else
-  {
-    $resultat["error"] = EXIT_CODE_OK;
+    $resultat["error"] = EXIT_CODE_ERROR_SQL;
   }
   return $resultat;
-}
+};
 
 /*********************/
 /*** FUNCTION USER***/
 /*********************/
 
-function getUser($pDAO,$idUser)
+function getUser($pDAO,$idUser) //OK
 {
+  $resultat["error"] = EXIT_CODE_OK;
   if($idUser == "")
   {
     $resultat["user"] = $pDAO["User"]->getAll();
   }
   else
   {
-    $resultat["user"] = $pDAO["User"]->getOne($idUser);
+    $resultat["error"] = checkIdUser($pDAO,$idUser);
+    if($resultat["error"] == 0)
+    {
+      $resultat["user"] = $pDAO["User"]->getOne($idUser);
+    }
+    else
+    {
+      $resultat["error"] = EXIT_CODE_INCORRECT_ID_USER;
+    }
   }
   if($resultat["user"] == -1)
   {
     $resultat["error"] = EXIT_CODE_INCORRECT_USER_READ;
   }
-  else
-  {
-    $resultat["error"] = EXIT_CODE_OK;
-  }
   return $resultat;
-}
+};
 
-function setUser($pDAO,$idUser)
+
+function setUser($pDAO,$idUser) //OK
 {
+  $resultat["error"] = EXIT_CODE_OK;
   if($idUser == "")
   {
     $resultat["user"] = $pDAO["User"]->getAll();
   }
   else
   {
-    $resultat["user"] = $pDAO["User"]->getOne($idUser);
+    $resultat["error"] = checkIdUser($pDAO,$idUser);
+    if($resultat["error"] == 0)
+    {
+      $resultat["user"] = $pDAO["User"]->getOne($idUser);
+    }
+    else
+    {
+      $resultat["error"] = EXIT_CODE_INCORRECT_ID_USER;
+    }
   }
   if($resultat["user"] == -1)
   {
-    $resultat["error"] = EXIT_CODE_INCORRECT_USER_READ;
-  }
-  else
-  {
-    $resultat["error"] = EXIT_CODE_OK;
+    $resultat["error"] = EXIT_CODE_ERROR_SQL;
   }
   return $resultat;
-}
+};
 
 /******************/
 /* FUNCTION CARDS  */
 /******************/
 
-function getCard($pDAO,$idUser){};
+function getCard($pDAO,$idUser) //OK
+{
+  $resultat["error"] = EXIT_CODE_OK;
+  if($idUser == "")
+  {
+    $resultat["card"] = $pDAO["Card"]->getAll();
+  }
+  else
+  {
+    $resultat["error"] = checkIdUser($pDAO,$idUser);
+    if($resultat["error"] == 0)
+    {
+      $resultat["card"] = $pDAO["Card"]->getOne($idUser);
+    }
+    else
+    {
+      $resultat["error"] = EXIT_CODE_INCORRECT_ID_USER;
+    }
+    if($resultat["card"] == -1)
+    {
+      $resultat["error"] = EXIT_CODE_ERROR_SQL;
+    }
+  }
 
-function setOneCardByUserId(){};
+  return $resultat;
+};
 
-function exchangeCards($pDAO,$idUser,$idUser_secondary,$cards,$cards_secondary){}
+function setCardByUserId($pDAO,$idUser,$cards)
+{
+  $resultat["error"] = EXIT_CODE_OK;
+  return $resultat;
+};
 
-function getRandomCard(){
-  $card = getRandomCard();
+function exchangeCards($pDAO,$idUser,$idUser_secondary,$cards,$cards_secondary)
+{
+  $resultat["error"] = EXIT_CODE_NO_IMPLEMENTED_FUNCTION;
+  return $resultat;
+};
+
+function getRandomCard($pDAO,$idUser) //Non Fonctionnel
+{
+  $resultat["error"] = EXIT_CODE_OK;
   if(isset($card))
   {
     if($pDAO["Card"]->insert($card,$idUser))
@@ -147,33 +198,43 @@ function getRandomCard(){
     }
     else
     {
-      return EXIT_CODE_ERROR_INSERTION_IN_DB;
+      return EXIT_CODE_ERROR_SQL;
     }
   }
   else
   {
     return EXIT_CODE_RANDOM_CARD_IS_NULL;
   }
+  return $resultat;
 };
 
-function deleteCardByUserid($pDAO,$idUser,$idCards){
-  if($idCards != "")
+
+function deleteCardByUserid($pDAO,$idUser,$idCards) //OK
+{
+  $resultat["error"] = checkIdUser($pDAO,$idUser);
+  if($resultat["error"] == 0)
   {
+    if($idCards != "")
+    {
       if($pDAO["Card"]->checkExist($cidCard,$idUser))
       {
         $pDAO["Card"]->delete($idCard,$idUser);
       }
       else
       {
-        $error = EXIT_CODE_CARDS_IS_MISSING_IN_DB;
+        $resultat["error"] = EXIT_CODE_CARDS_IS_MISSING_IN_DB;
       }
-
-    return $error;
+    }
+    else
+    {
+      $pDAO["Card"]->deleteAll($idUser);
+    }
   }
   else
   {
-      $pDAO["Card"]->deleteAll($idUser);
+    $resultat["error"] = EXIT_CODE_INCORRECT_ID_USER;
   }
+  return $resultat;
 }
 
 /******************/
@@ -181,29 +242,35 @@ function deleteCardByUserid($pDAO,$idUser,$idCards){
 /******************/
 
 
-function craftOneCard($pDAO,$idUser,$cards)
+function craftOneCard($pDAO,$idUser,$cards)  //Non Fonctionnel
 {
-  return EXIT_CODE_OK;
+  $resultat["error"] = EXIT_CODE_NO_IMPLEMENTED_FUNCTION;
+  return $resultat;
 }
 
-function meltCards($pDAO,$idUser,$cards)
+function meltCards($pDAO,$idUser,$cards)   //Non Fonctionnel
 {
-  return EXIT_CODE_OK;
+  $resultat["error"] = EXIT_CODE_NO_IMPLEMENTED_FUNCTION;
+  return $resultat;
 }
 
-function getQuestion($pDAO)
+function getQuestion($pDAO)  //Non Fonctionnel
 {
-  return EXIT_CODE_OK;
+  $resultat["error"] = EXIT_CODE_NO_IMPLEMENTED_FUNCTION;
+  return $resultat;
   //Voir API Goub
 }
 
-function setAnswer($pDAO)
+function setAnswer($pDAO)  //Non Fonctionnel
 {
-  return EXIT_CODE_OK;
+  $resultat["error"] = EXIT_CODE_NO_IMPLEMENTED_FUNCTION;
+  return $resultat;
   //Voir API Goub
 }
 
-function getInventory($pDAO,$idUser)
+function getInventory($pDAO,$idUser)  //Non Fonctionnel
 {
+  $resultat["error"] = EXIT_CODE_NO_IMPLEMENTED_FUNCTION;
+  return $resultat;
   return $pDAO["Card"]->getAll($idUser);
 }

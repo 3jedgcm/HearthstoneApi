@@ -12,6 +12,26 @@
   }
 }
 
+@GET("money/{idUser}")
+@GET("money/")
+@POST("money/{idUser}")
+@POST("money/")
+@GET("user/{idUser}")
+@POST("user/{idUser}")
+@GET("user/")
+@POST("user/")
+@GET("card/{idUser}")
+@GET("card/")
+@POST("card/{idUser}")
+@DELETE("card/{idUser}")
+@POST("card/exchange/")
+@GET("card/random/{idUser}")
+@POST("other/melteCard/{idUser}")
+@POST("other/craftCard/{idUser}")
+@GET("other/quizz/{idUser}")
+@POST("other/quizz/{idUser}")
+
+
 
 /* Money */
 
@@ -32,6 +52,7 @@ SetAllMoney(@Field("value") String money)
 
 /* User */
 
+
 //GetOneUser
 @GET("user/{idUser}")
 GetOneUser(@Path("idUser") String idUser);
@@ -48,6 +69,7 @@ GetAllUser();
 SetAllUser(@Field("value") String value);
 
 /* Card */
+
 
 //GetOneCardByUserId
 @GET("card/{idUser}")
@@ -69,6 +91,7 @@ ExchangeCards(@Field("idUserOne") String idUserOne,@Field("idUserTwo") String id
 //GetRandomCard
 @GET("card/random/{idUser}")
 GetRandomCard(@Path("idUser") String idUser);
+
 
 /* Other */
 //MeltCards

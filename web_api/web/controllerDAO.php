@@ -65,7 +65,7 @@ function getMoney($pDAO,$idUser) //OK
 
 function getParam($pDAO) //OK
 {
-  $resultat["error"] = EXIT_CODE_NO_IMPLEMENTED_FUNCTION;
+
 
   $resultat["param"] = $pDAO["Param"]->getAll();
 
@@ -73,6 +73,11 @@ function getParam($pDAO) //OK
   {
     $resultat["error"] = EXIT_CODE_ERROR_SQL;
   }
+  else
+  {
+    $resultat["error"] = EXIT_CODE_OK;
+  }
+
   return $resultat;
 };
 
@@ -182,8 +187,8 @@ function getRandomCard($pDAO,$idUser) //Non Fonctionnel
   $resultat["error"] = EXIT_CODE_OK;
   if(isset($card))
   {
-    $resultat["card"] = $pDAO["Card"]->getRandomCard($idUser);
-    if()
+    $resultat = $pDAO["Card"]->getRandomCard($idUser);
+    if($resultat["error"])
     {
       return EXIT_CODE_OK;
     }

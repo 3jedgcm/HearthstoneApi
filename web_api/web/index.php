@@ -224,6 +224,7 @@ if(!$errorCode)
       {
         $resultat = getParam($DAO);
         $errorCode = $resultat["error"];
+        $param = $resultat["param"];
       }
       else
       {
@@ -271,9 +272,9 @@ if(!$errorCode)
   $newInventory = getInventory($DAO,$arrayUri[2]);
 }
 
-sendHttpRespond($arrayUri[1],$DAO,$arrayUri[2],$money,$inventory,$errorCode,$typeReqHttp);
+sendHttpRespond($arrayUri[1],$DAO,$arrayUri[2],$money,$inventory,$errorCode,$typeReqHttp,$param);
 
-function sendHttpRespond($pRequest,$pDAO,$pUser,$pMoney,$pCards,$pErrorCode,$typeReqHttp)
+function sendHttpRespond($pRequest,$pDAO,$pUser,$pMoney,$pCards,$pErrorCode,$typeReqHttp,$pParam)
 {
   header('Content-type: application/json');
   if($pErrorCode == EXIT_CODE_OK)
@@ -290,6 +291,11 @@ function sendHttpRespond($pRequest,$pDAO,$pUser,$pMoney,$pCards,$pErrorCode,$typ
         else
         {
           $data = ["money"=>$pMoney];
+        }
+        break;
+        case ROUTE_PARAM:
+        {
+          $data = ["parameter"=>$pParam];
         }
         break;
 

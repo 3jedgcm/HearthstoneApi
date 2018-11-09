@@ -8,7 +8,6 @@ include 'classes/User.php';
 include 'classes/CardDAO.php';
 include 'classes/ParamDAO.php';
 include 'classes/UserDAO.php';
+include 'loader.php';
 include 'ressource.php';
 include 'controllerDAO.php';
-include 'controllerAPI.php';
-include 'loader.php';

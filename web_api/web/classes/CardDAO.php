@@ -18,13 +18,13 @@ class CardDAO extends DAO {
       return true;
     }
 
-    public function insert($card)
+    public function insert($pCard)
     {
-      $stmt = $this->pdo->prepare("INSERT INTO Cards VALUES (?,?,?,?,?,?,?,?,?)");
-      $stmt->execute(array($card['']));
+      echo $pCard;
+      $stmt = $this->pdo->prepare("INSERT INTO Cards VALUES (?,?,?,?,?,?,?,?)");
+      $stmt->execute(array($card['id'],$card['nameCard'],$card['description'],$card['url'],$card['type'],$card['attack'],$card['life'],$card['cost']));
       $row = $stmt->fetch(PDO::FETCH_ASSOC);
-      return $row["Money"];
-      return true;
+      return $row;
     }
 
     public function delete($id_card,$id_user)

@@ -26,10 +26,9 @@
 @DELETE("card/{idUser}")
 @POST("card/exchange/")
 @GET("card/random/{idUser}")
-@POST("other/melteCard/{idUser}")
-@POST("other/craftCard/{idUser}")
 @GET("other/quizz/{idUser}")
-@POST("other/quizz/{idUser}")
+@GET("param")
+
 
 
 

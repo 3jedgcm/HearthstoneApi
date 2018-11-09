@@ -4,22 +4,20 @@ require_once $_SERVER["DOCUMENT_ROOT"] . "/auto_load.php"; //Inclusion du charge
 $errorCode = EXIT_CODE_OK;
 
 $arrayUri = getArrayUri();
-// Test de la variable
-$errorCode = checkIdUser($DAO,$idUser);
-$returnData = getTypeOfRequestHttp();
-$errorCode = $returnData["exitCode"];
-$typeReqHttp = $returnData["type"];
+$typeReqHttp = $_SERVER['REQUEST_METHOD'];
 
 if(!$errorCode)
 {
   switch($typeReqHttp)
   {
-    case'DELETE':
+    case REQUEST_DELETE:
     switch($arrayUri[1])
     {
-      case'CARD':
-      if($arrayUri[3] == "")
+      case ROUTE_CARD:
+
+      if($arrayUri[3] == SUB_ROUTE_EMPTY)
       {
+
         $resultat = deleteCardByUserid($DAO,$arrayUri[2],$arrayUri[3]);
         $errorCode = $resultat["error"];
       }
@@ -27,19 +25,20 @@ if(!$errorCode)
       {
         $errorCode = EXIT_CODE_TOO_LONG_URI;
       }
+      break;
       default:
       $errorCode = EXIT_CODE_INVALID_URI;
       break;
     }
     break;
 
-    case'POST':
+    case REQUEST_POST:
     switch($arrayUri[1])
     {
-      case'cards':
-      if($arrayUri[3] == "")
+      case ROUTE_CARD:
+      if($arrayUri[3] == SUB_ROUTE_EMPTY)
       {
-        if($arrayUri[2] == "exchange")
+        if($arrayUri[2] == SUB_ROUTE_EXCHANGE)
         {
           if(isset($_POST['cardUserOne']) && isset($_POST['cardUserTwo']) && isset($_POST['idUserTwo']) && isset($_POST['idUserOne']))
           {
@@ -78,14 +77,15 @@ if(!$errorCode)
       }
 
       break;
-      case'money':
+      case ROUTE_MONEY:
       if(isset($_POST['value']))
       {
-        if($arrayUri[3] == "")
+        if($arrayUri[3] == SUB_ROUTE_EMPTY)
         {
-          if($arrayUri[2] == "")
+          if($arrayUri[2] == SUB_ROUTE_EMPTY)
           {
-            setMoney($DAO,"",$_POST['value']);
+            $resultat = setMoney($DAO,"",$_POST['value']);
+            $errorCode = $resultat["error"];
           }
           else
           {
@@ -102,24 +102,85 @@ if(!$errorCode)
         $errorCode = EXIT_CODE_UNKNOW_VALUE_PARAMETTER;
       }
       break;
-      case'parametter':
-      $errorCode = EXIT_CODE_NO_IMPLEMENTED_FUNCTION;
-      break;
 
-      case'other':
-      $errorCode = EXIT_CODE_NO_IMPLEMENTED_FUNCTION;
-      break;
+      case ROUTE_OTHER:
+      if(is_numeric($arrayUri[3]))
+      {
+        switch($arrayUri[2])
+        {
+          case SUB_ROUTE_MELT:
+          if(isset($_POST['cards']))
+          {
+            $resultat = meltCards($DAO,$arrayUri[3],$_POST['cards']);
+            $errorCode = $resultat["error"];
+          }
+          else
+          {
+            $errorCode = EXIT_CODE_MISSING_PARAMETTER;
+          }
+          break;
 
+          case SUB_ROUTE_CRAFTCARD:
+          if(isset($_POST['cards']))
+          {
+            $resultat = craftOneCard($DAO,$arrayUri[3],$_POST['cards']);
+            $errorCode = $resultat["error"];
+          }
+          else
+          {
+            $errorCode = EXIT_CODE_MISSING_PARAMETTER;
+          }
+          break;
+
+          case SUB_ROUTE_QUIZZ:
+
+          if(isset($_POST['numAnswer']) && isset($_POST['idQuestion']))
+          {
+            $resultat = setAnswer($DAO,$arrayUri[3],$_POST['$numAnswer'],$_POST['$idQuestion']);
+            $errorCode = $resultat["error"];
+          }
+          else
+          {
+            $errorCode = EXIT_CODE_MISSING_PARAMETTER;
+          }
+          break;
+
+          default:
+          $errorCode = EXIT_CODE_INVALID_URI;
+        }
+      }
+      else
+      {
+        $errorCode = EXIT_CODE_INCORRECT_ID_USER;
+      }
+      break;
+      case ROUTE_CONNECT:
+      if(isset($_POST['login']) && isset($_POST['pass']))
+      {
+        if($arrayUri[2] == SUB_ROUTE_EMPTY)
+        {
+          connect($DAO,$_POST['login'],$_POST['pass']);
+        }
+        else
+        {
+          $errorCode = EXIT_CODE_INVALID_URI;
+        }
+      }
+      else
+      {
+        $errorCode = EXIT_CODE_UNKNOW_VALUE_PARAMETTER;
+      }
+      break;
       default:
       $errorCode = EXIT_CODE_INVALID_URI;
     }
     break;
 
-    case'GET':
+    case REQUEST_GET:
     switch($arrayUri[1])
     {
-      case'user':
-      if($arrayUri[3] == "")
+      case ROUTE_USER:
+      if($arrayUri[3] == SUB_ROUTE_EMPTY)
       {
         $resultat = getUser($DAO,$arrayUri[2]);
         $errorCode = $resultat["error"];
@@ -130,45 +191,63 @@ if(!$errorCode)
         $errorCode = EXIT_CODE_TOO_LONG_URI;
       }
       break;
-      case'money':
-      if($arrayUri[3] == "")
+      case ROUTE_MONEY:
+
+      if($arrayUri[3] == SUB_ROUTE_EMPTY)
       {
-        $resultat = getMoney($DAO,$arrayUri[2]);
-        $errorCode = $resultat["error"];
-        $money = $resultat["money"];
+        if($arrayUri[2] == SUB_ROUTE_EMPTY)
+        {
+          $resultat = getMoney($DAO,$arrayUri[2]);
+          $errorCode = $resultat["error"];
+          $money = $resultat["money"];
+        }
+        else if(is_numeric($arrayUri[2]))
+        {
+          $resultat = getMoney($DAO,$arrayUri[2]);
+          $errorCode = $resultat["error"];
+          $money = $resultat["money"];
+        }
+        else
+        {
+          $errorCode = EXIT_CODE_INVALID_URI;
+        }
+
       }
       else
-      {
-        $errorCode = EXIT_CODE_TOO_LONG_URI;
-      }
-      break;
-      case'parametter':
-      if($arrayUri[2] == "")
-      {
-        $resultat = getParam($DAO);
-      }
-      else
-      {
-        $errorCode = EXIT_CODE_TOO_LONG_URI;
-      }
-      break;
-      case'cards':
-      if(is_numeric($arrayUri[2]) || "" == $arrayUri[2])
       {
 
-        $resultat = getCard($DAO,$arrayUri[2]);
+        $errorCode = EXIT_CODE_TOO_LONG_URI;
+      }
+      break;
+      case ROUTE_PARAM:
+      if($arrayUri[2] == SUB_ROUTE_EMPTY)
+      {
+        $resultat = getParam($DAO);
+        $errorCode = $resultat["error"];
       }
       else
       {
         $errorCode = EXIT_CODE_TOO_LONG_URI;
       }
       break;
-      case'other':
-      if($arrayUri[4] == "")
+      case ROUTE_CARD:
+      if(is_numeric($arrayUri[2]) || SUB_ROUTE_EMPTY == $arrayUri[2])
       {
-        if($arrayUri[3] == "question")
+        $resultat = getCard($DAO,$arrayUri[2]);
+        $errorCode = $resultat["error"];
+      }
+      else
+      {
+        $errorCode = EXIT_CODE_TOO_LONG_URI;
+      }
+      break;
+      case ROUTE_OTHER:
+      if(is_numeric($arrayUri[3]))
+      {
+        if($arrayUri[2] == SUB_ROUTE_QUIZZ)
         {
           $resultat = getQuestion($DAO);
+          $errorCode = $resultat["error"];
         }
         else
         {
@@ -177,14 +256,13 @@ if(!$errorCode)
       }
       else
       {
-        $errorCode = EXIT_CODE_TOO_LONG_URI;
+        $errorCode = EXIT_CODE_INVALID_URI;
       }
-
+      break;
       default:
       $errorCode = EXIT_CODE_INVALID_URI;
     }
     break;
-
     default:
     $errorCode = EXIT_CODE_INCORRECT_TYPE_REQUEST;
     break;
@@ -200,11 +278,11 @@ function sendHttpRespond($pRequest,$pDAO,$pUser,$pMoney,$pCards,$pErrorCode,$typ
   header('Content-type: application/json');
   if($pErrorCode == EXIT_CODE_OK)
   {
-    if($typeReqHttp == "GET")
+    if($typeReqHttp == REQUEST_GET)
     {
       switch($pRequest)
       {
-        case'money':
+        case ROUTE_MONEY:
         if($pUser != null)
         {
           $data = ["user"=>$pUser,"money"=>$pMoney];
@@ -214,6 +292,9 @@ function sendHttpRespond($pRequest,$pDAO,$pUser,$pMoney,$pCards,$pErrorCode,$typ
           $data = ["money"=>$pMoney];
         }
         break;
+
+
+
         default:
         $data = ["user"=>$pUser,"cards"=>$cards];
         break;
@@ -264,24 +345,9 @@ function getArrayUri()
   return $routes;
 }
 
-function getTypeOfRequestHttp()
+
+
+function debugVarDump($var)
 {
-  $method = $_SERVER['REQUEST_METHOD'];
-  switch ($method) {
-    case 'POST':
-    return ["exitCode" => EXIT_CODE_OK,"type" => "POST"];
-    break;
-
-    case 'DELETE':
-    return ["exitCode" => EXIT_CODE_OK,"type" => "DELETE"];
-    break;
-
-    case 'GET':
-    return ["exitCode" => EXIT_CODE_OK,"type" => "GET"];
-    break;
-
-    default:
-    return ["exitCode" => EXIT_CODE_INCORRECT_TYPE_REQUEST,"type" => ""];
-    break;
-  }
+  echo var_dump($var);
 }

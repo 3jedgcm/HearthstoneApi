@@ -1,4 +1,6 @@
 <?php
+require_once $_SERVER["DOCUMENT_ROOT"] . "/auto_load.php"; //Inclusion du chargement de tout les fichiers
+
 //Implémentation des constantes
 const EXIT_CODE_OK = 0;
 const EXIT_CODE_ACTION_MISSING = 1;
@@ -23,3 +25,22 @@ const EXIT_CODE_INCORRECT_USER_READ = 19;
 const EXIT_CODE_MISSING_PARAMETTER = 20;
 const EXIT_CODE_ERROR_SQL = 21;
 const EXIT_CODE_NO_IMPLEMENTED_FUNCTION = 99;
+
+const REQUEST_POST = "POST";
+const REQUEST_DELETE = "DELETE";
+const REQUEST_GET = "GET";
+
+const ROUTE_MONEY = "money";
+const ROUTE_USER = "user";
+const ROUTE_PARAM = "parametter";
+const ROUTE_CARD = "card";
+const ROUTE_OTHER = "other";
+const ROUTE_CONNECT = "connect";
+const SUB_ROUTE_EMPTY = "";
+const SUB_ROUTE_EXCHANGE = "exchange";
+const SUB_ROUTE_QUIZZ = "quizz";
+const SUB_ROUTE_CRAFTCARD = "craftcard";
+const SUB_ROUTE_MELT = "meltcard";
+
+
+const HEARTHSTONE_API_URI = "api.hearthstonejson.com/v1/15590/frFR/cards.json";

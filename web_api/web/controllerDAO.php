@@ -1,4 +1,5 @@
 <?php
+require_once $_SERVER["DOCUMENT_ROOT"] . "/auto_load.php"; //Inclusion du chargement de tout les fichiers
 /*********************/
 /** MONEY FUNCTION ***/
 /********************/
@@ -181,7 +182,8 @@ function getRandomCard($pDAO,$idUser) //Non Fonctionnel
   $resultat["error"] = EXIT_CODE_OK;
   if(isset($card))
   {
-    if($pDAO["Card"]->insert($card,$idUser))
+    $resultat["card"] = $pDAO["Card"]->getRandomCard($idUser);
+    if()
     {
       return EXIT_CODE_OK;
     }

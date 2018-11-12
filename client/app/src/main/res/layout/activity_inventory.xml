@@ -43,8 +43,8 @@
 
         <TextView
             android:id="@+id/profil"
-            android:layout_width="302dp"
-            android:layout_height="114dp"
+            android:layout_width="313dp"
+            android:layout_height="65dp"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
@@ -63,15 +63,15 @@
             android:typeface="normal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.296"
+            app:layout_constraintHorizontal_bias="0.345"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.983" />
+            app:layout_constraintVertical_bias="1.0" />
 
         <TextView
             android:id="@+id/respond"
-            android:layout_width="302dp"
-            android:layout_height="26dp"
+            android:layout_width="332dp"
+            android:layout_height="81dp"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
@@ -90,10 +90,10 @@
             android:typeface="normal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.303"
+            app:layout_constraintHorizontal_bias="0.222"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.749" />
+            app:layout_constraintVertical_bias="0.845" />
 
         <Spinner
             android:id="@+id/spinner"
@@ -129,9 +129,10 @@
             android:text="Send"
             app:layout_constraintBottom_toTopOf="@+id/profil"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.467"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/spinner"
-            app:layout_constraintVertical_bias="0.807" />
+            app:layout_constraintVertical_bias="0.678" />
 
         <EditText
             android:id="@+id/idUser"

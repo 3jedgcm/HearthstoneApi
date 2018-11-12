@@ -11,6 +11,11 @@ import retrofit2.http.Path;
 
 public interface CoopUniverseService
 {
+
+    /* Param */
+
+    @GET("parameter/")
+    Call<Reponse> GetAllParameter();
     /* Money */
 
     //GetOneMoney

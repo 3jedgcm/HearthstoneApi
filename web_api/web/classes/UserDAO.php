@@ -3,12 +3,19 @@ class UserDAO extends DAO {
 
     public function getOne($id_user)
     {
-      //Renvoi un objet card
+      $stmt = $this->pdo->prepare("SELECT * FROM Users WHERE IdUser=?");
+      $stmt->execute(array($id_user));
+      $row = $stmt->fetch(PDO::FETCH_ASSOC);
+      return $row;
     }
 
     public function getAll()
     {
-      //Renvoi un un tableau d'objet des cartes d'un utilisateur
+      $stmt = $this->pdo->prepare("SELECT * FROM Users");
+      $stmt->execute(array());
+      foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row)
+          $res[] = [$row["IdUser"]=>$row];
+      return $res;
     }
 
     public function update($obj)
@@ -26,9 +33,12 @@ class UserDAO extends DAO {
 
     }
 
-    public function checkOneById($id_user)
+    public function checkIdUser($id_user)
     {
-      return true;
+      $stmt = $this->pdo->prepare("SELECT IdUser FROM Users WHERE IdUser=?");
+      $stmt->execute(array($id_user));
+      $row = $stmt->fetch(PDO::FETCH_ASSOC);
+      return $row?EXIT_CODE_OK:EXIT_CODE_ERROR_SQL;
     }
 
     public function toString()

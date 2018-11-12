@@ -26,6 +26,7 @@
         <item>getQuestion</item>
         <item>MeltCards</item>
         <item>setAnswer</item>
+        <item>GetAllParameter</item>
     </string-array>
 </resources>
 

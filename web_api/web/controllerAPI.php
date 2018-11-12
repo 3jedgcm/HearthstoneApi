@@ -1,39 +1,47 @@
 <?php
-require_once $_SERVER["DOCUMENT_ROOT"] . "/auto_load.php"; //Inclusion du chargement de tout les fichiers
 
 //////////////////////////////
 // API HEARTHSTONE FUNCTION //
 /////////////////////////////
-var_dump($DAO);
 
-$response = "http://api.hearthstonejson.com/v1/15590/frFR/cards.json";
-//header('Content-type: application/json');
-$parse = file_get_contents($response);
+function insertAllCardInDataBase($pDAO)
+{
+  $parse = file_get_contents(HEARTHSTONE_API_URI);
+  $decoded = json_decode($parse, true);
+  foreach($decoded as $c)
+  {
+    switch($c['type'])
+    {
+      case"HERO_POWER":
+      if(DESACTIcATE) //Its not a card
+      {
+        $card = ["id"=>$c['id'],"nameCard"=>$c['name'],"description"=>$c['text'],"url"=>HEARTHSTONE_ART_URI.$c['id'].".png","type"=>$c['rarity'],"attack"=>"null","life"=>"null","cardCost"=>$c['cost']];
+      }
+      break;
+      case"MINION":
+      if(ACTIcATE)
+      {
+        $card = ["id"=>$c['id'],"nameCard"=>$c['name'],"description"=>$c['text'],"url"=>HEARTHSTONE_ART_URI.$c['id'].".png","type"=>$c['rarity'],"attack"=>$c['attack'],"life"=>$c['health'],"cardCost"=>$c['cost']];
+      }
+      break;
+      case"SPELL":
+      if(ACTIcATE)
+      {
+        $card = ["id"=>$c['id'],"nameCard"=>$c['name'],"description"=>$c['text'],"url"=>HEARTHSTONE_ART_URI.$c['id'].".png","type"=>$c['rarity'],"attack"=>"null","life"=>"null","cardCost"=>$c['cost']];
+      }
+      break;
+      case"HERO":
+      if(DESACTIcATE) //Its not a card
+      {
+        $card = ["id"=>$c['id'],"nameCard"=>$c['name'],"description"=>"null","url"=>HEARTHSTONE_ART_URI.$c['id'].".png","type"=>"null","attack"=>"null","life"=>$c['health'],"cardCost"=>"null"];
+      }
+      break;
+      default:
+      $card = [];
+      break;
 
-$decoded = json_decode($parse, true);
-$imguri = "/";
-//file_put_contents($imguri,);
-//fopen($_SERVER["DOCUMENT_ROOT"] . "/img/test.txt", "r");
-$dataCard[] = ["id"=>"null","nameCard"=>"null","description"=>"null","url"=>"null","type"=>"null","attack"=>"null","life"=>"null","life"=>"null"];
-$DAO["Card"]->insert($dataCard);
-/*
-foreach($decoded as $v){
-
-  $id = $v['id'];
-  $card[] = ["id"=>"null","nameCard"=>"null","description"=>"null","url"=>"null","type"=>"null","attack"=>"null","life"=>"null","life"=>"null"];
-  $card[] = ["id"=>$v['id'],"nameCard"=>$v['name'],"description"=>$v['text'],"url"=>$v['id'],"type"=>$v['rarity'],"attack"=>$v['attack'],"life"=>$v['health'],"life"=>$v['cost']];
-  $DAO["Card"]->insert($card);
-
-  //$url= "https://art.hearthstonejson.com/v1/render/latest/frFR/512x/";
-
-
-  //file_put_contents($_SERVER["DOCUMENT_ROOT"]."/img/".$id.".png", file_get_contents("https://art.hearthstonejson.com/v1/render/latest/frFR/512x/".$id.".png"));
-  //echo "Fait pour : ". $v['id'];
-  //echo '<br>';
+    }
+    $pDAO["Card"]->insert($card);
+  }
 }
-
-
-
-//echo json_encode($decoded, JSON_PRETTY_PRINT || JSON_UNESCAPED_SLASHES);
 ?>
-*/

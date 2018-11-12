@@ -130,6 +130,10 @@ public class CallBackGenerator extends AsyncTask<Void, Void, Void> {
             case("setAnswer"):
                 rep = service.setAnswer(this.idUser, this.answser);
                 break;
+            case("GetAllParameter"):
+                rep = service.GetAllParameter();
+                break;
+
         }
 
         try {

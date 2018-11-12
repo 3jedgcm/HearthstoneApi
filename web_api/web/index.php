@@ -14,10 +14,8 @@ if(!$errorCode)
     switch($arrayUri[1])
     {
       case ROUTE_CARD:
-
       if($arrayUri[3] == SUB_ROUTE_EMPTY)
       {
-
         $resultat = deleteCardByUserid($DAO,$arrayUri[2],$arrayUri[3]);
         $errorCode = $resultat["error"];
       }
@@ -27,7 +25,7 @@ if(!$errorCode)
       }
       break;
       default:
-      $errorCode = EXIT_CODE_INVALID_URI;
+        $errorCode = EXIT_CODE_INVALID_URI;
       break;
     }
     break;
@@ -47,7 +45,7 @@ if(!$errorCode)
           }
           else
           {
-            $errorCode = EXIT_CODE_MISSING_PARAMETTER;
+            $errorCode = EXIT_CODE_MISSING_PARAMETER;
           }
         }
         else
@@ -61,14 +59,13 @@ if(!$errorCode)
             }
             else
             {
-              $errorCode = EXIT_CODE_MISSING_PARAMETTER;
+              $errorCode = EXIT_CODE_MISSING_PARAMETER;
             }
           }
           else
           {
             $errorCode = EXIT_CODE_INVALID_URI;
           }
-
         }
       }
       else
@@ -99,7 +96,7 @@ if(!$errorCode)
       }
       else
       {
-        $errorCode = EXIT_CODE_UNKNOW_VALUE_PARAMETTER;
+        $errorCode = EXIT_CODE_UNKNOW_VALUE_PARAMETER;
       }
       break;
 
@@ -116,7 +113,7 @@ if(!$errorCode)
           }
           else
           {
-            $errorCode = EXIT_CODE_MISSING_PARAMETTER;
+            $errorCode = EXIT_CODE_MISSING_PARAMETER;
           }
           break;
 
@@ -128,7 +125,7 @@ if(!$errorCode)
           }
           else
           {
-            $errorCode = EXIT_CODE_MISSING_PARAMETTER;
+            $errorCode = EXIT_CODE_MISSING_PARAMETER;
           }
           break;
 
@@ -141,8 +138,12 @@ if(!$errorCode)
           }
           else
           {
-            $errorCode = EXIT_CODE_MISSING_PARAMETTER;
+            $errorCode = EXIT_CODE_MISSING_PARAMETER;
           }
+          break;
+
+          case SUB_ROUTE_ADD_CARD_SPECIAL:
+          insertAllCardInDataBase($DAO);
           break;
 
           default:
@@ -168,7 +169,7 @@ if(!$errorCode)
       }
       else
       {
-        $errorCode = EXIT_CODE_UNKNOW_VALUE_PARAMETTER;
+        $errorCode = EXIT_CODE_UNKNOW_VALUE_PARAMETER;
       }
       break;
       default:
@@ -192,7 +193,6 @@ if(!$errorCode)
       }
       break;
       case ROUTE_MONEY:
-
       if($arrayUri[3] == SUB_ROUTE_EMPTY)
       {
         if($arrayUri[2] == SUB_ROUTE_EMPTY)
@@ -200,22 +200,22 @@ if(!$errorCode)
           $resultat = getMoney($DAO,$arrayUri[2]);
           $errorCode = $resultat["error"];
           $money = $resultat["money"];
+
         }
         else if(is_numeric($arrayUri[2]))
         {
           $resultat = getMoney($DAO,$arrayUri[2]);
           $errorCode = $resultat["error"];
           $money = $resultat["money"];
+          $user = $arrayUri[2];
         }
         else
         {
           $errorCode = EXIT_CODE_INVALID_URI;
         }
-
       }
       else
       {
-
         $errorCode = EXIT_CODE_TOO_LONG_URI;
       }
       break;
@@ -232,15 +232,18 @@ if(!$errorCode)
       }
       break;
       case ROUTE_CARD:
-      if(is_numeric($arrayUri[2]) || SUB_ROUTE_EMPTY == $arrayUri[2])
-      {
-        $resultat = getCard($DAO,$arrayUri[2]);
-        $errorCode = $resultat["error"];
-      }
-      else
-      {
-        $errorCode = EXIT_CODE_TOO_LONG_URI;
-      }
+        if(SUB_ROUTE_RANDOM == $arrayUri[2])
+        {
+          $resultat = getRandomCard($DAO);
+          $errorCode = $resultat["error"];
+          $card = $resultat["randomCard"];
+        }
+        else
+        {
+          $resultat = getCard($DAO,$arrayUri[2]);
+          $errorCode = $resultat["error"];
+          $card = $resultat["card"];
+        }
       break;
       case ROUTE_OTHER:
       if(is_numeric($arrayUri[3]))
@@ -257,7 +260,14 @@ if(!$errorCode)
       }
       else
       {
-        $errorCode = EXIT_CODE_INVALID_URI;
+        if($arrayUri[2] == SUB_ROUTE_ADD_CARD_SPECIAL)
+        {
+            insertAllCardInDataBase($DAO);
+        }
+        else
+        {
+          $errorCode = EXIT_CODE_INVALID_URI;
+        }
       }
       break;
       default:
@@ -272,19 +282,19 @@ if(!$errorCode)
   $newInventory = getInventory($DAO,$arrayUri[2]);
 }
 
-sendHttpRespond($arrayUri[1],$DAO,$arrayUri[2],$money,$inventory,$errorCode,$typeReqHttp,$param);
+sendHttpRespond($arrayUri[1],$DAO,$arrayUri[2],$money,$newInventory,$errorCode,$typeReqHttp,$param,$card,$user);
 
-function sendHttpRespond($pRequest,$pDAO,$pUser,$pMoney,$pCards,$pErrorCode,$typeReqHttp,$pParam)
+function sendHttpRespond($firstArgR,$pDAO,$secondArgR,$pMoney,$pInventory,$pErrorCode,$typeReqHttp,$pParam,$pCard,$pUser)
 {
   header('Content-type: application/json');
   if($pErrorCode == EXIT_CODE_OK)
   {
     if($typeReqHttp == REQUEST_GET)
     {
-      switch($pRequest)
+      switch($firstArgR)
       {
         case ROUTE_MONEY:
-        if($pUser != null)
+        if($secondArgR != null)
         {
           $data = ["user"=>$pUser,"money"=>$pMoney];
         }
@@ -298,11 +308,18 @@ function sendHttpRespond($pRequest,$pDAO,$pUser,$pMoney,$pCards,$pErrorCode,$typ
           $data = ["parameter"=>$pParam];
         }
         break;
-
-
-
+        case ROUTE_CARD:
+        {
+          $data = $pCard;
+        }
+        break;
+        case ROUTE_USER:
+        {
+          $data = ["user"=>$pUser];
+        }
+        break;
         default:
-        $data = ["user"=>$pUser,"cards"=>$cards];
+        $data = ["user"=>$pUser,"cards"=>$pInventory];
         break;
       }
       echo json_encode(["exitCode"=>$pErrorCode,"data"=>$data]);

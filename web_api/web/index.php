@@ -33,14 +33,14 @@ if(!$errorCode)
     case REQUEST_POST:
     switch($arrayUri[1])
     {
-      case ROUTE_CARD:
+      case ROUTE_INVENTORY:
       if($arrayUri[3] == SUB_ROUTE_EMPTY)
       {
         if($arrayUri[2] == SUB_ROUTE_EXCHANGE)
         {
           if(isset($_POST['cardUserOne']) && isset($_POST['cardUserTwo']) && isset($_POST['idUserTwo']) && isset($_POST['idUserOne']))
           {
-            $resultat = exchangeCards($DAO,$_POST['idUserOne'],$_POST['idUserTwo'],$_POST['cardUserOne'],$_POST['cardUserTwo']);
+            $resultat = exchangeCard($DAO,$_POST['idUserOne'],$_POST['idUserTwo'],$_POST['cardUserOne'],$_POST['cardUserTwo']);
             $errorCode = $resultat["error"];
           }
           else
@@ -52,9 +52,9 @@ if(!$errorCode)
         {
           if(is_numeric($arrayUri[2]))
           {
-            if(isset($_POST['cards']))
+            if(isset($_POST['idCard']))
             {
-              $resultat = setCardByUserId($DAO,$arrayUri[2],$_POST['cards']);
+              $resultat = setCardInInventoryByUserId($DAO,$arrayUri[2],$_POST['idCard']);
               $errorCode = $resultat["error"];
             }
             else
@@ -72,7 +72,6 @@ if(!$errorCode)
       {
         $errorCode = EXIT_CODE_TOO_LONG_URI;
       }
-
       break;
       case ROUTE_MONEY:
       if(isset($_POST['value']))
@@ -156,16 +155,11 @@ if(!$errorCode)
       }
       break;
       case ROUTE_CONNECT:
-      if(isset($_POST['login']) && isset($_POST['pass']))
+      if(isset($_POST['login']) && isset($_POST['pass']) || isset($_POST['key']))
       {
-        if($arrayUri[2] == SUB_ROUTE_EMPTY)
-        {
-          connect($DAO,$_POST['login'],$_POST['pass']);
-        }
-        else
-        {
-          $errorCode = EXIT_CODE_INVALID_URI;
-        }
+        $resultat = connect($DAO,$_POST['login'],$_POST['pass'],$_POST['key'],$arrayUri[2]);
+        $errorCode = $resultat["error"];
+        $connect = $resultat["connect"];
       }
       else
       {
@@ -282,9 +276,9 @@ if(!$errorCode)
   $newInventory = getInventory($DAO,$arrayUri[2]);
 }
 
-sendHttpRespond($arrayUri[1],$DAO,$arrayUri[2],$money,$newInventory,$errorCode,$typeReqHttp,$param,$card,$user);
+sendHttpRespond($arrayUri[1],$DAO,$arrayUri[2],$money,$newInventory,$errorCode,$typeReqHttp,$param,$card,$user,$connect);
 
-function sendHttpRespond($firstArgR,$pDAO,$secondArgR,$pMoney,$pInventory,$pErrorCode,$typeReqHttp,$pParam,$pCard,$pUser)
+function sendHttpRespond($firstArgR,$pDAO,$secondArgR,$pMoney,$pInventory,$pErrorCode,$typeReqHttp,$pParam,$pCard,$pUser,$pConnect)
 {
   header('Content-type: application/json');
   if($pErrorCode == EXIT_CODE_OK)
@@ -323,6 +317,10 @@ function sendHttpRespond($firstArgR,$pDAO,$secondArgR,$pMoney,$pInventory,$pErro
         break;
       }
       echo json_encode(["exitCode"=>$pErrorCode,"data"=>$data]);
+    }
+    else if($typeReqHttp == REQUEST_POST)
+    {
+      echo json_encode(["exitCode"=>$pErrorCode,"connect"=>$pConnect]);
     }
     else
     {

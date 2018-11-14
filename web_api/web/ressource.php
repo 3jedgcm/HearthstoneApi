@@ -36,6 +36,7 @@ const ROUTE_PARAM = "parameter";
 const ROUTE_CARD = "card";
 const ROUTE_OTHER = "other";
 const ROUTE_CONNECT = "connect";
+const ROUTE_INVENTORY = "inventory";
 const SUB_ROUTE_EMPTY = "";
 const SUB_ROUTE_EXCHANGE = "exchange";
 const SUB_ROUTE_QUIZZ = "quizz";
@@ -43,6 +44,7 @@ const SUB_ROUTE_CRAFTCARD = "craftcard";
 const SUB_ROUTE_MELT = "meltcard";
 const SUB_ROUTE_RANDOM = "random";
 const SUB_ROUTE_ADD_CARD_SPECIAL = "admin";
+
 
 const HEARTHSTONE_API_URI = "http://api.hearthstonejson.com/v1/15590/frFR/cards.json";
 const HEARTHSTONE_ART_URI = "art.hearthstonejson.com/v1/render/latest/frFR/512x/";

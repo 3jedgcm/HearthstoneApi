@@ -81,4 +81,34 @@ class UserDAO extends DAO {
     }
 
 
+    public function checkAccountWithBase($pLogin,$pHashPass)
+    {
+      $pHashPass = md5($pHashPass);
+      $stmt = $this->pdo->prepare("SELECT * FROM Users WHERE Login=? and Password=?");
+      $stmt->execute(array($pLogin,$pHashPass));
+      $row = $stmt->fetch(PDO::FETCH_ASSOC);
+      return $row == false?false:true;
+    }
+
+    public function checkAccountWithGoogle($pKey)
+    {
+      $pKey = md5($pKey);
+      $stmt = $this->pdo->prepare("SELECT * FROM Users WHERE KeyGoogle=?");
+      $stmt->execute(array($pKey));
+      $row = $stmt->fetch(PDO::FETCH_ASSOC);
+      return $row == false?false:true;
+    }
+
+    public function checkAccountWithFacebook($pKey)
+    {
+      $pKey = md5($pKey);
+      $stmt = $this->pdo->prepare("SELECT * FROM Users WHERE KeyFacebook=?");
+      $stmt->execute(array($pKey));
+      $row = $stmt->fetch(PDO::FETCH_ASSOC);
+      return $row == false?false:true;
+    }
+
+
+
+
 }

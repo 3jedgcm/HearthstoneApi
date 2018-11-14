@@ -11,3 +11,34 @@
 
   }
 }
+
+/* Param */
+
+  @GET("parameter/")
+
+  @GET("money/{idUser}")
+  @GET("money/")
+  @POST("money/{idUser}")
+  @POST("money/")
+
+
+  @GET("user/{idUser}")
+  @POST("user/{idUser}")
+  @GET("user/")
+  @POST("user/")
+
+  @GET("card/{idUser}")
+  @GET("card/")
+
+  @POST("inventory/{idUser}")
+  @DELETE("inventory/{idUser}")
+  @GET("inventory/{idUser}")
+  @GET("inventory")
+  @POST("inventory/exchange/")
+
+  @GET("card/random/{idUser}")
+
+  @POST("other/melteCard/{idUser}")
+  @POST("other/craftCard/{idUser}")
+  @GET("other/quizz/{idUser}")
+  @POST("other/quizz/{idUser}")

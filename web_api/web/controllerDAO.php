@@ -3,7 +3,7 @@
 /** MONEY FUNCTION ***/
 /********************/
 
-function setMoney($pDAO,$idUser,$newValueMoney) //OK
+function setMoney($pDAO,$idUser,$newValueMoney) //100%
 {
   $resultat["error"] = EXIT_CODE_OK;
   if($idUser == "")
@@ -30,7 +30,7 @@ function setMoney($pDAO,$idUser,$newValueMoney) //OK
 
 };
 
-function getMoney($pDAO,$idUser) //OK
+function getMoney($pDAO,$idUser) ////100%
 {
   $resultat["error"] = EXIT_CODE_OK;
   if($idUser == "")
@@ -62,10 +62,8 @@ function getMoney($pDAO,$idUser) //OK
 /* FUNCTION PARAM  */
 /******************/
 
-function getParam($pDAO) //OK
+function getParam($pDAO) //100%
 {
-
-
   $resultat["param"] = $pDAO["Param"]->getAll();
 
   if($resultat["param"] == -1)
@@ -85,7 +83,7 @@ function getParam($pDAO) //OK
 /*** FUNCTION USER***/
 /*********************/
 
-function getUser($pDAO,$idUser) //OK
+function getUser($pDAO,$idUser) //100%
 {
   $resultat["error"] = EXIT_CODE_OK;
   if($idUser == "")
@@ -142,7 +140,7 @@ function setUser($pDAO,$idUser) //OK
 /* FUNCTION CARDS  */
 /******************/
 
-function getCard($pDAO,$idCard) //OK
+function getCard($pDAO,$idCard) //100%
 {
   $resultat["error"] = EXIT_CODE_OK;
   if($idCard == "")
@@ -151,6 +149,7 @@ function getCard($pDAO,$idCard) //OK
   }
   else
   {
+    $resultat["error"] = $pDAO["Card"]->checkIdCard($idCard);
     if($resultat["error"] == 0)
     {
       $resultat["card"] = $pDAO["Card"]->getOne($idCard);
@@ -168,19 +167,32 @@ function getCard($pDAO,$idCard) //OK
   return $resultat;
 };
 
-function setCardByUserId($pDAO,$idUser,$cards)
+function setCardInInventoryByUserId($pDAO,$idUser,$idCard)
 {
   $resultat["error"] = EXIT_CODE_OK;
+
+  $resultat["error"] = $pDAO["Inventory"]->insert($idCard,$idUser);
+
+  if($resultat["error"])
+  {
+    $resultat["error"] = EXIT_CODE_OK;
+  }
+  else
+  {
+    $resultat["error"] = EXIT_CODE_ERROR_INSERTION_IN_DB;
+  }
   return $resultat;
+
 };
 
-function exchangeCards($pDAO,$idUser,$idUser_secondary,$cards,$cards_secondary)
+function exchangeCard($pDAO,$idUser,$idUser_secondary,$cards,$cards_secondary)
 {
   $resultat["error"] = EXIT_CODE_NO_IMPLEMENTED_FUNCTION;
+
   return $resultat;
 };
 
-function getRandomCard($pDAO) //Non Fonctionnel
+function getRandomCard($pDAO) //100%
 {
   $resultat["error"] = EXIT_CODE_OK;
     $resultat["randomCard"] = $pDAO["Card"]->getRandomCard($idUser);
@@ -258,14 +270,30 @@ function getInventory($pDAO,$idUser)  //Non Fonctionnel
   return $pDAO["Card"]->getAll($idUser);
 }
 
-/******************/
-/* FUNCTION CONNECT  */
-/******************/
+/********************/
+/* FUNCTION CONNECT */
+/********************/
 
-function connect($pDAO,$login,$pass)  //Non Fonctionnel
+function connect($pDAO,$pLogin,$pPass,$pKey,$pMode)
 {
-  $resultat["error"] = EXIT_CODE_NO_IMPLEMENTED_FUNCTION;
-  $resultat["account"] = $pDAO["User"]->checkAccount($login,$pass);
+  $resultat["error"] = EXIT_CODE_OK;
+  if($pMode == "facebook")
+  {
+    $resultat["connect"] = $pDAO["User"]->checkAccountWithFacebook($pKey);
+  }
+  else if($pMode == "google")
+  {
+    $resultat["connect"] = $pDAO["User"]->checkAccountWithGoogle($pKey);
+  }
+  else if($pMode == "")
+  {
+    $resultat["connect"] = $pDAO["User"]->checkAccountWithBase($pLogin,$pPass);
+  }
+  else
+  {
+    $resultat["connect"] = false;
+    $resultat["error"] = EXIT_CODE_TOO_LONG_URI;
+  }
   return $resultat;
 
 }

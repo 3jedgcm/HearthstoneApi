@@ -29,9 +29,12 @@ class CardDAO extends DAO {
       return $row;
     }
 
-    public function update($obj)
+    public function checkIdCard($pIdCard)
     {
-      return true;
+      $stmt = $this->pdo->prepare("SELECT * FROM Cards WHERE id=?");
+      $stmt->execute(array($pIdCard));
+      $row = $stmt->fetch(PDO::FETCH_ASSOC);
+      return $row?EXIT_CODE_OK:EXIT_CODE_ERROR_SQL;
     }
 
     public function insert($pCard)

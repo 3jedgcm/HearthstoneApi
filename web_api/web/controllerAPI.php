@@ -13,25 +13,25 @@ function insertAllCardInDataBase($pDAO)
     switch($c['type'])
     {
       case"HERO_POWER":
-      if(DESACTIcATE) //Its not a card
+      if(DESACTIVATE) //Its not a card
       {
         $card = ["id"=>$c['id'],"nameCard"=>$c['name'],"description"=>$c['text'],"url"=>HEARTHSTONE_ART_URI.$c['id'].".png","type"=>$c['rarity'],"attack"=>"null","life"=>"null","cardCost"=>$c['cost']];
       }
       break;
       case"MINION":
-      if(ACTIcATE)
+      if(ACTIVATE)
       {
         $card = ["id"=>$c['id'],"nameCard"=>$c['name'],"description"=>$c['text'],"url"=>HEARTHSTONE_ART_URI.$c['id'].".png","type"=>$c['rarity'],"attack"=>$c['attack'],"life"=>$c['health'],"cardCost"=>$c['cost']];
       }
       break;
       case"SPELL":
-      if(ACTIcATE)
+      if(ACTIVATE)
       {
         $card = ["id"=>$c['id'],"nameCard"=>$c['name'],"description"=>$c['text'],"url"=>HEARTHSTONE_ART_URI.$c['id'].".png","type"=>$c['rarity'],"attack"=>"null","life"=>"null","cardCost"=>$c['cost']];
       }
       break;
       case"HERO":
-      if(DESACTIcATE) //Its not a card
+      if(DESACTIVATE) //Its not a card
       {
         $card = ["id"=>$c['id'],"nameCard"=>$c['name'],"description"=>"null","url"=>HEARTHSTONE_ART_URI.$c['id'].".png","type"=>"null","attack"=>"null","life"=>$c['health'],"cardCost"=>"null"];
       }

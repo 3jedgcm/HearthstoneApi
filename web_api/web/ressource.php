@@ -24,7 +24,10 @@ const EXIT_CODE_INCORRECT_MONEY_SETTER = 18;
 const EXIT_CODE_INCORRECT_USER_READ = 19;
 const EXIT_CODE_MISSING_PARAMETER = 20;
 const EXIT_CODE_ERROR_SQL = 21;
+const EXIT_CODE_LOGIN_EXIST = 22;
+const EXIT_CODE_GOOGLE_ACCOUNT_EXIST = 23;
 const EXIT_CODE_NO_IMPLEMENTED_FUNCTION = 99;
+const EXIT_CODE_FACEBOOK_ACCOUNT_EXIST = 24;
 
 const REQUEST_POST = "POST";
 const REQUEST_DELETE = "DELETE";
@@ -37,6 +40,8 @@ const ROUTE_CARD = "card";
 const ROUTE_OTHER = "other";
 const ROUTE_CONNECT = "connect";
 const ROUTE_INVENTORY = "inventory";
+const ROUTE_REGISTER = "register";
+const ROUTE_LINK = "link";
 const SUB_ROUTE_EMPTY = "";
 const SUB_ROUTE_EXCHANGE = "exchange";
 const SUB_ROUTE_QUIZZ = "quizz";
@@ -54,5 +59,5 @@ const DB_NAME = "psqt_iem";
 const DB_USER = "psqt_iem";
 const DB_PASS = "odSNV7j34Ex0";
 
-const DESACTIVATE = false;
+const DEACTIVATE = false;
 const ACTIVATE = true;

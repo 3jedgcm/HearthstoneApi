@@ -14,7 +14,12 @@ class ticketDAO extends DAO {
             $creditRestant = $creditRestant - 1;
             $stmt = $this->pdo->prepare("UPDATE adm_user SET credit = ? WHERE id_user = ?");
             $stmt->execute(array($creditRestant,$id_user));
-            return 0;
+            $stmt = $this->pdo->prepare("SELECT credit FROM adm_user WHERE id_user = ?");
+            $stmt->execute(array($id_user));
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            return $row;
+
         }
 
         else
@@ -22,10 +27,6 @@ class ticketDAO extends DAO {
             return -1;
         }
     }
-
-
-
-
 
     public function getTicketSimple($id_user) {
         $stmt = $this->pdo->prepare("SELECT credit FROM adm_user WHERE id_user=?");
@@ -78,13 +79,13 @@ class ticketDAO extends DAO {
                 $stmt = $this->pdo->prepare("UPDATE adm_user SET credit = ? WHERE id_user = ?");
                 $stmt->execute(array($creditRestant,$id_user));
             }
+
+            return array($numGain,$newCredit);
         }
         else
         {
             return -1;
         }
-
-        return array($numGain,$newCredit);
     }
 
 

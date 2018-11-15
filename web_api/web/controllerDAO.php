@@ -295,5 +295,75 @@ function connect($pDAO,$pLogin,$pPass,$pKey,$pMode)
     $resultat["error"] = EXIT_CODE_TOO_LONG_URI;
   }
   return $resultat;
+}
 
+function register($pDAO,$pLogin,$pPass,$pKey,$pMode)
+{
+  $resultat["error"] = EXIT_CODE_OK;
+  if($pMode == "facebook")
+  {
+    $checking = $pDAO["User"]->checkAccountWithFacebook($pKey);
+    if($checking == true)
+    {
+      $resultat["error"] = EXIT_CODE_FACEBOOK_ACCOUNT_EXIST;
+    }
+    else
+    {
+      $resultat["connect"] = $pDAO["User"]->registerWithFacebook($pKey);
+    }
+  }
+  else if($pMode == "google")
+  {
+    $checking = $pDAO["User"]->checkAccountWithGoogle($pKey);
+    if($checking == true)
+    {
+      $resultat["error"] = EXIT_CODE_GOOGLE_ACCOUNT_EXIST;
+    }
+    else
+    {
+      $resultat["connect"] = $pDAO["User"]->registerWithGoogle($pKey);
+    }
+  }
+  else if($pMode == "")
+  {
+    $checking = $pDAO["User"]->checkAccountWithBase($pLogin,$pPass);
+    
+    if($checking == true)
+    {
+      $resultat["error"] = EXIT_CODE_LOGIN_EXIST;
+    }
+    else
+    {
+      $resultat["connect"] = $pDAO["User"]->registerWithBase($pLogin,$pPass);
+    }
+  }
+  else
+  {
+    $resultat["connect"] = false;
+    $resultat["error"] = EXIT_CODE_TOO_LONG_URI;
+  }
+  return $resultat;
+}
+
+function linkAccount($pDAO,$pLogin,$pPass,$pKey,$pMode)
+{
+  $resultat["error"] = EXIT_CODE_OK;
+  if($pMode == "facebook")
+  {
+    $resultat["connect"] = $pDAO["User"]->checkAccountWithFacebook($pKey);
+  }
+  else if($pMode == "google")
+  {
+    $resultat["connect"] = $pDAO["User"]->checkAccountWithGoogle($pKey);
+  }
+  else if($pMode == "")
+  {
+    $resultat["connect"] = $pDAO["User"]->checkAccountWithBase($pLogin,$pPass);
+  }
+  else
+  {
+    $resultat["connect"] = false;
+    $resultat["error"] = EXIT_CODE_TOO_LONG_URI;
+  }
+  return $resultat;
 }

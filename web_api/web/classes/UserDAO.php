@@ -108,6 +108,33 @@ class UserDAO extends DAO {
       return $row == false?false:true;
     }
 
+    public function registerWithBase($pLogin,$pHashPass)
+    {
+
+      $pHashPass = md5($pHashPass);
+      $stmt = $this->pdo->prepare("INSERT INTO Users(Login,Password) VALUES (?,?)");
+      $stmt->execute(array($pLogin,$pHashPass));
+      $row = $stmt->fetch(PDO::FETCH_ASSOC);
+      return $row;
+    }
+
+    public function registerWithGoogle($pKey)
+    {
+      $pHashPass = md5($pKey);
+      $stmt = $this->pdo->prepare("INSERT INTO Users(KeyGoogle) VALUES (?)");
+      $stmt->execute(array($pHashPass));
+      $row = $stmt->fetch(PDO::FETCH_ASSOC);
+      return $row;
+    }
+
+    public function registerWithFacebook($pKey)
+    {
+      $pHashPass = md5($pKey);
+      $stmt = $this->pdo->prepare("INSERT INTO Users(KeyFacebook) VALUES (?)");
+      $stmt->execute(array($pHashPass));
+      $row = $stmt->fetch(PDO::FETCH_ASSOC);
+      return $row;
+    }
 
 
 

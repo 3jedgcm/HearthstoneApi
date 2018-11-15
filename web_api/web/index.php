@@ -155,9 +155,34 @@ if(!$errorCode)
       }
       break;
       case ROUTE_CONNECT:
-      if(isset($_POST['login']) && isset($_POST['pass']) || isset($_POST['key']))
+      if((isset($_POST['login']) && isset($_POST['pass']) && $arrayUri[2] == "" ) || (isset($_POST['key']) && ($arrayUri[2] == "facebook" ||  $arrayUri[2] == "google")))
       {
         $resultat = connect($DAO,$_POST['login'],$_POST['pass'],$_POST['key'],$arrayUri[2]);
+        $errorCode = $resultat["error"];
+        $connect = $resultat["connect"];
+      }
+      else
+      {
+        $errorCode = EXIT_CODE_UNKNOW_VALUE_PARAMETER;
+      }
+      break;
+      case ROUTE_REGISTER:
+      if((isset($_POST['login']) && isset($_POST['pass']) && $arrayUri[2] == "" ) || (isset($_POST['key']) && ($arrayUri[2] == "facebook" ||  $arrayUri[2] == "google")))
+      {
+        $resultat = register($DAO,$_POST['login'],$_POST['pass'],$_POST['key'],$arrayUri[2]);
+        $errorCode = $resultat["error"];
+        $connect = $resultat["connect"];
+      }
+      else
+      {
+        $errorCode = EXIT_CODE_UNKNOW_VALUE_PARAMETER;
+      }
+      break;
+
+      case ROUT_LINK_ACCOUNT:
+      if((isset($_POST['login']) && isset($_POST['pass']) && $arrayUri[2] == "" ) || (isset($_POST['key']) && ($arrayUri[2] == "facebook" ||  $arrayUri[2] == "google")))
+      {
+        $resultat = linkAccount($DAO,$_POST['login'],$_POST['pass'],$_POST['key'],$arrayUri[2]);
         $errorCode = $resultat["error"];
         $connect = $resultat["connect"];
       }

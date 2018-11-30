@@ -13,16 +13,9 @@ if(!$errorCode)
     case REQUEST_DELETE:
     switch($arrayUri[1])
     {
-      case ROUTE_CARD:
-      if($arrayUri[3] == SUB_ROUTE_EMPTY)
-      {
+      case ROUTE_INVENTORY:
         $resultat = deleteCardByUserid($DAO,$arrayUri[2],$arrayUri[3]);
         $errorCode = $resultat["error"];
-      }
-      else
-      {
-        $errorCode = EXIT_CODE_TOO_LONG_URI;
-      }
       break;
       default:
         $errorCode = EXIT_CODE_INVALID_URI;
@@ -179,18 +172,6 @@ if(!$errorCode)
       }
       break;
 
-      case ROUT_LINK_ACCOUNT:
-      if((isset($_POST['login']) && isset($_POST['pass']) && $arrayUri[2] == "" ) || (isset($_POST['key']) && ($arrayUri[2] == "facebook" ||  $arrayUri[2] == "google")))
-      {
-        $resultat = linkAccount($DAO,$_POST['login'],$_POST['pass'],$_POST['key'],$arrayUri[2]);
-        $errorCode = $resultat["error"];
-        $connect = $resultat["connect"];
-      }
-      else
-      {
-        $errorCode = EXIT_CODE_UNKNOW_VALUE_PARAMETER;
-      }
-      break;
       default:
       $errorCode = EXIT_CODE_INVALID_URI;
     }
@@ -200,55 +181,55 @@ if(!$errorCode)
     switch($arrayUri[1])
     {
       case ROUTE_USER:
-      if($arrayUri[3] == SUB_ROUTE_EMPTY)
-      {
-        $resultat = getUser($DAO,$arrayUri[2]);
-        $errorCode = $resultat["error"];
-        $user = $resultat["user"];
-      }
-      else
-      {
-        $errorCode = EXIT_CODE_TOO_LONG_URI;
-      }
-      break;
-      case ROUTE_MONEY:
-      if($arrayUri[3] == SUB_ROUTE_EMPTY)
-      {
-        if($arrayUri[2] == SUB_ROUTE_EMPTY)
+        if($arrayUri[3] == SUB_ROUTE_EMPTY)
         {
-          $resultat = getMoney($DAO,$arrayUri[2]);
+          $resultat = getUser($DAO,$arrayUri[2]);
           $errorCode = $resultat["error"];
-          $money = $resultat["money"];
-
-        }
-        else if(is_numeric($arrayUri[2]))
-        {
-          $resultat = getMoney($DAO,$arrayUri[2]);
-          $errorCode = $resultat["error"];
-          $money = $resultat["money"];
-          $user = $arrayUri[2];
+          $user = $resultat["user"];
         }
         else
         {
-          $errorCode = EXIT_CODE_INVALID_URI;
+          $errorCode = EXIT_CODE_TOO_LONG_URI;
         }
-      }
-      else
-      {
-        $errorCode = EXIT_CODE_TOO_LONG_URI;
-      }
+      break;
+      case ROUTE_MONEY:
+        if($arrayUri[3] == SUB_ROUTE_EMPTY)
+        {
+          if($arrayUri[2] == SUB_ROUTE_EMPTY)
+          {
+            $resultat = getMoney($DAO,$arrayUri[2]);
+            $errorCode = $resultat["error"];
+            $money = $resultat["money"];
+
+          }
+          else if(is_numeric($arrayUri[2]))
+          {
+            $resultat = getMoney($DAO,$arrayUri[2]);
+            $errorCode = $resultat["error"];
+            $money = $resultat["money"];
+            $user = $arrayUri[2];
+          }
+          else
+          {
+            $errorCode = EXIT_CODE_INVALID_URI;
+          }
+        }
+        else
+        {
+          $errorCode = EXIT_CODE_TOO_LONG_URI;
+        }
       break;
       case ROUTE_PARAM:
-      if($arrayUri[2] == SUB_ROUTE_EMPTY)
-      {
-        $resultat = getParam($DAO);
-        $errorCode = $resultat["error"];
-        $param = $resultat["param"];
-      }
-      else
-      {
-        $errorCode = EXIT_CODE_TOO_LONG_URI;
-      }
+        if($arrayUri[2] == SUB_ROUTE_EMPTY)
+        {
+          $resultat = getParam($DAO);
+          $errorCode = $resultat["error"];
+          $param = $resultat["param"];
+        }
+        else
+        {
+          $errorCode = EXIT_CODE_TOO_LONG_URI;
+        }
       break;
       case ROUTE_CARD:
         if(SUB_ROUTE_RANDOM == $arrayUri[2])
@@ -265,29 +246,29 @@ if(!$errorCode)
         }
       break;
       case ROUTE_OTHER:
-      if(is_numeric($arrayUri[3]))
-      {
-        if($arrayUri[2] == SUB_ROUTE_QUIZZ)
+        if(is_numeric($arrayUri[3]))
         {
-          $resultat = getQuestion($DAO);
-          $errorCode = $resultat["error"];
+          if($arrayUri[2] == SUB_ROUTE_QUIZZ)
+          {
+            $resultat = getQuestion($DAO);
+            $errorCode = $resultat["error"];
+          }
+          else
+          {
+            $errorCode = EXIT_CODE_INVALID_URI;
+          }
         }
         else
         {
-          $errorCode = EXIT_CODE_INVALID_URI;
+          if($arrayUri[2] == SUB_ROUTE_ADD_CARD_SPECIAL)
+          {
+              insertAllCardInDataBase($DAO);
+          }
+          else
+          {
+            $errorCode = EXIT_CODE_INVALID_URI;
+          }
         }
-      }
-      else
-      {
-        if($arrayUri[2] == SUB_ROUTE_ADD_CARD_SPECIAL)
-        {
-            insertAllCardInDataBase($DAO);
-        }
-        else
-        {
-          $errorCode = EXIT_CODE_INVALID_URI;
-        }
-      }
       break;
       default:
       $errorCode = EXIT_CODE_INVALID_URI;
@@ -345,7 +326,15 @@ function sendHttpRespond($firstArgR,$pDAO,$secondArgR,$pMoney,$pInventory,$pErro
     }
     else if($typeReqHttp == REQUEST_POST)
     {
-      echo json_encode(["exitCode"=>$pErrorCode,"connect"=>$pConnect]);
+      if($firstArgR == ROUTE_CONNECT)
+      {
+        echo json_encode(["exitCode"=>$pErrorCode,"connect"=>$pConnect]);
+      }
+      else
+      {
+        echo json_encode(["exitCode"=>$pErrorCode]);
+      }
+
     }
     else
     {
@@ -360,25 +349,6 @@ function sendHttpRespond($firstArgR,$pDAO,$secondArgR,$pMoney,$pInventory,$pErro
 
 }
 
-function checkIdUser($pDAO,$arrayUri)
-{
-  $postIdUser = $arrayUri[2];
-  if(isset($postIdUser))
-  {
-    if($pDAO["User"]->checkOneById($idUser))//Checking de l'id user coté serveur
-    {
-      return EXIT_CODE_OK;
-    }
-    else
-    {
-      return EXIT_CODE_INCORRECT_ID_USER;
-    }
-  }
-  else
-  {
-    return EXIT_CODE_UNKNOW_ID_USER;
-  }
-}
 
 function getArrayUri()
 {

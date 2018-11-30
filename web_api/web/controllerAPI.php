@@ -13,19 +13,19 @@ function insertAllCardInDataBase($pDAO)
     switch($c['type'])
     {
       case"HERO_POWER":
-      if(ACTIVATE) //Its not a card
+      if(DEACTIVATE) //Its not a card
       {
         $card = ["id"=>$c['id'],"nameCard"=>$c['name'],"description"=>$c['text'],"url"=>HEARTHSTONE_ART_URI.$c['id'].".png","type"=>$c['rarity'],"attack"=>"null","life"=>"null","cardCost"=>$c['cost']];
       }
       break;
       case"MINION":
-      if(DEACTIVATE)
+      if(ACTIVATE)
       {
         $card = ["id"=>$c['id'],"nameCard"=>$c['name'],"description"=>$c['text'],"url"=>HEARTHSTONE_ART_URI.$c['id'].".png","type"=>$c['rarity'],"attack"=>$c['attack'],"life"=>$c['health'],"cardCost"=>$c['cost']];
       }
       break;
       case"SPELL":
-      if(DEACTIVATE)
+      if(ACTIVATE)
       {
         $card = ["id"=>$c['id'],"nameCard"=>$c['name'],"description"=>$c['text'],"url"=>HEARTHSTONE_ART_URI.$c['id'].".png","type"=>$c['rarity'],"attack"=>"null","life"=>"null","cardCost"=>$c['cost']];
       }

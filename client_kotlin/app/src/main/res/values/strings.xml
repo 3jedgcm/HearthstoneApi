@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">PokeApi</string>
+    <string name="facebook_app_id">2473295659563839</string>
+    <string name="fb_login_protocol_scheme">fb2473295659563839</string>
+    <string name="title_activity_inventory">InventoryActivity</string>
+
+    <string name="country_prompt">Choose a country</string>
+
+    <string-array name="country_arrays">
+        <item>GetOneMoney</item>
+        <item>GetAllMoney</item>
+        <item>SetOneMoney</item>
+        <item>SetAllMoney</item>
+        <item>GetOneUser</item>
+        <item>SetOneUser</item>
+        <item>GetAllUser</item>
+        <item>SetAllUser</item>
+        <item>GetOneCardByUserId</item>
+        <item>GetAllCard</item>
+        <item>SetOneCardByUserId</item>
+        <item>DeleteOneCardByUserid</item>
+        <item>ExchangCards</item>
+        <item>GetRandomCard</item>
+        <item>MeltCards</item>
+        <item>CraftOneCard</item>
+        <item>getQuestion</item>
+        <item>MeltCards</item>
+        <item>setAnswer</item>
+        <item>GetAllParameter</item>
+    </string-array>
+</resources>
+

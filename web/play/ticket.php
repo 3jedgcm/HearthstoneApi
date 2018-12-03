@@ -87,22 +87,22 @@ ob_start(); ?>
                             $g = 0;
                             switch ($i) {
                                 case 6 :
-                                    $g = SIXTICKETGAIN-1;
+                                    $g = SIXTICKETGAIN;
                                     break;
                                 case 5 :
-                                    $g = FIVETICKETGAIN-1;
+                                    $g = FIVETICKETGAIN;
                                     break;
                                 case 4 :
-                                    $g = FOURTICKETGAIN-1;
+                                    $g = FOURTICKETGAIN;
                                     break;
                                 case 3 :
-                                    $g = THREETICKETGAIN-1;
+                                    $g = THREETICKETGAIN;
                                     break;
                                 case 2 :
-                                    $g = TWOTICKETGAIN-1;
+                                    $g = TWOTICKETGAIN;
                                     break;
                                 case 1 :
-                                    $g = ONETICKETGAIN-1;
+                                    $g = ONETICKETGAIN;
                                     break;
                             }
                             ?>

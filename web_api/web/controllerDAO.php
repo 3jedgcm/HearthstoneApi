@@ -173,7 +173,7 @@ function setCardInInventoryByUserId($pDAO,$idUser,$idCard)
 
   $resultat["error"] = $pDAO["Inventory"]->insert($idCard,$idUser);
 
-  if($resultat["error"])
+  if($resultat["error"] == false)
   {
     $resultat["error"] = EXIT_CODE_OK;
   }
@@ -204,16 +204,23 @@ function getRandomCard($pDAO) //100%
 };
 
 
-function deleteCardByUserid($pDAO,$idUser,$idCards) //OK
+function deleteCardByUserid($pDAO,$idUser,$idCards)
 {
   $resultat["error"] = $pDAO["User"]->checkIdUser($idUser);
   if($resultat["error"] == 0)
   {
     if($idCards != "")
     {
-      if($pDAO["Card"]->checkExist($cidCard,$idUser))
+      if($pDAO["Card"]->checkIdCard($idCards) == EXIT_CODE_OK)
       {
-        $pDAO["Card"]->delete($idCard,$idUser);
+        if($pDAO["Inventory"]->checkInventoryExist($idCards,$idUser) == EXIT_CODE_OK)
+        {
+          $pDAO["Inventory"]->delete($idCards,$idUser);
+        }
+        else
+        {
+          $resultat["error"] = EXIT_CODE_INVENTORY_IS_MISSING;
+        }
       }
       else
       {
@@ -222,7 +229,7 @@ function deleteCardByUserid($pDAO,$idUser,$idCards) //OK
     }
     else
     {
-      $pDAO["Card"]->deleteAll($idUser);
+      $pDAO["Inventory"]->deleteAll($idUser);
     }
   }
   else
@@ -263,6 +270,10 @@ function setAnswer($pDAO,$idUser,$numAnswer,$idQuestion)  //Non Fonctionnel
   //Voir API Goub
 }
 
+/**********************/
+/* FUNCTION INVENTORY */
+/**********************/
+
 function getInventory($pDAO,$idUser)  //Non Fonctionnel
 {
   $resultat["error"] = EXIT_CODE_NO_IMPLEMENTED_FUNCTION;
@@ -274,7 +285,7 @@ function getInventory($pDAO,$idUser)  //Non Fonctionnel
 /* FUNCTION CONNECT */
 /********************/
 
-function connect($pDAO,$pLogin,$pPass,$pKey,$pMode)
+function connect($pDAO,$pLogin,$pPass,$pKey,$pMode) //100%
 {
   $resultat["error"] = EXIT_CODE_OK;
   if($pMode == "facebook")
@@ -297,7 +308,7 @@ function connect($pDAO,$pLogin,$pPass,$pKey,$pMode)
   return $resultat;
 }
 
-function register($pDAO,$pLogin,$pPass,$pKey,$pMode)
+function register($pDAO,$pLogin,$pPass,$pKey,$pMode) //100%
 {
   $resultat["error"] = EXIT_CODE_OK;
   if($pMode == "facebook")
@@ -327,7 +338,7 @@ function register($pDAO,$pLogin,$pPass,$pKey,$pMode)
   else if($pMode == "")
   {
     $checking = $pDAO["User"]->checkAccountWithBase($pLogin,$pPass);
-    
+
     if($checking == true)
     {
       $resultat["error"] = EXIT_CODE_LOGIN_EXIST;
@@ -336,29 +347,6 @@ function register($pDAO,$pLogin,$pPass,$pKey,$pMode)
     {
       $resultat["connect"] = $pDAO["User"]->registerWithBase($pLogin,$pPass);
     }
-  }
-  else
-  {
-    $resultat["connect"] = false;
-    $resultat["error"] = EXIT_CODE_TOO_LONG_URI;
-  }
-  return $resultat;
-}
-
-function linkAccount($pDAO,$pLogin,$pPass,$pKey,$pMode)
-{
-  $resultat["error"] = EXIT_CODE_OK;
-  if($pMode == "facebook")
-  {
-    $resultat["connect"] = $pDAO["User"]->checkAccountWithFacebook($pKey);
-  }
-  else if($pMode == "google")
-  {
-    $resultat["connect"] = $pDAO["User"]->checkAccountWithGoogle($pKey);
-  }
-  else if($pMode == "")
-  {
-    $resultat["connect"] = $pDAO["User"]->checkAccountWithBase($pLogin,$pPass);
   }
   else
   {

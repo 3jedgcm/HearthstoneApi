@@ -36,7 +36,7 @@ class InventoryDAO extends DAO {
     public function exchange($pIdUser,$pIdUser_secondary,$pCards,$pCards_secondary)
     {
       // RETURN 0 IF OK RETURN ERROR CODE IF ID USER OR ID CARD DOSNT EXIST
-     
+
 
     }
 
@@ -55,18 +55,30 @@ class InventoryDAO extends DAO {
       return $row;
     }
 
-    public function delete($id_card,$id_user)
+    public function delete($pIdCard,$pIdUser)
     {
-      $stmt = $this->pdo->prepare("DELETE FROM Inventory WHERE idUser = :idUser and idCard = :idCard");
-      $stmt->execute(array('id'=>"",'idUser'=>$pIdUser,'idCard'=>$pIdCard));
+      $stmt = $this->pdo->prepare("DELETE FROM Inventory WHERE idUser = ? and idCard = ?");
+      $stmt->execute(array($pIdUser,$pIdCard));
+
       $row = $stmt->fetch(PDO::FETCH_ASSOC);
       return $row;
     }
 
-
-    public function checkExist($id_card,$id_user)
+    public function deleteAll($pIdUser)
     {
-      return true;
+      $stmt = $this->pdo->prepare("DELETE FROM Inventory WHERE idUser = ?");
+      $stmt->execute(array($pIdUser));
+
+      $row = $stmt->fetch(PDO::FETCH_ASSOC);
+      return $row;
+    }
+
+    public function checkInventoryExist($pIdCard,$pIdUser)
+    {
+      $stmt = $this->pdo->prepare("SELECT * FROM Inventory WHERE idUser=? and idCard=?");
+      $stmt->execute(array($pIdUser,$pIdCard));
+      $row = $stmt->fetch(PDO::FETCH_ASSOC);
+      return $row?EXIT_CODE_OK:EXIT_CODE_ERROR_SQL;
     }
 
 }

@@ -33,8 +33,13 @@ if(!$errorCode)
         {
           if(isset($_POST['cardUserOne']) && isset($_POST['cardUserTwo']) && isset($_POST['idUserTwo']) && isset($_POST['idUserOne']))
           {
-            $resultat = exchangeCard($DAO,$_POST['idUserOne'],$_POST['idUserTwo'],$_POST['cardUserOne'],$_POST['cardUserTwo']);
-            $errorCode = $resultat["error"];
+          //TODO EBE just for check 2nd version of function
+        // $resultat = exchangeCard($DAO,$_POST['idUserOne'],$_POST['idUserTwo'],$_POST['cardUserOne'],$_POST['cardUserTwo']);
+          $resultat = exchangeCard2($DAO,$_POST['idUserOne'],$_POST['idUserTwo'],$_POST['cardUserOne'],$_POST['cardUserTwo']);
+          var_dump( "resultat exchangeCard2__::: ",$resultat);
+          var_dump( "resultat exchangeCard2::: ",$resultat["error"]);
+
+          $errorCode = $resultat["error"];
           }
           else
           {
@@ -180,6 +185,35 @@ if(!$errorCode)
     case REQUEST_GET:
     switch($arrayUri[1])
     {
+
+      case ROUTE_INVENTORY:
+        if($arrayUri[3] == SUB_ROUTE_EMPTY)
+        {
+          if($arrayUri[2] == SUB_ROUTE_EMPTY)
+          {
+            $resultat = getInventory($DAO,$arrayUri[2]);
+            $errorCode = $resultat["error"];
+            $inventory = $resultat["inventory"];
+
+          }
+          else if(is_numeric($arrayUri[2]))
+          {
+            $resultat = getInventory($DAO,$arrayUri[2]);
+            $errorCode = $resultat["error"];
+            $inventory = $resultat["inventory"];
+            $user = $arrayUri[2];
+          }
+          else
+          {
+            $errorCode = EXIT_CODE_INVALID_URI;
+          }
+        }
+        else
+        {
+          $errorCode = EXIT_CODE_TOO_LONG_URI;
+        }
+      break;
+
       case ROUTE_USER:
         if($arrayUri[3] == SUB_ROUTE_EMPTY)
         {
@@ -293,6 +327,16 @@ function sendHttpRespond($firstArgR,$pDAO,$secondArgR,$pMoney,$pInventory,$pErro
     {
       switch($firstArgR)
       {
+        case ROUTE_INVENTORY:
+        if($secondArgR != null)
+        {
+          $data = ["user"=>$pUser,"inventory"=>$pInventory];
+        }
+        else
+        {
+          $data = ["inventory"=>$pInventory];
+        }
+        break;
         case ROUTE_MONEY:
         if($secondArgR != null)
         {
@@ -318,6 +362,7 @@ function sendHttpRespond($firstArgR,$pDAO,$secondArgR,$pMoney,$pInventory,$pErro
           $data = ["user"=>$pUser];
         }
         break;
+
         default:
         $data = ["user"=>$pUser,"cards"=>$pInventory];
         break;

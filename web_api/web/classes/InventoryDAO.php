@@ -38,18 +38,18 @@ public function usersExist($pIdUser,$pIdUser_secondary) //,$pCards,$pCards_secon
   // check 1: Users
   $stmt = $this->pdo->prepare(
       "SELECT CASE
-  WHEN (COUNT (idUser)=0) THEN 'ERR1_NO_IDUSERS'
-  WHEN (COUNT (idUser)=2) THEN 'OK'
-  WHEN (COUNT (idUser)=1 AND idUser<> :idUser1) THEN 'ERR2_NO_IDUSER1'
-  WHEN (COUNT (idUser)=1 AND idUser<> :idUser2) THEN 'ERR3_NO_IDUSER2'
+  WHEN (COUNT (idUser)=0) THEN 1
+  WHEN (COUNT (idUser)=2) THEN 0
+  WHEN (COUNT (idUser)=1 AND idUser<> :idUser1) THEN 1
+  WHEN (COUNT (idUser)=1 AND idUser<> :idUser2) THEN 1
   END AS 'Result'
   FROM Users WHERE EXISTS (SELECT 1 FROM Users WHERE idUser = :idUser1 OR idUser = :idUser2)
   and (idUser = :idUser1 OR idUser = :idUser2)");
 
   $stmt->execute(array(':idUser1'=>$pIdUser,':idUser2'=>$pIdUser_secondary));
   $row = $stmt->fetch(PDO::FETCH_ASSOC);
-  var_dump("check users::",$row);
-  return $row;
+
+  return intval($row["Result"]);
   //$stmt->bindParam(':idUser1',$pIdUser);
   //$stmt->bindParam(':idUser2',$pIdUser_secondary));
 
@@ -61,10 +61,10 @@ public function usersExist($pIdUser,$pIdUser_secondary) //,$pCards,$pCards_secon
     // check 2: Cards
       $stmt2 = $this->pdo->prepare(
       "SELECT CASE
-    WHEN (COUNT (id)=0) THEN 'ERR1_NO_IDCARDS'
-    WHEN (COUNT (id)=2) THEN 'OK'
-    WHEN (COUNT (id)=1 AND id <> :idCard1) THEN 'ERR2_NO_IDCARD1'
-    WHEN (COUNT (id)=1 AND id <> :idCard2) THEN 'ERR3_NO_IDCARD2'
+    WHEN (COUNT (id)=0) THEN 1
+    WHEN (COUNT (id)=2) THEN 0
+    WHEN (COUNT (id)=1 AND id <> :idCard1) THEN 1
+    WHEN (COUNT (id)=1 AND id <> :idCard2) THEN 1
     END AS 'Result'
     FROM Cards WHERE EXISTS ( SELECT 1 FROM Cards WHERE id = :idCard1 OR id = :idCard2)
     and (id = :idCard1 OR id = :idCard2)");
@@ -74,65 +74,48 @@ public function usersExist($pIdUser,$pIdUser_secondary) //,$pCards,$pCards_secon
     //var_dump("check cards::",$row2);
     //TEST EBE
     //return $row2 == "OK"?EXIT_CODE_OK:EXIT_CODE_ERROR_SQL;
-    return $row2;
+    return intval($row["Result"]);
     }
 
     // function delete tuples (désimbrication--interleaving of function exchange)
     public function deleteInventory($pIdUser,$pIdUser_secondary,$pCards,$pCards_secondary)
     {
-      //delete 1
-      $stmt3 = $this->pdo->prepare("DELETE FROM Inventory WHERE (idCard = :idCard and idUser = :idUser)
-      or (idCard = :idCard2 and idUser = :idUser2) ");
-      $stmt3->execute(array('idUser'=>$pIdUser,'idCard'=>$pCards, 'idUser2'=>$pIdUser_secondary,'idCard2'=>$pCards_secondary ));
-      $row3 = $stmt3->fetch(PDO::FETCH_ASSOC);
-      //var_dump(["delete1"=>$row3]);
 
-      return ["delete1"=>$row3];
+      //delete 1
+      $stmt = $this->pdo->prepare("DELETE FROM Inventory WHERE (idCard = :idCard and idUser = :idUser)
+      or (idCard = :idCard2 and idUser = :idUser2) ");
+      $stmt->execute(array('idUser'=>$pIdUser,'idCard'=>$pCards,'idUser2'=>$pIdUser_secondary,'idCard2'=>$pCards_secondary));
+      $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+
+      return intval($row);
 
     }
 
 
     // Second function cards exchange in Inventory => only two Inserts  , the rest of checks made in controllerDAO
-    public function exchange2($pIdUser,$pIdUser_secondary,$pCards,$pCards_secondary)
+    public function exchange($pIdUser,$pIdUser_secondary,$pCards,$pCards_secondary)
     {
 
       // Insert 1
-      $stmt5 = $this->pdo->prepare("INSERT INTO Inventory(idUser,idCard) VALUES (:idUser,:idCard)");
-      $stmt5->execute(array(':idUser'=>$pIdUser,':idCard'=>$pCards_secondary));
-      $row5 = $stmt5->fetch(PDO::FETCH_ASSOC);
+      $stmt = $this->pdo->prepare("INSERT INTO Inventory(idUser,idCard) VALUES (:idUser,:idCard)");
+      $stmt->execute(array('idUser'=>$pIdUser,'idCard'=>$pCards_secondary));
+      $row = $stmt->fetch(PDO::FETCH_ASSOC);
       //return ["insert Inventory"=>$row5];
       //var_dump(["insert1"=>$row5]);
       // Insert 2
-      $stmt6 = $this->pdo->prepare("INSERT INTO Inventory(idUser,idCard) VALUES (:idUser,:idCard)");
-      $stmt6->execute(array(':idUser'=>$pIdUser_secondary,':idCard'=>$pCards));
-      $row6 = $stmt6->fetch(PDO::FETCH_ASSOC);
+      $stmt2 = $this->pdo->prepare("INSERT INTO Inventory(idUser,idCard) VALUES (:idUser,:idCard)");
+      $stmt2->execute(array('idUser'=>$pIdUser_secondary,'idCard'=>$pCards));
+      $row2 = $stmt2->fetch(PDO::FETCH_ASSOC);
       //var_dump("insert2:",$row6);
 
-      // TODO to verify if necessary
-      if ($row5 == false and $row6 == false) //or ($row6<>0))
-      {
-      //  var_dump("insert1:::",$row5, "insert2:::",$row6);
-      //return ["insert Inventory"=>$row6];
-      //return $row?EXIT_CODE_OK:EXIT_CODE_ERROR_SQL;
-      $resultat = EXIT_CODE_OK ;
-      }
-      elseif ($row6<>0) {
-        //  var_dump (["insert Inventory2"=>$row6]);
-            //var_dump("insert2__",$row6);
-       $resultat = EXIT_CODE_ERROR_SQL ;
-      }
-      else //if ($row5 <> 0)
-      {
-        //var_dump (["insert Inventory1"=>$row5]);
-        //var_dump("insert1__",$row5);
-      $resultat = EXIT_CODE_ERROR_SQL ;
-      }
       return $resultat ;
 
     }
 
 
 // READY FOR TESTS
+/*
 public function exchange($pIdUser,$pIdUser_secondary,$pCards,$pCards_secondary)
 {
    // RETURN 0 IF OK RETURN ERROR CODE IF ID USER OR ID CARD DOSNT EXIST
@@ -222,7 +205,7 @@ $resultat = ["check users"=>$rowUsr,"check cards"=>$rowCard,"delete Inventory"=>
 
  return $resultat["error"];
  }
-
+*/
 
     public function update($obj)
     {
@@ -261,22 +244,23 @@ $resultat = ["check users"=>$rowUsr,"check cards"=>$rowCard,"delete Inventory"=>
       $stmt = $this->pdo->prepare("SELECT * FROM Inventory WHERE idUser=? and idCard=?");
       $stmt->execute(array($pIdUser,$pIdCard));
       $row = $stmt->fetch(PDO::FETCH_ASSOC);
-      var_dump( "resultat check InventoryExist:* ",$row);
+      //var_dump( "resultat check InventoryExist:* ",$row);
       return $row?EXIT_CODE_OK:EXIT_CODE_ERROR_SQL;
     }
 
-    public function insertTransaction_History($pIdCard,$pIdUser,$pIdUser_secondary,$pDate,
+    public function insertTransaction_History($pIdCard1,$pIdCard2,$pIdUser,$pIdUser_secondary,$pDate,
     $pType,$pDetails, $pIdInventory, $pPrice)
     {
 
-      $stmt = $this->pdo->prepare("INSERT INTO Transaction_History(type, details,date,user_origin,user_target,idCard,idInventory,price)
+      $stmt = $this->pdo->prepare("INSERT INTO Transaction_History(type, details,date,user_origin,user_target,idCard1,idCard2,idInventory,price)
       VALUES (
         :type,
         :details,
-        :date,
+        CURRENT_DATE(),--:date,
         :user_origin,
         :user_target,
-        :idCard,
+        :idCard1,
+        :idCard2
         :idInventory,
         :price
        )");
@@ -284,10 +268,11 @@ $resultat = ["check users"=>$rowUsr,"check cards"=>$rowCard,"delete Inventory"=>
         $stmt->execute(array(
           ':type'=> $pType,
           ':details'=> $pDetails,
-          ':date'=> getdate(), //$pDate, //TODO getdate()
+          //':date'=> getdate(), //$pDate, //TODO getdate()
           ':user_origin'=>$pIdUser,
           ':user_target'=>$pIdUser_secondary,
-          ':idCard'=>$pIdCard,
+          ':idCard1'=>$pIdCard1,
+          ':idCard2'=>$pIdCard2,
           ':idInventory'=> $pIdInventory,
           ':price'=>$pPrice
            )); $row = $stmt->fetch(PDO::FETCH_ASSOC);

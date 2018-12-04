@@ -169,6 +169,7 @@ function getCard($pDAO,$idCard) //100%
 
 function setCardInInventoryByUserId($pDAO,$idUser,$idCard)
 {
+
   $resultat["error"] = EXIT_CODE_OK;
 
   $resultat["error"] = $pDAO["Inventory"]->insert($idCard,$idUser);
@@ -185,131 +186,87 @@ function setCardInInventoryByUserId($pDAO,$idUser,$idCard)
 
 };
 
-function exchangeCard($pDAO,$idUser,$idUser_secondary,$cards,$cards_secondary)
+function exchangeCard($pDAO,$idUser,$idUser_secondary,$idCard,$idCard_secondary)
 {
-  //$resultat["error"] = EXIT_CODE_NO_IMPLEMENTED_FUNCTION;
-  return $resultat = $pDAO["Inventory"]->exchange($idUser,$idUser_secondary,$cards,$cards_secondary);
 
-};
-
-// second version of function exchangeCard => with checks on controllerDAO level
-function exchangeCard2($pDAO,$idUser,$idUser_secondary,$idCard,$idCard_secondary)
-{
   $flagUsersCardsExists = false;
   $flagUsersCardsInInventory = false;
 
-  $resultatUsers  = $pDAO["Inventory"]->usersExist($idUser,$idUser_secondary); //Check User
-
+  $resultatUsers = $pDAO["Inventory"]->usersExist($idUser,$idUser_secondary); //Check User
   if($resultatUsers)
   {
+        var_dump("LES USER 2 EXISTES PAS");
     return $resultat["error"] = EXIT_CODE_INCORRECT_ID_USER;
-  }
 
+  }
   $resultatCards = $pDAO["Inventory"]->cardsExist($idCard,$idCard_secondary); //Check Card
 
-  if($resultatUsers)
+  if($resultatCards)
   {
+    var_dump("LES CARTES 2 EXISTES PAS");
     return $resultat["error"] = EXIT_CODE_CARDS_IS_MISSING_IN_DB;
   }
 
-  $resultatCardsUser1 = $pDAO["Inventory"]->checkInventoryExist($idCard,$idUser); //Check InventoryidUserOne
+  $resultatCardsPlayer = $pDAO["Inventory"]->checkInventoryExist($idCard,$idUser); //Check InventoryidUserOne
 
-  if($resultatUsers)
+  if($resultatCardsPlayer)
   {
+    var_dump("ERROR DANS CHECK INVENTORY 1 EXIST");
     return $resultat["error"] = EXIT_CODE_CARDS_IS_MISSING_IN_DB;
   }
 
-  $resultatCardsUser2 = $pDAO["Inventory"]->checkInventoryExist($idCard_secondary,$idUser_secondary); //Check InventoryidUserTwo
+  $resultatCardsPlayerSecondary = $pDAO["Inventory"]->checkInventoryExist($idCard_secondary,$idUser_secondary); //Check InventoryidUserTwo
 
-  if($resultatUsers)
+  if($resultatCardsPlayerSecondary)
   {
+    var_dump("ERROR DANS CHECK INVENTORY 2 EXIST");
     return $resultat["error"] = EXIT_CODE_CARDS_IS_MISSING_IN_DB;
   }
 
-
-
-
-
-
-
-
-  if($resultatUsers["Result"] && $resultatCards["Result"])
+  $resultatDeleteCards = $pDAO["Inventory"]-> deleteInventory($idUser,$idUser_secondary,$idCard,$idCard_secondary);
+  var_dump($resultatDeleteCards);
+  if($resultatDeleteCards)
   {
-     $flagUsersCardsExists = true;
-  }
-  elseif ($resultatCards["Result"]  !== $resultatOK) {
-
-  }
-  elseif ($resultatUsers["Result"] !== $resultatOK) {
-    $resultat["error"] = EXIT_CODE_UNKNOW_ID_USER; //EXIT_CODE_USERS_IS_MISSING_IN_DB;
+    var_dump("ERROR DANS LE DELETE");
+    return $resultat["error"] = EXIT_CODE_ERROR_SQL;
   }
 
+  $resultatExchange = $pDAO["Inventory"]-> exchange($idUser,$idUser_secondary,$idCard,$idCard_secondary);
 
 
-  if ($resultatCardsUser1 && $resultatCardsUser2)
-  {
-      $flagUsersCardsInInventory = true;
-  }
-  elseif ($resultatCardsUser1 !== EXIT_CODE_OK ) {
-    // code...
-      var_dump( "INVENTORY_IS_MISSING 1");
-     $resultat["error"] = EXIT_CODE_INVENTORY_IS_MISSING ;
-  }
-  elseif ($resultatCardsUser2 !== EXIT_CODE_OK ) {
-    // code...
-    var_dump( "INVENTORY_IS_MISSING 2");
-     $resultat["error"] = EXIT_CODE_INVENTORY_IS_MISSING ;
-  }
+  $idInventory=0; //TODO recup iDInventory deleted
+  $pDate= CURRENT_DATE();//getdate();
+  $type ="DELETE_REC";
+  $details= "";
+  $price = 0;
+
+  $resultatInsertLog1 = $pDAO["Inventory"]-> insertTransaction_History($idCard,$idUser,$idUser_secondary,$pDate,$type,$details, $idInventory, $price);
 
 
- // Check 5: final Check
- if ($flagUsersCardsExists == true && $flagUsersCardsInInventory = true)
-  {
-     $resultatDeleteCards = $pDAO["Inventory"]-> deleteInventory($idUser,$idUser_secondary,$idCard,$idCard_secondary);
-
-
-     $idInventory=0; //TODO recup iDInventory deleted
-     $pDate= getdate();
-     $type ="DELETE_REC";
-     $details= "";
-     $price = 0;
-
-    if ($resultatDeleteCards == false){ //bc code return of correct execution is 0 (?)
-      // Log record type Delete  =>  insert to table Transaction_history
-
-     $resultatInsertLog1 = $pDAO["Inventory"]-> insertTransaction_History($idCard,$idUser,$idUser_secondary,
-                                                                 $pDate,$type,$details, $idInventory, $price);
-                                               //TODO 2 insert -><- bc 2 delete
-     }
-
-
-     $resultatExchange = $pDAO["Inventory"]-> exchange2($idUser,$idUser_secondary,$idCard,$idCard_secondary);
-       var_dump( "insert cards result: ",$resultatExchange);
-
+  return $resultatExchange;
        //TODO after tests  copy this all to exchange2 function
           $idInventory=0; //TODO recup iDInventory new created
-          $pDate= getdate();
+          $pDate= CURRENT_DATE();//getdate();
           $type = "INSERT_REC" ;
           $details= "";
           $price = 0;
 
-     if ($resultatExchange == EXIT_CODE_OK){
+  if ($resultatExchange == EXIT_CODE_OK)
+     {
         // Log record type Exchange  =>  insert to table Transaction_history
         $resultatInsertLog2 = $pDAO["Inventory"]-> insertTransaction_History($idCard,$idUser,$idUser_secondary,
                                                                     $pDate,$type,$details, $idInventory, $price);
                                                   //TODO 2 insert -><- bc 2 inserts
        }
 
-
      $resultat["error"] = $resultatExchange;//EXIT_CODE_OK;
 
-  }
-
-
-   //var_dump( "resultat check Users: ",$resultatUsers["Result"]);
-   return $resultat; //["error"];
-
+   return $resultat;
 }
+
+
+
+
 
 
 function getRandomCard($pDAO) //100%

@@ -35,10 +35,8 @@ if(!$errorCode)
           {
           //TODO EBE just for check 2nd version of function
         // $resultat = exchangeCard($DAO,$_POST['idUserOne'],$_POST['idUserTwo'],$_POST['cardUserOne'],$_POST['cardUserTwo']);
-          $resultat = exchangeCard2($DAO,$_POST['idUserOne'],$_POST['idUserTwo'],$_POST['cardUserOne'],$_POST['cardUserTwo']);
-          var_dump( "resultat exchangeCard2__::: ",$resultat);
-          var_dump( "resultat exchangeCard2::: ",$resultat["error"]);
-
+          $resultat = exchangeCard($DAO,$_POST['idUserOne'],$_POST['idUserTwo'],$_POST['cardUserOne'],$_POST['cardUserTwo']);
+          var_dump($resultat["error"]);
           $errorCode = $resultat["error"];
           }
           else

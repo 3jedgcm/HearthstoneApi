@@ -96,20 +96,28 @@ public function usersExist($pIdUser,$pIdUser_secondary) //,$pCards,$pCards_secon
     // Second function cards exchange in Inventory => only two Inserts  , the rest of checks made in controllerDAO
     public function exchange($pIdUser,$pIdUser_secondary,$pCards,$pCards_secondary)
     {
-
+      $resultat = true;
       // Insert 1
       $stmt = $this->pdo->prepare("INSERT INTO Inventory(idUser,idCard) VALUES (:idUser,:idCard)");
       $stmt->execute(array('idUser'=>$pIdUser,'idCard'=>$pCards_secondary));
       $row = $stmt->fetch(PDO::FETCH_ASSOC);
       //return ["insert Inventory"=>$row5];
-      //var_dump(["insert1"=>$row5]);
+     var_dump("resultat exchange 1",$row);
       // Insert 2
       $stmt2 = $this->pdo->prepare("INSERT INTO Inventory(idUser,idCard) VALUES (:idUser,:idCard)");
       $stmt2->execute(array('idUser'=>$pIdUser_secondary,'idCard'=>$pCards));
       $row2 = $stmt2->fetch(PDO::FETCH_ASSOC);
-      //var_dump("insert2:",$row6);
+      var_dump("resultat exchange 2 :",$row2);
 
-      return $resultat ;
+
+     if (!$row && !$row2){
+       $resultat = EXIT_CODE_OK; //false ; // 0 => result correct   <>0 incorrect
+     }
+     else
+     {
+        $resultat = EXIT_CODE_ERROR_INSERTION_IN_DB;
+     }
+     return $resultat ;
 
     }
 
@@ -248,34 +256,54 @@ $resultat = ["check users"=>$rowUsr,"check cards"=>$rowCard,"delete Inventory"=>
       return $row?EXIT_CODE_OK:EXIT_CODE_ERROR_SQL;
     }
 
-    public function insertTransaction_History($pIdCard1,$pIdCard2,$pIdUser,$pIdUser_secondary,$pDate,
-    $pType,$pDetails, $pIdInventory, $pPrice)
+////$pDate,
+    public function insertTransaction_History($pIdCard1,$pIdCard2,$pIdUser,$pIdUser_secondary,$pType,$pDetails,$pIdInventory, $pPrice,$pDateformat)
     {
+      //var_dump('CURRENT_DATE',CURRENT_DATE());
+    //  var_dump('CURRENT_DATE',getdate());
 
-      $stmt = $this->pdo->prepare("INSERT INTO Transaction_History(type, details,date,user_origin,user_target,idCard1,idCard2,idInventory,price)
-      VALUES (
+
+   /*
+      [seconds] => 40
+      [minutes] => 58
+      [hours]   => 21
+      [mday]    => 17
+      [wday]    => 2
+      [mon]     => 6
+      [year]    => 2003
+      [yday]    => 167
+      [weekday] => Tuesday
+      [month]   => June
+      [0]       => 1055901520 */
+
+  
+
+
+      $stmt = $this->pdo->prepare("INSERT INTO Transaction_History(type,details,date_modif,user_origin,user_target,idCard1,idCard2,idInventory,price)
+      VALUES(
         :type,
         :details,
-        CURRENT_DATE(),--:date,
+        :date_modif,
         :user_origin,
         :user_target,
         :idCard1,
-        :idCard2
+        :idCard2,
         :idInventory,
         :price
        )");
       //$stmt->execute(array('idUser'=>$pIdUser,'idCard'=>$pIdCard));
         $stmt->execute(array(
-          ':type'=> $pType,
-          ':details'=> $pDetails,
-          //':date'=> getdate(), //$pDate, //TODO getdate()
-          ':user_origin'=>$pIdUser,
-          ':user_target'=>$pIdUser_secondary,
-          ':idCard1'=>$pIdCard1,
-          ':idCard2'=>$pIdCard2,
-          ':idInventory'=> $pIdInventory,
-          ':price'=>$pPrice
-           )); $row = $stmt->fetch(PDO::FETCH_ASSOC);
+          'type'=>$pType,
+          'details'=>$pDetails,
+          'date_modif'=>$pDateformat,//$dateformat,    //':date'=> getdate(), //$pDate, //TODO getdate()
+          'user_origin'=>$pIdUser,
+          'user_target'=>$pIdUser_secondary,
+          'idCard1'=>$pIdCard1,
+          'idCard2'=>$pIdCard2,
+          'idInventory'=>$pIdInventory,
+          'price'=>$pPrice ));
+
+      $row = $stmt->fetch(PDO::FETCH_ASSOC);
       return $row;
     }
 

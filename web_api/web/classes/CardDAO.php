@@ -20,6 +20,43 @@ class CardDAO extends DAO {
       return ["cards"=>$result];
     }
 
+    public function getAllByName($filter)
+    {
+      $stmt = $this->pdo->prepare("SELECT * FROM Cards WHERE nameCard LIKE '%".$filter."%' ");
+      $stmt->execute();
+      foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row)
+      {
+        $result[] = [$row['id']=>$row];
+      }
+      return ["cards"=>$result];
+    }
+
+    public function getAllByCost($filter)
+    {
+      $stmt = $this->pdo->prepare("SELECT * FROM Cards");
+      $stmt->execute();
+      foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row)
+      {
+        $result[] = [$row['id']=>$row];
+      }
+      return ["cards"=>$result];
+    }
+
+    public function getAllByRarity()
+    {
+      $stmt = $this->pdo->prepare("SELECT * FROM Cards");
+      $stmt->execute();
+      foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row)
+      {
+        $result[] = [$row['id']=>$row];
+      }
+      return ["cards"=>$result];
+    }
+
+
+
+
+
     public function getRandomCard()
     {
       $stmt = $this->pdo->prepare("SELECT * FROM Cards ORDER BY RAND() LIMIT 1");

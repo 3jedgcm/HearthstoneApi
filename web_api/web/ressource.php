@@ -49,7 +49,7 @@ const SUB_ROUTE_CRAFTCARD = "craftcard";
 const SUB_ROUTE_MELT = "meltcard";
 const SUB_ROUTE_RANDOM = "random";
 const SUB_ROUTE_ADD_CARD_SPECIAL = "admin";
-
+const SUB_ROUTE_FILTER = "filter";
 
 const HEARTHSTONE_API_URI = "http://api.hearthstonejson.com/v1/15590/frFR/cards.json";
 const HEARTHSTONE_ART_URI = "art.hearthstonejson.com/v1/render/latest/frFR/512x/";

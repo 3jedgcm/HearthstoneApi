@@ -140,12 +140,22 @@ function setUser($pDAO,$idUser) //OK
 /* FUNCTION CARDS  */
 /******************/
 
-function getCard($pDAO,$idCard) //100%
+function getCard($pDAO,$idCard,$typeFilter,$valueFilter)
 {
   $resultat["error"] = EXIT_CODE_OK;
+
   if($idCard == "")
   {
+    if($typeFilter == "")
     $resultat["card"] = $pDAO["Card"]->getAll();
+    else if($typeFilter == "name")
+    $resultat["card"] = $pDAO["Card"]->getAllByName($valueFilter);
+    else if($typeFilter == "cost")
+    $resultat["card"] = $pDAO["Card"]->getAllByCost($valueFilter);
+    else if($typeFilter == "rarity")
+    $resultat["card"] = $pDAO["Card"]->getAllByRarity($valueFilter);
+
+
   }
   else
   {
@@ -223,6 +233,7 @@ function exchangeCard($pDAO,$idUser,$idUser_secondary,$idCard,$idCard_secondary)
     return $resultat["error"] = EXIT_CODE_CARDS_IS_MISSING_IN_DB;
   }
 
+// Delete
   $resultatDeleteCards = $pDAO["Inventory"]-> deleteInventory($idUser,$idUser_secondary,$idCard,$idCard_secondary);
   var_dump($resultatDeleteCards);
   if($resultatDeleteCards)
@@ -231,33 +242,58 @@ function exchangeCard($pDAO,$idUser,$idUser_secondary,$idCard,$idCard_secondary)
     return $resultat["error"] = EXIT_CODE_ERROR_SQL;
   }
 
+// Log delete
+    $idInventory=0; //TODO recup iDInventory deleted
+    //$pDate= //getdate();
+    $type ="DELETE_REC";
+    $details= "";
+    $price = 0;
+
+
+    $date= getdate();
+    var_dump('CURRENT_DATE2',$date[0]);
+    $d = $date[mday];
+    $m = $date[mon];
+    $y = $date[year];
+    $h= $date[hours];
+    $min = $date[minutes];
+    $pDateformat = $d."/".$m."/".$y."/".$h.":".$min ;
+    var_dump('CURRENT_DATE3',$pDateformat);
+
+
+    $resultatInsertLog1 = $pDAO["Inventory"]-> insertTransaction_History($idCard,$idCard_secondary,$idUser,$idUser_secondary,$type,$details, $idInventory, $price ,$pDateformat); //$pDate
+    var_dump ("result resultatInsertLog1::",$resultatInsertLog1);
+
+
+  //Exchange
   $resultatExchange = $pDAO["Inventory"]-> exchange($idUser,$idUser_secondary,$idCard,$idCard_secondary);
 
-
-  $idInventory=0; //TODO recup iDInventory deleted
-  $pDate= CURRENT_DATE();//getdate();
-  $type ="DELETE_REC";
-  $details= "";
-  $price = 0;
-
-  $resultatInsertLog1 = $pDAO["Inventory"]-> insertTransaction_History($idCard,$idUser,$idUser_secondary,$pDate,$type,$details, $idInventory, $price);
+  var_dump ("result resultatExchange Log2::",$resultatExchange);
 
 
-  return $resultatExchange;
        //TODO after tests  copy this all to exchange2 function
           $idInventory=0; //TODO recup iDInventory new created
-          $pDate= CURRENT_DATE();//getdate();
+        //  $pDate= CURRENT_DATE();//getdate();
           $type = "INSERT_REC" ;
           $details= "";
           $price = 0;
 
-  if ($resultatExchange == EXIT_CODE_OK)
+
+
+
+var_dump ("result resultatInsertLog3::",$resultatExchange);
+
+  if ($resultatExchange <> EXIT_CODE_OK)//EXIT_CODE_NOTOK)
      {
+       var_dump("ERROR IN EXCHANGE");
+       return $resultat["error"] = $resultatExchange ;//EXIT_CODE_ERROR_SQL;
+
+    }
         // Log record type Exchange  =>  insert to table Transaction_history
-        $resultatInsertLog2 = $pDAO["Inventory"]-> insertTransaction_History($idCard,$idUser,$idUser_secondary,
-                                                                    $pDate,$type,$details, $idInventory, $price);
+        $resultatInsertLog2 = $pDAO["Inventory"]-> insertTransaction_History($idCard,$idCard_secondary,$idUser,$idUser_secondary,
+                                                                   $type,$details, $idInventory, $price ,$pDateformat);
                                                   //TODO 2 insert -><- bc 2 inserts
-       }
+
 
      $resultat["error"] = $resultatExchange;//EXIT_CODE_OK;
 

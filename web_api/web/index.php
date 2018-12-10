@@ -270,9 +270,16 @@ if(!$errorCode)
           $errorCode = $resultat["error"];
           $card = $resultat["randomCard"];
         }
+        else if(SUB_ROUTE_FILTER == $arrayUri[2])
+        {
+
+          $resultat = getCard($DAO,"",$_GET["filter"],$_GET["value_filter"]);
+          $errorCode = $resultat["error"];
+          $card = $resultat["card"];
+        }
         else
         {
-          $resultat = getCard($DAO,$arrayUri[2]);
+          $resultat = getCard($DAO,$arrayUri[2],"","");
           $errorCode = $resultat["error"];
           $card = $resultat["card"];
         }

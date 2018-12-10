@@ -33,8 +33,8 @@ class CardDAO extends DAO {
 
     public function getAllByCost($filter)
     {
-      $stmt = $this->pdo->prepare("SELECT * FROM Cards");
-      $stmt->execute();
+      $stmt = $this->pdo->prepare("SELECT * FROM Cards WHERE cost = ?");
+      $stmt->execute(array($filter));
       foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row)
       {
         $result[] = [$row['id']=>$row];
@@ -42,10 +42,10 @@ class CardDAO extends DAO {
       return ["cards"=>$result];
     }
 
-    public function getAllByRarity()
+    public function getAllByRarity($filter)
     {
-      $stmt = $this->pdo->prepare("SELECT * FROM Cards");
-      $stmt->execute();
+      $stmt = $this->pdo->prepare("SELECT * FROM Cards WHERE type = ?");
+      $stmt->execute(array($filter));
       foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row)
       {
         $result[] = [$row['id']=>$row];

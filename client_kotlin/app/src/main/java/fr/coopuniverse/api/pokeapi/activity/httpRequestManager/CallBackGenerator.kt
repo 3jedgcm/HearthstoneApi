@@ -46,7 +46,7 @@ class CallBackGenerator(
             "SetOneUser" -> rep = service.SetOneUser(idUser!!, value!!)
             "GetAllUser" -> rep = service.GetAllUser()
             "SetAllUser" -> rep = service.SetAllUser(value!!)
-            "GetOneCardByUserId" -> rep = service.GetOneCardByUserId(idUser!!)
+            "GetCardByUserId" -> rep = service.GetCardByUserId(idUser!!)
             "GetAllCard" -> rep = service.GetAllCard()
             "SetOneCardByUserId" -> rep = service.SetOneCardByUserId(idUser!!, cardUserOne!!.toString())
             "DeleteOneCardByUserid" -> rep = service.DeleteOneCardByUserid(idUser!!)

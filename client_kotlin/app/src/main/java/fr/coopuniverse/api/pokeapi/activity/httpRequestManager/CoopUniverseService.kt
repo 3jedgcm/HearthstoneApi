@@ -11,6 +11,7 @@ import retrofit2.http.Path
 
 interface CoopUniverseService {
 
+
     /* Param */
 
     @GET("parameter/")
@@ -55,14 +56,16 @@ interface CoopUniverseService {
     @POST("user/")
     fun SetAllUser(@Field("value") value: String): Call<Reponse>
 
-    /* Card */
+
 
     //GetOneCardByUserId
-    @GET("card/{idUser}")
-    fun GetOneCardByUserId(@Path("idUser") idUser: String): Call<Reponse>
+    @GET("inventory/{idUser}") //NOT GOOD
+    fun GetCardByUserId(@Path("idUser") idUser: String): Call<Reponse>
 
-    //GetAllCard
-    @GET("card/")
+
+    /* Card */
+    //GetAllCardInInventory
+    @GET("inventory/")
     fun GetAllCard(): Call<Reponse>
 
     //SetOneCardByUserId

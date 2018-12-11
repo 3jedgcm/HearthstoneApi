@@ -5,25 +5,13 @@
 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
 
     tools:context=".activity.MainActivity"
     tools:layout_editor_absoluteY="25dp">
 
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="115dp"
-        android:layout_height="37dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="Disconnect"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
 
     <com.shobhitpuri.custombuttons.GoogleSignInButton
-        android:id="@+id/sign_in_button"
+        android:id="@+id/sign_in_google"
         android:layout_width="264dp"
         android:layout_height="50dp"
         android:layout_centerInParent="true"
@@ -32,15 +20,16 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
+        android:autoText="false"
         android:text="@string/google_sign_up"
         android:textAppearance="@style/TextAppearance.AppCompat.Button"
         app:isDarkTheme="false"
-        app:layout_constraintBottom_toTopOf="@+id/login_button"
+        app:layout_constraintBottom_toTopOf="@+id/sign_in_facebook"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <com.facebook.login.widget.LoginButton
-        android:id="@+id/login_button"
+        android:id="@+id/sign_in_facebook"
         android:layout_width="259dp"
         android:layout_height="48dp"
         android:layout_gravity="center_horizontal"
@@ -48,26 +37,28 @@
         android:layout_marginLeft="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginBottom="68dp"
+        android:layout_marginBottom="52dp"
         android:textAppearance="@style/TextAppearance.AppCompat"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/login"
+        android:id="@+id/login_field"
         android:layout_width="258dp"
         android:layout_height="49dp"
         android:layout_marginBottom="16dp"
         android:ems="10"
+        android:hint="Identifiant"
         android:inputType="textEmailAddress"
-        app:layout_constraintBottom_toTopOf="@+id/pass"
+        app:layout_constraintBottom_toTopOf="@+id/pass_field"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/pass"
+        android:id="@+id/pass_field"
         android:layout_width="260dp"
         android:layout_height="53dp"
         android:layout_marginStart="8dp"
@@ -76,13 +67,14 @@
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
         android:ems="10"
+        android:hint="Mot de pass"
         android:inputType="textPassword"
-        app:layout_constraintBottom_toTopOf="@+id/connect"
+        app:layout_constraintBottom_toTopOf="@+id/sign_in_simple"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/connect"
+        android:id="@+id/sign_in_simple"
         style="@android:style/Widget.DeviceDefault.Light.Button"
         android:layout_width="262dp"
         android:layout_height="48dp"
@@ -91,67 +83,30 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="12dp"
-        android:background="@color/cardview_light_background"
+        android:background="@color/colorPrimary"
         android:text="Sign In"
-        android:textColor="@color/cardview_dark_background"
-        app:layout_constraintBottom_toTopOf="@+id/sign_in_button"
+        android:textColor="@color/common_google_signin_btn_text_dark_default"
+        app:layout_constraintBottom_toTopOf="@+id/sign_in_google"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.505"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="332dp"
-        android:layout_height="149dp"
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginBottom="44dp"
-        app:layout_constraintBottom_toTopOf="@+id/login"
+        android:text="Connexion"
+        android:textAllCaps="false"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/login_field"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/hearthstone" />
-
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="76dp"
-        android:layout_height="146dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
-        android:rotation="30"
-        app:layout_constraintBottom_toTopOf="@+id/login"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.39"
-        app:srcCompat="@drawable/leroy" />
-
-    <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="87dp"
-        android:layout_height="112dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
-        android:rotation="340"
-        app:layout_constraintBottom_toTopOf="@+id/login"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.451"
-        app:srcCompat="@drawable/mil" />
+        app:layout_constraintVertical_bias="0.841" />
 
 </android.support.constraint.ConstraintLayout>

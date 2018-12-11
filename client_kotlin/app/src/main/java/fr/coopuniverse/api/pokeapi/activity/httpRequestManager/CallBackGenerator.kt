@@ -25,7 +25,7 @@ class CallBackGenerator(
         var value: String? = null,
         var action: String? = null,
         var key: String? = null,
-        var login: String = null,
+        var login: String? = null,
         var pass: String? = null)
     : AsyncTask<TextView, Void, Reponse>() {
 

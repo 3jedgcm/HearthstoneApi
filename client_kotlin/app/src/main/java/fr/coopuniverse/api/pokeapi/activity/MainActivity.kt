@@ -29,73 +29,75 @@ import com.shobhitpuri.custombuttons.GoogleSignInButton
 import org.json.JSONException
 
 import fr.coopuniverse.api.pokeapi.R
+import fr.coopuniverse.api.pokeapi.activity.activity.HomeActivity
 import fr.coopuniverse.api.pokeapi.activity.httpRequestManager.CallBackGenerator
 
 class MainActivity : AppCompatActivity() {
 
-
     lateinit var callbackManager: CallbackManager
-    lateinit var loginButton: LoginButton
+    lateinit var signInFacebookButton: LoginButton
     var accessToken: AccessToken? = null
     var id: TextView? = null
     var name: TextView? = null
     var mail: TextView? = null
     var isLoggedIn: Boolean = false
     var test: Button? = null
-    var connectButton: Button? = null
+    var signInSimpleButton: Button? = null
     var login: EditText? = null
     var pass: EditText? = null
-    lateinit var disconnect: Button
-    lateinit var signInButton: GoogleSignInButton
+    lateinit var disconnectButton: Button
+    lateinit var signInGoogleButton: GoogleSignInButton
     lateinit var mGoogleSignInClient: GoogleSignInClient
     var imageView: ImageView? = null
 
 
-    //https://cdn.shopify.com/s/files/1/0441/9405/files/Pokemon_Moon_phone_wallpaper_by_Trinket_Geek_large.jpg?v=1481926584
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?)
+    {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Google connexion
-        signInButton = findViewById<View>(R.id.sign_in_button) as GoogleSignInButton
-        disconnect = findViewById(R.id.button2)
-        connectButton = findViewById(R.id.connect)
-        loginButton = findViewById(R.id.login_button)
-        login = findViewById(R.id.login)
-        pass = findViewById(R.id.pass)
+        // All findView
+        login = findViewById(R.id.login_field)
+        pass = findViewById(R.id.pass_field)
+        signInGoogleButton = findViewById<View>(R.id.sign_in_google) as GoogleSignInButton
+        signInSimpleButton = findViewById(R.id.sign_in_simple)
+        signInFacebookButton = findViewById(R.id.sign_in_facebook)
+      //  disconnectButton = findViewById(R.id.sign_out)
+
 
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build()
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
-        disconnect.isEnabled = false
-        signInButton.setOnClickListener { signIn() }
+//        disconnectButton.isEnabled = false
+        signInGoogleButton.setOnClickListener {googleSignIn()}
 
-        connectButton!!.setOnClickListener {
-            CallBackGenerator(callback = InventoryActivity(), login = login.text.toString())
+        signInSimpleButton!!.setOnClickListener {
+
+            this.simpleSignIn()
 
         }
 
-        disconnect.setOnClickListener {
+
+
+/*        disconnectButton.setOnClickListener {
             mGoogleSignInClient.signOut().addOnCompleteListener(this@MainActivity) {
                 //mail.setText("Mail : ");
                 //name.setText("Name : ");
                 //id.setText("Id : ");
                 //imageView.setVisibility(View.INVISIBLE);
-                disconnect.isEnabled = false
-                signInButton.isEnabled = true
-                loginButton.isEnabled = true
+                disconnectButton.isEnabled = false
+                signInGoogleButton.isEnabled = true
+                signInFacebookButton.isEnabled = true
             }
         }
 
-
+*/
         val account = GoogleSignIn.getLastSignedInAccount(this)
-        //updateUI(account);
-        //Facebook connexion
-        this.callbackManager = CallbackManager.Factory.create()
 
-        this.loginButton.setReadPermissions("email")
-        this.loginButton.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
+        this.callbackManager = CallbackManager.Factory.create()
+        this.signInFacebookButton.setReadPermissions("email")
+        this.signInFacebookButton.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
             override fun onSuccess(loginResult: LoginResult) {
 
             }
@@ -122,7 +124,7 @@ class MainActivity : AppCompatActivity() {
                                 e.printStackTrace()
                             }
                         }
-                        connectEnable()
+                        enableConnection()
 
 
                         val parameters = Bundle()
@@ -142,51 +144,55 @@ class MainActivity : AppCompatActivity() {
                 })
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
+    {
         callbackManager.onActivityResult(requestCode, resultCode, data)
         super.onActivityResult(requestCode, resultCode, data)
-        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
-        if (requestCode == 1) {
-            // The Task returned from this call is always completed, no need to attach
-            // a listener.
-
-
+        if (requestCode == 1)
+        {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             handleSignInResult(task)
-
         }
     }
 
-
-    private fun signIn() {
+    private fun googleSignIn()
+    {
         val signInIntent = mGoogleSignInClient.signInIntent
         startActivityForResult(signInIntent, 1)
+    }
 
+    private fun simpleSignIn()
+    {
+        CallBackGenerator(callback = InventoryActivity(), login = login.toString())
     }
 
 
-    private fun changeActivity(ud: UserData) {
-        val inventoryIntent = Intent(this, InventoryActivity::class.java)
+    private fun changeActivity(ud: UserData)
+    {
+        val inventoryIntent = Intent(this, HomeActivity::class.java)
         Log.d("Chaton", ud.toString())
-        CallBackGenerator(InventoryActivity(),)
+        CallBackGenerator(InventoryActivity(),false)
         inventoryIntent.putExtra("PERSONNAL_INFORMATION", ud.toString())
-
         startActivityForResult(inventoryIntent, 1)
     }
 
-    private fun connectEnable() {
-        disconnect.isEnabled = true
-        signInButton.isEnabled = false
-        loginButton.isEnabled = false
+    private fun enableConnection() {
+//        disconnectButton.isEnabled = true
+        signInGoogleButton.isEnabled = false
+        signInFacebookButton.isEnabled = false
+
 
     }
 
-    private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
-        try {
+    private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>)
+    {
+        try
+        {
 
             val acct = completedTask.getResult<ApiException>(ApiException::class.java!!)
-            if (acct != null) {
-                connectEnable()
+            if (acct != null)
+            {
+                enableConnection()
                 //imageView.setVisibility(View.VISIBLE);
                 val personName = acct.displayName
                 val personGivenName = acct.givenName
@@ -202,11 +208,14 @@ class MainActivity : AppCompatActivity() {
                     Picasso.get().load(personPhoto).into(imageView);
                 }*/
                 changeActivity(UserData(acct.id, acct.displayName, acct.familyName))
-
             }
 
-        } catch (e: ApiException) {
+        } catch (e: ApiException)
+        {
+
         }
+
+
 
     }
 

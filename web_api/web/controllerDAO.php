@@ -387,10 +387,15 @@ function setAnswer($pDAO,$idUser,$numAnswer,$idQuestion)  //Non Fonctionnel
 /* FUNCTION INVENTORY */
 /**********************/
 
-function getInventory($pDAO,$IdUser)  //Ready for test
+function getInventory($pDAO,$pIdUser)  //Ready for test
 {
-  $resultat["error"] = EXIT_CODE_NO_IMPLEMENTED_FUNCTION;
+  $resultat["error"] = EXIT_CODE_OK;
+  if(is_numeric($pIdUser))
   $resultat["inventory"]=  $pDAO["Inventory"]->getAllCardByUserId($pIdUser);
+  else
+  $resultat["inventory"]=  $pDAO["Inventory"]->getAllCard();
+
+
   return $resultat;
   //return $pDAO["Card"]->getAll($IdUser);
 }

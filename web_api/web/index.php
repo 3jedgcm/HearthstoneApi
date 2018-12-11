@@ -321,7 +321,7 @@ if(!$errorCode)
   $newInventory = getInventory($DAO,$arrayUri[2]);
 }
 
-sendHttpRespond($arrayUri[1],$DAO,$arrayUri[2],$money,$newInventory,$errorCode,$typeReqHttp,$param,$card,$user,$connect);
+sendHttpRespond($arrayUri[1],$DAO,$arrayUri[2],$money,$inventory,$errorCode,$typeReqHttp,$param,$card,$user,$connect);
 
 function sendHttpRespond($firstArgR,$pDAO,$secondArgR,$pMoney,$pInventory,$pErrorCode,$typeReqHttp,$pParam,$pCard,$pUser,$pConnect)
 {

@@ -20,6 +20,17 @@ class InventoryDAO extends DAO {
       return [$pIdUser=>$result];
     }
 
+    public function getAllCard()
+    {
+      $stmt = $this->pdo->prepare("SELECT * FROM Inventory");
+      $stmt->execute();
+      foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row)
+      {
+        $result[] = [$row['idCard']=>$row];
+      }
+      return [$pIdUser=>$result];
+    }
+
     public function getAllUserByCardId($pIdCard)
     {
       $stmt = $this->pdo->prepare("SELECT * FROM Inventory WHERE idCard = ?");
@@ -276,7 +287,7 @@ $resultat = ["check users"=>$rowUsr,"check cards"=>$rowCard,"delete Inventory"=>
       [month]   => June
       [0]       => 1055901520 */
 
-  
+
 
 
       $stmt = $this->pdo->prepare("INSERT INTO Transaction_History(type,details,date_modif,user_origin,user_target,idCard1,idCard2,idInventory,price)

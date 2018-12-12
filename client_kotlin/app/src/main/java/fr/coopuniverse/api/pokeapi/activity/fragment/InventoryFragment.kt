@@ -9,23 +9,22 @@ import android.view.ViewGroup
 
 import fr.coopuniverse.api.pokeapi.R
 
-class GridFragment : Fragment() {
+class InventoryFragment : Fragment() {
 
     companion object {
-        fun newInstance() = GridFragment()
+        fun newInstance() = InventoryFragment()
     }
 
-    private lateinit var viewModel: GridViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.grid_fragment, container, false)
+        return inflater.inflate(R.layout.inventory_fragment, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(GridViewModel::class.java)
-        // TODO: Use the ViewModel
+
+
     }
 
 }

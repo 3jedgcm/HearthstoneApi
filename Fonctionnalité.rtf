@@ -1,8 +1,10 @@
 {\rtf1\ansi\ansicpg1252\cocoartf1671
-{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
-{\colortbl;\red255\green255\blue255;}
-{\*\expandedcolortbl;;}
-\paperw11900\paperh16840\margl1440\margr1440\vieww40460\viewh20020\viewkind0
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fswiss\fcharset0 Helvetica-Bold;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red255\green255\blue255;\red63\green63\blue63;
+}
+{\*\expandedcolortbl;;\cssrgb\c0\c0\c0;\cssrgb\c100000\c100000\c100000;\cssrgb\c31373\c31373\c31373;
+}
+\paperw11900\paperh16840\margl1440\margr1440\vieww40460\viewh19720\viewkind0
 \pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
 
 \f0\fs24 \cf0 PokeApi : \
@@ -19,7 +21,7 @@ Fonctionnalit\'e9 :\
 \
 - L\'92argent virtuelle peut \'eatre r\'e9cup\'e9r\'e9 par l\'92api pour une utilisation dans une autre application.\
 \
-- Il existe une fonctionnalit\'e9 qui permet de recuperer une carte al\'e9atoire dans les cartes possibles tout les 24h.\
+- Il existe une fonctionnalit\'e9 qui permet de r\'e9cup\'e9rer une carte al\'e9atoire dans les cartes possibles tout les 24h.\
 \
 - Il existe un syst\'e8me de Quizz qui permet de jouer une carte pour en gagner une autre, si l\'92utilisateur gagne alors, il gagne une nouvelle carte sinon, il en perd une dans son inventaire.\
 \
@@ -29,48 +31,66 @@ Fonctionnalit\'e9 :\
 \
 - Il est possible de r\'e9cup\'e9rer l\'92inventaire de l\'92utilisateur avec la GoogleKeyUser sur l\'92api.\
 \
- 00\
+
+\f1\b Ce qui est fait :
+\f0\b0 \
 \
-Sp\'e9cification Entr\'e9e/Sortie\
+GET\
+\
+/card \
+/card/\{idCard\} \
+\pard\pardeftab720\sl280\partightenfactor0
+\cf2 \cb3 \expnd0\expndtw0\kerning0
+/card/filter?filter=\{typeFilter\}&value_filter=\{value\}\cf0 \cb1 \kerning1\expnd0\expndtw0 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf0 /user/\
+/user/\{idUser\}\
+/parameter/\
+/inventory/\
+/inventory/\{idUser\}\
+/money/\
+/money/\{idUser\}\
+\
+POST\
+/inventory/exchang\cf2 e/  	\{\{\cb3 \expnd0\expndtw0\kerning0
+cardUserOne, cardUserTwo, idUserTwo, idUserOne\}\}\cf4 \
+\cf0 \cb1 \kerning1\expnd0\expndtw0 /money/\{idUser\}/ 		\{\{value\}\}\
+/route/register/			\{\{login, pass\}\}\
+route/register/google 	\{key\}\}\
+route/register/facebook 	\{key\}\}\
+/route/connect/ 			\{\{login, pass\}\}\
+/route/connect/google 	\{\{key\}\}\
+/route/connect/facebook 	\{\{key\}\}\
 \
 \
-ACTION (Obligatoire) Type : chaine de caract\'e8re \
-ID_UTILISATEUR (Obligatoire) Type : entier\
-ID_UTILISATEUR_SECONDAIRE : Type : entier\
-CARDS : Tableau de CARD\
-CARDS_SECONDAIRE : Tableau de CARD\
-CARD : Type : Objet repr\'e9sentant une carte\
-CODE_RETOUR_ACTION : Type Entier\
-ARGENT : Type Entier\
-QUESTION: Type JSON\
-\
-Type d\'92action :\
-\
-ACTION:(SUPPRIMER);ID_UTILISATEUR;CARDS => CODE_RETOUR_ACTION;CARDS //Supprimer une carte\
-\
-ACTION:(CARTE_ALEATOIRE);ID_UTILISATEUR => CODE_RETOUR_ACTION;CARDS //Action carte al\'e9atoire\
-\
-ACTION:(FUSION); ID_UTILISATEUR ; CARDS => CODE_RETOUR_ACTION;CARDS //Fusion d\'92une carte\
-\
-ACTION:(OBTENIR_ARGENT); ID_UTILISATEUR => CODE_RETOUR_ACTION;ARGENT //Obtenir l\'92argent d\'92un utilisateur\
-\
-ACTION:(FORGE); ID_UTILISATEUR ; CARDS  => CODE_RETOUR_ACTION;CARDS // Forger une carte\
-\
-ACTION:(ECHANGE); ID_UTILISATEUR; ID_UTILISATEUR_SECONDAIRE; CARDS ; CARDS_SECONDAIRE;  => CODE_RETOUR_ACTION ; CARDS ; CARDS_SECONDAIRE //Echanger une carte\
-\
-ACTION:(OBTENIR_QUESTION);ID_UTILISATEUR; => QUESTION //Obtenir une question\
+DELETE\
+/inventory/\{idUser\}/\{idCard\}\
 \
 \
-Arbre du projet :\
 \
-Api.php\
-Autoload.php\
-Classes/\
-	DAO.php\
-	DB.php\
-	User_DAO.php\
-	Card_DAO.php\
-	Param.php\
+/other/admin // A NE PAS UTILISER \
+\
+\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f1\b \cf0 Ce qu\'92il reste \'e0 faire :
+\f0\b0 \
+\
+GET\
+\
+/other/quizz\
+\
+\
+POST\
+\
+/other/meltcard/\
+/other/carftcard/\
+/other/quizz\
+\
+Structure du projet\
+\
+Route => Controller => DAO\
 	\
 \
 }

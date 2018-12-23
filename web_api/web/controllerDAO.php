@@ -198,6 +198,7 @@ function setCardInInventoryByUserId($pDAO,$idUser,$idCard)
 
 function exchangeCard($pDAO,$idUser,$idUser_secondary,$idCard,$idCard_secondary)
 {
+<<<<<<< Updated upstream
 
   $flagUsersCardsExists = false;
   $flagUsersCardsInInventory = false;
@@ -304,6 +305,12 @@ var_dump ("result resultatInsertLog3::",$resultatExchange);
 
 
 
+=======
+  //$resultat["error"] = EXIT_CODE_NO_IMPLEMENTED_FUNCTION;
+  return $resultat = $pDAO["Inventory"]->exchange($idUser,$idUser_secondary,$cards,$cards_secondary);
+
+};
+>>>>>>> Stashed changes
 
 function getRandomCard($pDAO) //100%
 {
@@ -402,6 +409,10 @@ function getInventory($pDAO,$pIdUser)  //Ready for test
 
 
 
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 /********************/
 /* FUNCTION CONNECT */
 /********************/

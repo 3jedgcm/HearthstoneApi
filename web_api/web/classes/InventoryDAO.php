@@ -151,9 +151,14 @@ END AS 'Result'
 FROM Users WHERE EXISTS ( SELECT 1 FROM Users WHERE idUser = :idUser1 OR idUser = :idUser2)
 and (idUser = :idUser1 OR idUser = :idUser2)");
 
+<<<<<<< Updated upstream
 $stmt->execute(array(':idUser1'=>$pIdUser,':idUser2'=>$pIdUser_secondary));
 $rowUsr = $stmt->fetch(PDO::FETCH_ASSOC);
 var_dump(["check1"=>$rowUsr]);
+=======
+$stmt->execute(array('idUser1'=>$pIdUser,'idUser2'=>$pIdUser_secondary));
+$row = $stmt->fetch(PDO::FETCH_ASSOC);
+>>>>>>> Stashed changes
 //return ["check users"=>$row];
 //$stmt->bindParam(':idUser1',$pIdUser);
 //$stmt->bindParam(':idUser2',$pIdUser_secondary));
@@ -165,6 +170,7 @@ WHEN (COUNT (id)=0) THEN 'ERR1_NO_IDCARDS'
 WHEN (COUNT (id)=2) THEN 'OK'
 WHEN (COUNT (id)=1 AND id <> :idCard1) THEN 'ERR2_NO_IDCARD1'
 WHEN (COUNT (id)=1 AND id <> :idCard2) THEN 'ERR3_NO_IDCARD2'
+<<<<<<< Updated upstream
 END AS 'Result'
 FROM Cards WHERE EXISTS ( SELECT 1 FROM Cards WHERE id = :idCard1 OR id = :idCard2)
 and (id = :idCard1 OR id = :idCard2)");
@@ -172,12 +178,20 @@ and (id = :idCard1 OR id = :idCard2)");
 $stmt2->execute(array(':idCard1'=>$pCards,':idCard2'=>$pCards_secondary));
 $rowCard = $stmt2->fetch(PDO::FETCH_ASSOC);
 var_dump(["check2"=>$rowCard]);
+=======
+END
+FROM Users WHERE EXISTS ( SELECT 1 FROM Cards WHERE id = :idCard1 OR idCard = :idCard2) and (id= :idCard1 OR id= :idCard2)");
+
+$stmt2->execute(array('idCard1'=>$pCards,'idCard2'=>$pCards_secondary));
+$row2 = $stmt2->fetch(PDO::FETCH_ASSOC);
+>>>>>>> Stashed changes
 //return ["check cards"=>$row2];
 
 
 //check 3:    //TODO verif si le signe egalité en PHP correct(?)
 if ($rowUsr["Result"] == "OK" and $rowCard["Result"] == "OK" ) // if Users and Cards Exists in General mysql_list_tables
 {
+<<<<<<< Updated upstream
     $stmt3 = $this->pdo->prepare("DELETE FROM Inventory WHERE idCard = :idCard and idUser = :idUser");
     $stmt3->execute(array(':idUser'=>$pIdUser,':idCard'=>$pCards));
     $row3 = $stmt3->fetch(PDO::FETCH_ASSOC);
@@ -187,17 +201,36 @@ if ($rowUsr["Result"] == "OK" and $rowCard["Result"] == "OK" ) // if Users and C
     $stmt4->execute(array(':idUser'=>$pIdUser_secondary,':idCard'=>$pCards_secondary));
     $row4 = $stmt4->fetch(PDO::FETCH_ASSOC);
     var_dump(["delete2"=>$row4]);
+=======
+    $stmt3 = $this->pdo->prepare("DELETE FROM Inventory WHERE (idCard = :idCard and idUser = :idUser)");
+    $stmt3->execute(array('idUser'=>$pIdUser,'idCard'=>$pCards));
+    $row3 = $stmt3->fetch(PDO::FETCH_ASSOC);
+
+
+    $stmt4 = $this->pdo->prepare("DELETE FROM Inventory WHERE (idCard =:idCard and idUser= :idUser)");
+    $stmt4->execute(array('idUser'=>$pIdUser_secondary,'idCard'=>$pCards_secondary));
+    $row4 = $stmt4->fetch(PDO::FETCH_ASSOC);
+
+>>>>>>> Stashed changes
     // Insert 1
     $stmt5 = $this->pdo->prepare("INSERT INTO Inventory(idUser,idCard) VALUES (:idUser,:idCard)");
     $stmt5->execute(array(':idUser'=>$pIdUser,':idCard'=>$pCards_secondary));
     $row5 = $stmt5->fetch(PDO::FETCH_ASSOC);
     //return ["insert Inventory"=>$row5];
+<<<<<<< Updated upstream
     var_dump(["insert1"=>$row5]);
     // Insert 2
     $stmt6 = $this->pdo->prepare("INSERT INTO Inventory(idUser,idCard) VALUES (:idUser,:idCard)");
     $stmt6->execute(array(':idUser'=>$pIdUser_secondary,':idCard'=>$pCards));
     $row6 = $stmt6->fetch(PDO::FETCH_ASSOC);
     var_dump(["insert2"=>$row6]);
+=======
+
+    // Insert 2
+    $stmt6 = $this->pdo->prepare("INSERT INTO Inventory(idUser,idCard) VALUES (:idUser,:idCard)");
+    $stmt6->execute(array('idUser'=>$pIdUser_secondary,'idCard'=>$pCards));
+    $row6 = $stmt6->fetch(PDO::FETCH_ASSOC);
+>>>>>>> Stashed changes
     //return ["insert Inventory"=>$row6];
 
     if ($row5 == false and $row6 == false ) {

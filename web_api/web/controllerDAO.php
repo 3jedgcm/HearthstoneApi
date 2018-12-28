@@ -78,7 +78,6 @@ function getParam($pDAO) //100%
   return $resultat;
 };
 
-
 /*********************/
 /*** FUNCTION USER***/
 /*********************/
@@ -109,8 +108,7 @@ function getUser($pDAO,$idUser) //100%
   return $resultat;
 };
 
-
-function setUser($pDAO,$idUser) //OK
+function setUser($pDAO,$idUser) //100%
 {
   $resultat["error"] = EXIT_CODE_OK;
   if($idUser == "")
@@ -140,7 +138,7 @@ function setUser($pDAO,$idUser) //OK
 /* FUNCTION CARDS  */
 /******************/
 
-function getCard($pDAO,$idCard,$typeFilter,$valueFilter)
+function getCard($pDAO,$idCard,$typeFilter,$valueFilter)  //100%
 {
   $resultat["error"] = EXIT_CODE_OK;
 
@@ -148,14 +146,8 @@ function getCard($pDAO,$idCard,$typeFilter,$valueFilter)
   {
     if($typeFilter == "")
     $resultat["card"] = $pDAO["Card"]->getAll();
-    else if($typeFilter == "name")
-    $resultat["card"] = $pDAO["Card"]->getAllByName($valueFilter);
-    else if($typeFilter == "cost")
-    $resultat["card"] = $pDAO["Card"]->getAllByCost($valueFilter);
-    else if($typeFilter == "rarity")
-    $resultat["card"] = $pDAO["Card"]->getAllByRarity($valueFilter);
-
-
+    else
+    $resultat["card"] = $pDAO["Card"]->getAllByFilter($typeFilter,$valueFilter);
   }
   else
   {
@@ -177,7 +169,7 @@ function getCard($pDAO,$idCard,$typeFilter,$valueFilter)
   return $resultat;
 };
 
-function setCardInInventoryByUserId($pDAO,$idUser,$idCard)
+function setCardInInventoryByUserId($pDAO,$idUser,$idCard)  //100%
 {
 
   $resultat["error"] = EXIT_CODE_OK;
@@ -196,121 +188,66 @@ function setCardInInventoryByUserId($pDAO,$idUser,$idCard)
 
 };
 
-function exchangeCard($pDAO,$idUser,$idUser_secondary,$idCard,$idCard_secondary)
+function exchangeCard($pDAO,$idUser,$idUser_secondary,$idCard,$idCard_secondary)  //100%
 {
-<<<<<<< Updated upstream
 
   $flagUsersCardsExists = false;
   $flagUsersCardsInInventory = false;
-
-  $resultatUsers = $pDAO["Inventory"]->usersExist($idUser,$idUser_secondary); //Check User
+  $resultatUsers = $pDAO["Inventory"]->usersExist($idUser,$idUser_secondary);
   if($resultatUsers)
   {
-        var_dump("LES USER 2 EXISTES PAS");
     return $resultat["error"] = EXIT_CODE_INCORRECT_ID_USER;
 
   }
-  $resultatCards = $pDAO["Inventory"]->cardsExist($idCard,$idCard_secondary); //Check Card
-
-  if($resultatCards)
+  $resultatCardsOne = $pDAO["Card"]->checkIdCard($idCard);
+  $resultatCardsTwo = $pDAO["Card"]->checkIdCard($idCard_secondary);
+  if(!$resultatCardsOne)
   {
-    var_dump("LES CARTES 2 EXISTES PAS");
-    return $resultat["error"] = EXIT_CODE_CARDS_IS_MISSING_IN_DB;
+    $resultat["error"] = EXIT_CODE_CARDS_IS_MISSING_IN_DB;
+    return $resultat;
   }
-
+  if(!$resultatCardsTwo)
+  {
+    $resultat["error"] = EXIT_CODE_CARDS_IS_MISSING_IN_DB;
+    return $resultat;
+  }
   $resultatCardsPlayer = $pDAO["Inventory"]->checkInventoryExist($idCard,$idUser); //Check InventoryidUserOne
-
   if($resultatCardsPlayer)
   {
-    var_dump("ERROR DANS CHECK INVENTORY 1 EXIST");
-    return $resultat["error"] = EXIT_CODE_CARDS_IS_MISSING_IN_DB;
+    $resultat["error"] = EXIT_CODE_INVENTORY_IS_MISSING;
+    return $resultat;
   }
-
   $resultatCardsPlayerSecondary = $pDAO["Inventory"]->checkInventoryExist($idCard_secondary,$idUser_secondary); //Check InventoryidUserTwo
 
   if($resultatCardsPlayerSecondary)
   {
-    var_dump("ERROR DANS CHECK INVENTORY 2 EXIST");
-    return $resultat["error"] = EXIT_CODE_CARDS_IS_MISSING_IN_DB;
+    $resultat["error"] = EXIT_CODE_INVENTORY_IS_MISSING;
+    return $resultat;
   }
-
-// Delete
   $resultatDeleteCards = $pDAO["Inventory"]-> deleteInventory($idUser,$idUser_secondary,$idCard,$idCard_secondary);
-  var_dump($resultatDeleteCards);
   if($resultatDeleteCards)
   {
-    var_dump("ERROR DANS LE DELETE");
-    return $resultat["error"] = EXIT_CODE_ERROR_SQL;
+    $resultat["error"] = EXIT_CODE_ERROR_SQL;
+    return $resultat;
+  }
+  if ($pDAO["Inventory"]->exchange($idUser,$idUser_secondary,$idCard,$idCard_secondary) <> EXIT_CODE_OK)
+  {
+    $resultat["error"] = EXIT_CODE_EXCHANGE_NOT_WORKING;
+    return $resultat;
   }
 
-// Log delete
-    $idInventory=0; //TODO recup iDInventory deleted
-    //$pDate= //getdate();
-    $type ="DELETE_REC";
-    $details= "";
-    $price = 0;
-
-
-    $date= getdate();
-    var_dump('CURRENT_DATE2',$date[0]);
-    $d = $date[mday];
-    $m = $date[mon];
-    $y = $date[year];
-    $h= $date[hours];
-    $min = $date[minutes];
-    $pDateformat = $d."/".$m."/".$y."/".$h.":".$min ;
-    var_dump('CURRENT_DATE3',$pDateformat);
-
-
-    $resultatInsertLog1 = $pDAO["Inventory"]-> insertTransaction_History($idCard,$idCard_secondary,$idUser,$idUser_secondary,$type,$details, $idInventory, $price ,$pDateformat); //$pDate
-    var_dump ("result resultatInsertLog1::",$resultatInsertLog1);
-
-
-  //Exchange
-  $resultatExchange = $pDAO["Inventory"]-> exchange($idUser,$idUser_secondary,$idCard,$idCard_secondary);
-
-  var_dump ("result resultatExchange Log2::",$resultatExchange);
-
-
-       //TODO after tests  copy this all to exchange2 function
-          $idInventory=0; //TODO recup iDInventory new created
-        //  $pDate= CURRENT_DATE();//getdate();
-          $type = "INSERT_REC" ;
-          $details= "";
-          $price = 0;
-
-
-
-
-var_dump ("result resultatInsertLog3::",$resultatExchange);
-
-  if ($resultatExchange <> EXIT_CODE_OK)//EXIT_CODE_NOTOK)
-     {
-       var_dump("ERROR IN EXCHANGE");
-       return $resultat["error"] = $resultatExchange ;//EXIT_CODE_ERROR_SQL;
-
-    }
-        // Log record type Exchange  =>  insert to table Transaction_history
-        $resultatInsertLog2 = $pDAO["Inventory"]-> insertTransaction_History($idCard,$idCard_secondary,$idUser,$idUser_secondary,
-                                                                   $type,$details, $idInventory, $price ,$pDateformat);
-                                                  //TODO 2 insert -><- bc 2 inserts
-
-
-     $resultat["error"] = $resultatExchange;//EXIT_CODE_OK;
-
-   return $resultat;
+  $idInventory=0;
+  $type ="DELETE_REC";
+  $details= "";
+  $price = 0;
+  $date= getdate();
+  $pDateformat = $date[mday]."/".$date[mon]."/".$date[year]."/".$date[hours].":".$date[minutes] ;
+  $resultatInsertLog1 = $pDAO["Inventory"]-> insertTransaction_History($idCard,$idCard_secondary,$idUser,$idUser_secondary,$type,$details, $idInventory, $price ,$pDateformat);
+  $type = "INSERT_REC" ;
+  $resultatInsertLog2 = $pDAO["Inventory"]-> insertTransaction_History($idCard,$idCard_secondary,$idUser,$idUser_secondary,$type,$details, $idInventory, $price ,$pDateformat);
+  $resultat["error"] = EXIT_CODE_OK;
+  return $resultat;
 }
-
-
-
-
-
-=======
-  //$resultat["error"] = EXIT_CODE_NO_IMPLEMENTED_FUNCTION;
-  return $resultat = $pDAO["Inventory"]->exchange($idUser,$idUser_secondary,$cards,$cards_secondary);
-
-};
->>>>>>> Stashed changes
 
 function getRandomCard($pDAO) //100%
 {
@@ -323,8 +260,7 @@ function getRandomCard($pDAO) //100%
   return $resultat;
 };
 
-
-function deleteCardByUserid($pDAO,$idUser,$idCards)
+function deleteCardByUserid($pDAO,$idUser,$idCards)  //100%
 {
   $resultat["error"] = $pDAO["User"]->checkIdUser($idUser);
   if($resultat["error"] == 0)
@@ -363,56 +299,173 @@ function deleteCardByUserid($pDAO,$idUser,$idCards)
 /* FUNCTION OTHER  */
 /******************/
 
-
-function craftOneCard($pDAO,$idUser,$cards)  //Non Fonctionnel
+function craftOneCard($pDAO,$idUser,$idCardOne,$idCardTwo,$idCardThree) //100%
 {
-  $resultat["error"] = EXIT_CODE_NO_IMPLEMENTED_FUNCTION;
+  $isExistOne = $pDAO["Inventory"]->checkInventoryExist($idCardOne,$idUser);
+  $isExistTwo = $pDAO["Inventory"]->checkInventoryExist($idCardTwo,$idUser);
+  $isExistThree = $pDAO["Inventory"]->checkInventoryExist($idCardThree,$idUser);
+  if($isExistOne == EXIT_CODE_OK && $isExistTwo == EXIT_CODE_OK && $isExistThree == EXIT_CODE_OK)
+  {
+    $pDAO["Inventory"]->delete($idCardOne,$idUser);
+    $pDAO["Inventory"]->delete($idCardTwo,$idUser);
+    $pDAO["Inventory"]->delete($idCardThree,$idUser);
+    $newCard = $pDAO["Card"]->getRandomCard();
+    $pDAO["Inventory"]->insert($newCard["id"],$idUser);
+    $resultat["error"] = EXIT_CODE_OK;
+    $resultat["result"] = $newCard;
+    return $resultat;
+  }
+  else
+  {
+    $resultat["error"] = EXIT_CODE_INVENTORY_IS_MISSING;
+    return $resultat;
+  }
+}
+
+function meltCard($pDAO,$idUser,$idCard) //100%
+{
+  $isExist = $pDAO["Inventory"]->checkInventoryExist($idCard,$idUser);
+  if($isExist == EXIT_CODE_OK)
+  {
+    $pDAO["Inventory"]->delete($idCard,$idUser);
+    if(rand(0,1))
+    {
+      $newCard = $pDAO["Card"]->getRandomCard();
+      $pDAO["Inventory"]->insert($newCard["id"],$idUser);
+      $resultat["result"] = $newCard;
+    }
+    else
+    {
+      $resultat["result"] = false;
+    }
+    $resultat["error"] = EXIT_CODE_OK;
+    return $resultat;
+  }
+  else
+  {
+    $resultat["error"] = EXIT_CODE_INVENTORY_IS_MISSING;
+    return $resultat;
+  }
+}
+
+function getQuestion($pDAO)  //100%
+{
+  $listCountry = json_decode(file_get_contents(CITY_API_URI),true);
+  $indexCountry = array_rand($listCountry,1);
+  $questionCountry = $listCountry[$indexCountry];
+
+  $listCity = json_decode(file_get_contents(CITY_API_URI . $listCountry[$indexCountry]["code"] . END_CITY_API_URI),true);
+
+  $listCity = array_filter($listCity,function($city){
+    return $city["population"] < MIN_POPULATION;
+  });
+  $index = array_rand($listCity,1);
+  $firstChoice = $listCity[$index];
+  $numGoodAnswer = $listCountry[$indexCountry]["code"];
+  $listCountryWithout = array_filter($listCountry,function($country){
+    return $country["code"] != $numGoodAnswer;
+  });
+  $listCountryWithout = array_filter($listCountryWithout,function($country){
+    return $country["code"] != "976"; //ENLEVER MAYOTTE
+  });
+
+
+  $selectCountry = array_rand($listCountryWithout,1);
+  $listCity = json_decode(file_get_contents(CITY_API_URI . $listCountryWithout[$selectCountry]["code"] . END_CITY_API_URI),true);
+  $listCity = array_filter($listCity,function($city){
+    return $city["population"] > MIN_POPULATION;
+  });
+
+  if(count($listCity) == 1)
+  {
+
+    $secondChoice = array_pop($listCity);
+  }
+  elseif(count($listCity) == 0)
+  {
+    var_dump("ALERRTTT");
+    var_dump($listCountryWithout[$selectCountry]);
+  }
+  else
+  {
+    $index = array_rand($listCity,1);
+    $secondChoice = $listCity[$index];
+  }
+  $selectCountry = array_rand($listCountryWithout,1);
+  $listCity = json_decode(file_get_contents(CITY_API_URI . $listCountryWithout[$selectCountry]["code"] . END_CITY_API_URI),true);
+  $listCity = array_filter($listCity,function($city){
+    return $city["population"] > MIN_POPULATION;
+  });
+
+  if(count($listCity) == 1)
+  {
+    $thridChoice = array_pop($listCity);
+  }
+  elseif(count($listCity) == 0)
+  {
+    var_dump("ALERRTTT");
+    var_dump($listCountryWithout[$selectCountry]);
+  }
+  else
+  {
+    $index = array_rand($listCity,1);
+    $thridChoice = $listCity[$index];
+  }
+  $selectCountry = array_rand($listCountryWithout,1);
+  $listCity = json_decode(file_get_contents(CITY_API_URI . $listCountryWithout[$selectCountry]["code"] . END_CITY_API_URI),true);
+  $listCity = array_filter($listCity,function($city){
+    return $city["population"] > MIN_POPULATION;
+  });
+  if(count($listCity) == 1)
+  {
+    $fourthChoice = array_pop($listCity);
+  }
+  elseif(count($listCity) == 0)
+  {
+    var_dump("ALERRTTT");
+    var_dump($listCountryWithout[$selectCountry]);
+  }
+  else
+  {
+    $index = array_rand($listCity,1);
+    $fourthChoice = $listCity[$index];
+  }
+  $answer = [$firstChoice["nom"],$secondChoice["nom"],$thridChoice["nom"],$fourthChoice["nom"]];
+  shuffle($answer);
+  $question = "Quel est la ville qui vient du département de " . $questionCountry["nom"] . " ?";
+  $goodReponse = sha1($firstChoice["nom"] . "OUIGO");
+  $result = [$question,$answer,$goodReponse];
+  $resultat["error"] = EXIT_CODE_OK;
+  $resultat["result"] = $result;
   return $resultat;
 }
 
-function meltCards($pDAO,$idUser,$cards)   //Non Fonctionnel
+function setAnswer($pDAO,$idUser,$hashAnswer,$question)  //Non Fonctionnel
 {
-  $resultat["error"] = EXIT_CODE_NO_IMPLEMENTED_FUNCTION;
-  return $resultat;
-}
 
-function getQuestion($pDAO)  //Non Fonctionnel
-{
-  $resultat["error"] = EXIT_CODE_NO_IMPLEMENTED_FUNCTION;
+  if(sha1($question . "OUIGO") == $hashAnswer)
+  {
+    $resultat["resultat"] = true;
+  }
+  else
+  {
+    $resultat["resultat"] = false;
+  }
+  $resultat["error"] = EXIT_CODE_OK;
   return $resultat;
-  //Voir API Goub
-}
-
-function setAnswer($pDAO,$idUser,$numAnswer,$idQuestion)  //Non Fonctionnel
-{
-  $resultat["error"] = EXIT_CODE_NO_IMPLEMENTED_FUNCTION;
-  return $resultat;
-  //Voir API Goub
 }
 
 /**********************/
 /* FUNCTION INVENTORY */
 /**********************/
 
-function getInventory($pDAO,$pIdUser)  //Ready for test
+function getInventory($pDAO,$pIdUser) //100%
 {
   $resultat["error"] = EXIT_CODE_OK;
-  if(is_numeric($pIdUser))
   $resultat["inventory"]=  $pDAO["Inventory"]->getAllCardByUserId($pIdUser);
-  else
-  $resultat["inventory"]=  $pDAO["Inventory"]->getAllCard();
-
-
   return $resultat;
-  //return $pDAO["Card"]->getAll($IdUser);
 }
 
-
-
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
 /********************/
 /* FUNCTION CONNECT */
 /********************/

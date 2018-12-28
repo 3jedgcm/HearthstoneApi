@@ -33,11 +33,8 @@ if(!$errorCode)
         {
           if(isset($_POST['cardUserOne']) && isset($_POST['cardUserTwo']) && isset($_POST['idUserTwo']) && isset($_POST['idUserOne']))
           {
-          //TODO EBE just for check 2nd version of function
-        // $resultat = exchangeCard($DAO,$_POST['idUserOne'],$_POST['idUserTwo'],$_POST['cardUserOne'],$_POST['cardUserTwo']);
-          $resultat = exchangeCard($DAO,$_POST['idUserOne'],$_POST['idUserTwo'],$_POST['cardUserOne'],$_POST['cardUserTwo']);
-          var_dump($resultat["error"]);
-          $errorCode = $resultat["error"];
+            $resultat = exchangeCard($DAO,$_POST['idUserOne'],$_POST['idUserTwo'],$_POST['cardUserOne'],$_POST['cardUserTwo']);
+            $errorCode = $resultat["error"];
           }
           else
           {
@@ -78,6 +75,7 @@ if(!$errorCode)
           {
             $resultat = setMoney($DAO,"",$_POST['value']);
             $errorCode = $resultat["error"];
+
           }
           else
           {
@@ -94,17 +92,17 @@ if(!$errorCode)
         $errorCode = EXIT_CODE_UNKNOW_VALUE_PARAMETER;
       }
       break;
-
       case ROUTE_OTHER:
-      if(is_numeric($arrayUri[3]))
+      if($arrayUri[3] == SUB_ROUTE_EMPTY)
       {
         switch($arrayUri[2])
         {
           case SUB_ROUTE_MELT:
-          if(isset($_POST['cards']))
+          if(isset($_POST['idCard']))
           {
-            $resultat = meltCards($DAO,$arrayUri[3],$_POST['cards']);
+            $resultat = meltCard($DAO,$arrayUri[3],$_POST['idCard']);
             $errorCode = $resultat["error"];
+            $result = $resultat["result"];
           }
           else
           {
@@ -113,22 +111,23 @@ if(!$errorCode)
           break;
 
           case SUB_ROUTE_CRAFTCARD:
-          if(isset($_POST['cards']))
+          if(isset($_POST['idCardOne']) && isset($_POST['idCardTwo']) && isset($_POST['idCardThree']))
           {
-            $resultat = craftOneCard($DAO,$arrayUri[3],$_POST['cards']);
+            $resultat = craftOneCard($DAO,$arrayUri[3],$_POST['idCardOne'],$_POST['idCardTwo'],$_POST['idCardThree']);
             $errorCode = $resultat["error"];
+            $result = $resultat["result"];
           }
           else
           {
             $errorCode = EXIT_CODE_MISSING_PARAMETER;
           }
           break;
-
           case SUB_ROUTE_QUIZZ:
-
-          if(isset($_POST['numAnswer']) && isset($_POST['idQuestion']))
+          if(isset($_POST['answer']) && isset($_POST['question']))
           {
-            $resultat = setAnswer($DAO,$arrayUri[3],$_POST['$numAnswer'],$_POST['$idQuestion']);
+            $resultat = setAnswer($DAO,$arrayUri[3],$_POST['answer'],$_POST['question']);
+            $result = $resultat["resultat"];
+
             $errorCode = $resultat["error"];
           }
           else
@@ -183,18 +182,10 @@ if(!$errorCode)
     case REQUEST_GET:
     switch($arrayUri[1])
     {
-
       case ROUTE_INVENTORY:
         if($arrayUri[3] == SUB_ROUTE_EMPTY)
         {
-          if($arrayUri[2] == SUB_ROUTE_EMPTY)
-          {
-            $resultat = getInventory($DAO,$arrayUri[2]);
-            $errorCode = $resultat["error"];
-            $inventory = $resultat["inventory"];
-
-          }
-          else if(is_numeric($arrayUri[2]))
+          if(is_numeric($arrayUri[2]))
           {
             $resultat = getInventory($DAO,$arrayUri[2]);
             $errorCode = $resultat["error"];
@@ -270,44 +261,35 @@ if(!$errorCode)
           $errorCode = $resultat["error"];
           $card = $resultat["randomCard"];
         }
-        else if(SUB_ROUTE_FILTER == $arrayUri[2])
-        {
-
-          $resultat = getCard($DAO,"",$_GET["filter"],$_GET["value_filter"]);
-          $errorCode = $resultat["error"];
-          $card = $resultat["card"];
-        }
         else
         {
-          $resultat = getCard($DAO,$arrayUri[2],"","");
+          $resultat = getCard($DAO,"",$_GET["filter"],$_GET["value_filter"]);
           $errorCode = $resultat["error"];
           $card = $resultat["card"];
         }
       break;
       case ROUTE_OTHER:
-        if(is_numeric($arrayUri[3]))
+      if($arrayUri[3] == SUB_ROUTE_EMPTY)
+      {
+        if($arrayUri[2] == SUB_ROUTE_QUIZZ)
         {
-          if($arrayUri[2] == SUB_ROUTE_QUIZZ)
-          {
-            $resultat = getQuestion($DAO);
-            $errorCode = $resultat["error"];
-          }
-          else
-          {
-            $errorCode = EXIT_CODE_INVALID_URI;
-          }
+          $resultat = getQuestion($DAO);
+          $errorCode = $resultat["error"];
+          $result = $resultat["result"];
+        }
+        else if($arrayUri[2] == SUB_ROUTE_ADD_CARD_SPECIAL)
+        {
+          insertAllCardInDataBase($DAO);
         }
         else
         {
-          if($arrayUri[2] == SUB_ROUTE_ADD_CARD_SPECIAL)
-          {
-              insertAllCardInDataBase($DAO);
-          }
-          else
-          {
-            $errorCode = EXIT_CODE_INVALID_URI;
-          }
+          $errorCode = EXIT_CODE_INVALID_URI;
         }
+      }
+      else
+      {
+        $errorCode = EXIT_CODE_INVALID_URI;
+      }
       break;
       default:
       $errorCode = EXIT_CODE_INVALID_URI;
@@ -321,9 +303,9 @@ if(!$errorCode)
   $newInventory = getInventory($DAO,$arrayUri[2]);
 }
 
-sendHttpRespond($arrayUri[1],$DAO,$arrayUri[2],$money,$inventory,$errorCode,$typeReqHttp,$param,$card,$user,$connect);
+sendHttpRespond($arrayUri[1],$DAO,$arrayUri[2],$money,$inventory,$errorCode,$typeReqHttp,$param,$card,$user,$connect,$result);
 
-function sendHttpRespond($firstArgR,$pDAO,$secondArgR,$pMoney,$pInventory,$pErrorCode,$typeReqHttp,$pParam,$pCard,$pUser,$pConnect)
+function sendHttpRespond($firstArgR,$pDAO,$secondArgR,$pMoney,$pInventory,$pErrorCode,$typeReqHttp,$pParam,$pCard,$pUser,$pConnect,$pResult)
 {
   header('Content-type: application/json');
   if($pErrorCode == EXIT_CODE_OK)
@@ -367,6 +349,11 @@ function sendHttpRespond($firstArgR,$pDAO,$secondArgR,$pMoney,$pInventory,$pErro
           $data = ["user"=>$pUser];
         }
         break;
+        case ROUTE_OTHER:
+        {
+          $data = ["question"=>$pResult];
+        }
+        break;
 
         default:
         $data = ["user"=>$pUser,"cards"=>$pInventory];
@@ -380,11 +367,14 @@ function sendHttpRespond($firstArgR,$pDAO,$secondArgR,$pMoney,$pInventory,$pErro
       {
         echo json_encode(["exitCode"=>$pErrorCode,"connect"=>$pConnect]);
       }
+      else if($firstArgR == ROUTE_OTHER)
+      {
+        echo json_encode(["exitCode"=>$pErrorCode,"result"=>$pResult]);
+      }
       else
       {
         echo json_encode(["exitCode"=>$pErrorCode]);
       }
-
     }
     else
     {
@@ -395,8 +385,6 @@ function sendHttpRespond($firstArgR,$pDAO,$secondArgR,$pMoney,$pInventory,$pErro
   {
     echo json_encode(["exitCode"=>$pErrorCode]);
   }
-
-
 }
 
 

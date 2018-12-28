@@ -1,44 +1,19 @@
-{
-  "exitCode":1,
-  "data":{
-    "user":{"id_user":1,"key"},
-    "cards":[
-      {"id_user":1,"id_card":42,"desc_card":"is one card"},
-      {"id_user":18,"id_card":65,"desc_card":"is another card"},
-      {"id_user":13,"id_card":325,"desc_card":"fake card"}
-    ],
-    "money":1
-
-  }
-}
-
-/* Param */
-
-  @GET("parameter/")
-
+  @GET("parameter")
   @GET("money/{idUser}")
-  @GET("money/")
-  @POST("money/{idUser}")
-  @POST("money/")
-
-
+  @GET("money")
   @GET("user/{idUser}")
-  @POST("user/{idUser}")
-  @GET("user/")
-  @POST("user/")
-
+  @GET("user")
   @GET("card/{idUser}")
-  @GET("card/")
-
-  @POST("inventory/{idUser}")
-  @DELETE("inventory/{idUser}")
+  @GET("card")
+  @GET("card/random")
+  @GET("card?filter={TYPE_FILTER}&value_filter={VALUE_FILTER}")
   @GET("inventory/{idUser}")
-  @GET("inventory")
-  @POST("inventory/exchange/")
-
-  @GET("card/random/{idUser}")
-
-  @POST("other/melteCard/{idUser}")
-  @POST("other/craftCard/{idUser}")
-  @GET("other/quizz/{idUser}")
-  @POST("other/quizz/{idUser}")
+  @DELETE("inventory/{idUser}")
+  @DELETE("inventory/{idUser}/{idCard}")
+  @GET("other/quizz")
+  @POST("money/{idUser}")                                           KEY = value
+  @POST("inventory/{idUser}")                                       KEY = idCard
+  @POST("inventory/exchange")                                       KEY = idUserOne KEY = cardUserOne KEY = idUserTwo  KEY = cardUserTwo
+  @POST("other/meltCard/{idUser}")                                  KEY = idCard
+  @POST("other/craftCard/{idUser}")                                 KEY = idCardOne KEY = idCardTwo KEY = idCardThree
+  @POST("other/quizz")                                              KEY = answer KEY = question

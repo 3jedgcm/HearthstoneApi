@@ -29,6 +29,9 @@ const EXIT_CODE_GOOGLE_ACCOUNT_EXIST = 23;
 const EXIT_CODE_NO_IMPLEMENTED_FUNCTION = 99;
 const EXIT_CODE_FACEBOOK_ACCOUNT_EXIST = 24;
 const EXIT_CODE_INVENTORY_IS_MISSING = 25;
+const EXIT_CODE_EXCHANGE_NOT_WORKING = 26;
+
+
 
 const REQUEST_POST = "POST";
 const REQUEST_DELETE = "DELETE";
@@ -51,9 +54,18 @@ const SUB_ROUTE_RANDOM = "random";
 const SUB_ROUTE_ADD_CARD_SPECIAL = "admin";
 const SUB_ROUTE_FILTER = "filter";
 
+
+
+
+
 const HEARTHSTONE_API_URI = "http://api.hearthstonejson.com/v1/15590/frFR/cards.json";
 const HEARTHSTONE_ART_URI = "art.hearthstonejson.com/v1/render/latest/frFR/512x/";
 
+const CITY_API_URI = "https://geo.api.gouv.fr/departements/";
+const END_CITY_API_URI = "/communes";
+
+
+const MIN_POPULATION = "10000";
 const DB_HOST = "psqt.myd.infomaniak.com";
 const DB_NAME = "psqt_iem";
 const DB_USER = "psqt_iem";

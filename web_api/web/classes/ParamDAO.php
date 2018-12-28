@@ -1,5 +1,6 @@
 <?php
 class ParamDAO extends DAO {
+
     public function getAll()
     {
       $stmt = $this->pdo->prepare("SELECT IdParameter,Value FROM Parameters");
@@ -10,4 +11,5 @@ class ParamDAO extends DAO {
       }
       return $resultat;
     }
+
 }

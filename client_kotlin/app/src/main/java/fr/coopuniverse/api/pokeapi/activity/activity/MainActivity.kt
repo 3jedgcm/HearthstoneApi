@@ -1,4 +1,4 @@
-package fr.coopuniverse.api.pokeapi.activity
+package fr.coopuniverse.api.pokeapi.activity.activity
 
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
@@ -29,10 +29,14 @@ import com.shobhitpuri.custombuttons.GoogleSignInButton
 import org.json.JSONException
 
 import fr.coopuniverse.api.pokeapi.R
-import fr.coopuniverse.api.pokeapi.activity.activity.HomeActivity
+import fr.coopuniverse.api.pokeapi.activity.InventoryActivity
+import fr.coopuniverse.api.pokeapi.activity.UserData
 import fr.coopuniverse.api.pokeapi.activity.httpRequestManager.CallBackGenerator
+import fr.coopuniverse.api.pokeapi.activity.httpRequestManager.Reponse
+import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), CallBackDisplay  {
+
 
     lateinit var callbackManager: CallbackManager
     lateinit var signInFacebookButton: LoginButton
@@ -163,8 +167,26 @@ class MainActivity : AppCompatActivity() {
 
     private fun simpleSignIn()
     {
-        CallBackGenerator(callback = InventoryActivity(), login = login.toString())
+        CallBackGenerator(callback = this,action = "Connect",isActivateCallBack = true, login = login?.text.toString() ,pass = pass?.text.toString(), url = "https://api.coopuniverse.fr/").execute()
     }
+
+    override fun display(rep: Reponse)
+    {
+        Log.d("Chaton",rep.toString())
+        if(!rep.connect)
+        {
+            errorView.text = "Mauvais login ou mot de passe"
+        }
+        else
+        {
+            changeActivity(UserData("Kikoo","Kikoo","Kikoo"))
+        }
+    }
+    private fun callBackLogin(result: String)
+    {
+
+    }
+
 
 
     private fun changeActivity(ud: UserData)

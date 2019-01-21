@@ -22,14 +22,9 @@
 
     <include
         android:id="@+id/include"
-        layout="@layout/content_home" />
-
-    <fragment
-        android:id="@+id/fragment_container"
-        android:name="fr.coopuniverse.api.pokeapi.activity.fragment.HomeFragment"
+        layout="@layout/content_home"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_anchor="@+id/include"
-        app:layout_anchorGravity="top|center" />
+        android:layout_height="match_parent" />
+
 
 </android.support.design.widget.CoordinatorLayout>

@@ -20,7 +20,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onClickCard(card: Card) {
         var fragment = CardDetailFragment()
         fragment.updateCard(card)
-        supportFragmentManager.beginTransaction().add(R.id.fragment_container,fragment).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.contentHome,fragment).commit()
     }
 
     override fun setFragment(dest: Destination) {
@@ -33,13 +33,13 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             Destination.Melt -> MeltFragment()
             Destination.Quizz -> QuizzFragment()
             Destination.Shop -> ShopFragment()
-            Destination.Exchange -> HomeFragment()
+            Destination.Exchange -> ExchangeFragment()
             Destination.Settings -> SettingsFragment()
             Destination.Inventory -> InventoryFragment()
             Destination.CardDetail -> CardDetailFragment()
         }
 
-        supportFragmentManager.beginTransaction().add(R.id.fragment_container,fragment).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.contentHome,fragment).commit()
     }
 
 
@@ -55,7 +55,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
 
-        supportFragmentManager.beginTransaction().add(R.id.fragment_container, HomeFragment()).commit()
+        supportFragmentManager.beginTransaction().add(R.id.contentHome, HomeFragment()).commit()
 
 
         nav_view.setNavigationItemSelectedListener(this)

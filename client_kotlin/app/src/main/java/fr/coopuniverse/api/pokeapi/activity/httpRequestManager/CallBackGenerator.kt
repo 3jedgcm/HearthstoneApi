@@ -3,7 +3,7 @@ package fr.coopuniverse.api.pokeapi.activity.httpRequestManager
 import android.os.AsyncTask
 import android.util.Log
 import android.widget.TextView
-import fr.coopuniverse.api.pokeapi.activity.CallBackDisplay
+import fr.coopuniverse.api.pokeapi.activity.activity.CallBackDisplay
 
 import java.io.IOException
 
@@ -37,6 +37,7 @@ class CallBackGenerator(
 
     fun generateCallBack(): Reponse {
 
+        Log.d("Chaton",""+pass + " " + login)
         var reponse: Reponse?
         val retrofit = Retrofit.Builder().baseUrl(url).addConverterFactory(GsonConverterFactory.create()).build()
         val service = retrofit.create(CoopUniverseService::class.java)
@@ -68,6 +69,7 @@ class CallBackGenerator(
         }
 
         try {
+
             reponse = rep.execute().body()
             return reponse
 
@@ -86,11 +88,12 @@ class CallBackGenerator(
 
     override fun onPostExecute(result: Reponse)
     {
+
         if(isActivateCallBack == true)
         {
             callback.display(result)
         }
 
-        Log.d("Chaton",""+result.toString())
+
     }
 }

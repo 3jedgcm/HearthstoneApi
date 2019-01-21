@@ -8,6 +8,7 @@ import android.widget.Spinner
 import android.widget.TextView
 import fr.coopuniverse.api.pokeapi.activity.httpRequestManager.*
 import fr.coopuniverse.api.pokeapi.R
+import fr.coopuniverse.api.pokeapi.activity.activity.CallBackDisplay
 
 
 class InventoryActivity : CallBackDisplay,AppCompatActivity() {

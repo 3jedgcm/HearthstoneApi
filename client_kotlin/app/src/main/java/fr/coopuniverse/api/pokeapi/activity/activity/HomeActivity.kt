@@ -11,11 +11,17 @@ import android.view.Menu
 import android.view.MenuItem
 import fr.coopuniverse.api.pokeapi.R
 import fr.coopuniverse.api.pokeapi.activity.fragment.*
+import fr.coopuniverse.api.pokeapi.activity.httpRequestManager.Card
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.app_bar_home.*
 
-class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, CallBackFragment
+class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, CallBackFragment, CallBackOnClickCard
 {
+    override fun onClickCard(card: Card) {
+        var fragment = CardDetailFragment()
+        fragment.updateCard(card)
+        supportFragmentManager.beginTransaction().add(R.id.fragment_container,fragment).commit()
+    }
 
     override fun setFragment(dest: Destination) {
 

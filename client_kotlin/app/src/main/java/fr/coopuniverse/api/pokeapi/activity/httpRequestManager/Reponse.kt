@@ -1,7 +1,7 @@
 package fr.coopuniverse.api.pokeapi.activity.httpRequestManager
 
 
-class Reponse(var connect: Boolean = false, var exitCode: Int = -1, var data: Data = Data(-1)) {
+class Reponse(var id: String, var connect: Boolean = false, var exitCode: Int = -1, var data: Data = Data(-1)) {
 
 
     override fun toString(): String {

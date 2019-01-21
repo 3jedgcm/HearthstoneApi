@@ -36,8 +36,6 @@ class CallBackGenerator(
 
 
     fun generateCallBack(): Reponse {
-
-        Log.d("Chaton",""+pass + " " + login)
         var reponse: Reponse?
         val retrofit = Retrofit.Builder().baseUrl(url).addConverterFactory(GsonConverterFactory.create()).build()
         val service = retrofit.create(CoopUniverseService::class.java)
@@ -77,7 +75,7 @@ class CallBackGenerator(
             e.printStackTrace()
 
         }
-        return Reponse()
+        return Reponse(key!!)
 
     }
 
@@ -91,7 +89,8 @@ class CallBackGenerator(
 
         if(isActivateCallBack == true)
         {
-            callback.display(result)
+            result.id = key!!
+            callback.display(result,this.action!!)
         }
 
 

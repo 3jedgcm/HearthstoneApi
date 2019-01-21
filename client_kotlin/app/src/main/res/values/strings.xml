@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PokeApi</string>
+    <string name="app_name">Hearthstone API</string>
     <string name="facebook_app_id">2473295659563839</string>
     <string name="fb_login_protocol_scheme">fb2473295659563839</string>
     <string name="title_activity_inventory">InventoryActivity</string>

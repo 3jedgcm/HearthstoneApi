@@ -12,134 +12,80 @@ import retrofit2.http.Path
 interface CoopUniverseService {
 
 
-    /* Param */
-
+    ////////////////////////////// GET ////////////////////////////////////
+    //////////////////////////
+    ////// GET ALL ///////
     @GET("parameter/")
     fun GetAllParameter(): Call<Reponse>
-    /* Money */
-
-    //GetOneMoney
-    @GET("money/{idUser}")
-    fun GetOneMoney(@Path("idUser") idUser: String): Call<Reponse>
-
-    //GetAllMoney
     @GET("money/")
     fun GetAllMoney(): Call<Reponse>
-
-    //SetOneMoney
+    @GET("user/")
+    fun GetAllUser(): Call<Reponse>
+    @GET("card/")
+    fun GetAllCard(): Call<Reponse>
+    ///////////////////////////
+    ////// GET BY USER ID /////
+    @GET("money/{idUser}")
+    fun GetOneMoney(@Path("idUser") idUser: String): Call<Reponse>
+    @GET("user/{idUser}")
+    fun GetOneUser(@Path("idUser") idUser: String): Call<Reponse>
+    @GET("inventory/{idUser}")
+    fun GetCardByUserId(@Path("idUser") idUser: String): Call<Reponse>
+    //////////////////////////
+    ////// SPECIAL //////////
+    @GET("card/random")
+    fun GetRandomCard(): Call<Reponse>
+    @GET("other/quizz/")
+    fun GetQuestion(): Call<Reponse>
+    @GET("card?filter={typeFilter}&value_filter={valueFilter}")
+    fun GetCardByFilter(@Path("typeFilter") typeFilter: String,@Path("valueFilter") valueFilter: String): Call<Reponse>
+    /////////////////////////////////////////////////////////////////////
+    ////////////////////////////POST////////////////////////////////
+    //////// REGISTER ////////
+    @FormUrlEncoded
+    @POST("register")
+    fun SimpleRegister(@Field("login") login: String,@Field("pass") pass: String): Call<Reponse>
+    @FormUrlEncoded
+    @POST("register/facebook")
+    fun FacebookRegister(@Field("key") key: String): Call<Reponse>
+    @FormUrlEncoded
+    @POST("register/google")
+    fun GoogleRegister(@Field("key") key: String): Call<Reponse>
+    //////////////////////////
+    //////// CONNECT ////////
+    @FormUrlEncoded
+    @POST("connect")
+    fun SimpleLogin(@Field("login") login: String,@Field("pass") pass: String): Call<Reponse>
+    @FormUrlEncoded
+    @POST("connect/facebook")
+    fun FacebookLogin(@Field("key") key: String): Call<Reponse>
+    @FormUrlEncoded
+    @POST("connect/google")
+    fun GoogleLogin(@Field("key") key: String): Call<Reponse>
+    //////////////////////////
+    //////// SET BY ID USER ////////
     @FormUrlEncoded
     @POST("money/{idUser}")
     fun SetOneMoney(@Path("idUser") idUser: String, @Field("value") money: String): Call<Reponse>
-
-    //SetAllMoney
     @FormUrlEncoded
-    @POST("money/")
-    fun SetAllMoney(@Field("value") money: String): Call<Reponse>  //Manque param post
-
-    /* User */
-
-    //GetOneUser
-    @GET("user/{idUser}")
-    fun GetOneUser(@Path("idUser") idUser: String): Call<Reponse>
-
-    //SetOneUser
+    @POST("inventory/{idUser}")
+    fun SetOneCard(@Path("idUser") idUser: String, @Field("idCard") idCard: String): Call<Reponse>
+    //////////////////////////
+    ///////// EXCHANGE ////////
     @FormUrlEncoded
-    @POST("user/{idUser}")
-    fun SetOneUser(@Path("idUser") idUser: String, @Field("value") value: String): Call<Reponse>
-
-    //GetAllUser
-    @GET("user/")
-    fun GetAllUser(): Call<Reponse>
-
-    //SetAllUser ## deprecated
-    @FormUrlEncoded
-    @POST("user/")
-    fun SetAllUser(@Field("value") value: String): Call<Reponse>
-
-
-
-    //GetOneCardByUserId
-    @GET("inventory/{idUser}") //NOT GOOD
-    fun GetCardByUserId(@Path("idUser") idUser: String): Call<Reponse>
-
-
-    /* Card */
-    //GetAllCardInInventory
-    @GET("inventory/")
-    fun GetAllCard(): Call<Reponse>
-
-    //SetOneCardByUserId
-    @FormUrlEncoded
-    @POST("card/{idUser}")
-    fun SetOneCardByUserId(@Path("idUser") idUser: String, @Field("cards") cards: String): Call<Reponse>
-
-    //DeleteOneCardByUserid
-    @DELETE("card/{idUser}")
-    fun DeleteOneCardByUserid(@Path("idUser") idUser: String): Call<Reponse>
-
-    //ExchangeCards
-    @FormUrlEncoded
-    @POST("card/exchange/")
+    @POST("inventory/exchange/")
     fun ExchangeCards(@Field("idUserOne") idUserOne: String, @Field("idUserTwo") idUserTwo: String, @Field("cardUserOne") cardUserOne: String, @Field("cardUserTwo") cardUserTwo: String): Call<Reponse>
-
-    //GetRandomCard
-    @GET("card/random/{idUser}")
-    fun GetRandomCard(@Path("idUser") idUser: String): Call<Reponse>
-
-    /* Other */
-    //MeltCards
+    //////////////////////////
+    //////// SPECIAL ////////
     @FormUrlEncoded
-    @POST("other/melteCard/{idUser}")
-    fun MeltCards(@Path("idUser") idUser: String, @Field("cards") cards: String): Call<Reponse>
-
-    //CraftOneCard
+    @POST("other/meltCard/{idUser}")
+    fun MeltCards(@Path("idUser") idUser: String, @Field("idCard") idCard: String): Call<Reponse>
     @FormUrlEncoded
     @POST("other/craftCard/{idUser}")
-    fun CraftOneCard(@Path("idUser") idUser: String, @Field("cards") cards: String): Call<Reponse>
-
-    //GetQuestion
-    @GET("other/quizz/{idUser}")
-    fun getQuestion(@Path("idUser") idUser: String): Call<Reponse>
-
-    //SetQuestion
+    fun CraftOneCard(@Path("idUser") idUser: String, @Field("idCardOne") idCardOne: String, @Field("idCardTwo") idCardTwo: String, @Field("idCardThree") idCardThree: String): Call<Reponse>
+    //////////////////////////
+    //////// QUESTION ////////
     @FormUrlEncoded
-    @POST("other/quizz/{idUser}")
-    fun setAnswer(@Path("idUser") idUser: String, @Field("answer") answer: String): Call<Reponse>
-
-    //register
-    @FormUrlEncoded
-    @POST("register/")
-    fun register(@Path("pass") pass: String, @Field("login") login: String): Call<Reponse>
-
-
-    //register facebook
-    @FormUrlEncoded
-    @POST("register/facebook")
-    fun registerFacebook(@Path("key") key: String): Call<Reponse>
-
-    //register google
-    @FormUrlEncoded
-    @POST("register/google")
-    fun registerGoogle(@Path("key") key: String): Call<Reponse>
-
-
-    //Connect
-    @FormUrlEncoded
-    @POST("connect/")
-    fun connect(@Path("pass") pass: String, @Field("login") login: String): Call<Reponse>
-
-    @FormUrlEncoded
-    @POST("connect/facebook")
-    fun connectFacebook(@Path("key") key: String): Call<Reponse>
-
-    @FormUrlEncoded
-    @POST("connect/google")
-    fun connectGoogle(@Path("key") key: String): Call<Reponse>
-
-
-
-
-    @GET("{action}/{idUser}")
-    fun getAction(@Path("idUser") idUser: String, @Path("action") action: String): Call<Reponse>
-
+    @POST("other/quizz")
+    fun SetAnswer(@Field("answer") answer: String,@Field("question") question: String): Call<Reponse>
 }

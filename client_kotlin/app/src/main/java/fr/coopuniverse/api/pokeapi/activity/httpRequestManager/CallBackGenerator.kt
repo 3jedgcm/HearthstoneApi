@@ -15,12 +15,17 @@ import retrofit2.converter.gson.GsonConverterFactory
 class CallBackGenerator(
         var callback: CallBackDisplay,
         var isActivateCallBack: Boolean? = false,
+        var typeFilter: String? = null,
+        var valueFilter: String? = null,
         var url: String? = null,
         var idUser: String? = null,
         var idUserTwo: String? = null,
-        var cards: List<Card>? = null,
-        var cardUserOne: Card? = null,
-        var cardUserTwo: Card? = null,
+        var idCard: String? = null,
+        var idCardOne: String? = null,
+        var idCardTwo: String? = null,
+        var idCardThree: String? = null,
+        var cardUserOne: String? = null,
+        var cardUserTwo: String? = null,
         var answser: String? = null,
         var value: String? = null,
         var action: String? = null,
@@ -33,38 +38,33 @@ class CallBackGenerator(
     fun generateCallBack(): Reponse {
 
         var reponse: Reponse?
-
         val retrofit = Retrofit.Builder().baseUrl(url).addConverterFactory(GsonConverterFactory.create()).build()
         val service = retrofit.create(CoopUniverseService::class.java)
         val rep: Call<Reponse>
         when (action) {
             "GetOneMoney" -> rep = service.GetOneMoney(idUser!!)
             "GetAllMoney" -> rep = service.GetAllMoney()
-            "SetOneMoney" -> rep = service.SetOneMoney(idUser!!, value!!)
-            "SetAllMoney" -> rep = service.SetAllMoney(value!!)
             "GetOneUser" -> rep = service.GetOneUser(idUser!!)
-            "SetOneUser" -> rep = service.SetOneUser(idUser!!, value!!)
             "GetAllUser" -> rep = service.GetAllUser()
-            "SetAllUser" -> rep = service.SetAllUser(value!!)
             "GetCardByUserId" -> rep = service.GetCardByUserId(idUser!!)
             "GetAllCard" -> rep = service.GetAllCard()
-            "SetOneCardByUserId" -> rep = service.SetOneCardByUserId(idUser!!, cardUserOne!!.toString())
-            "DeleteOneCardByUserid" -> rep = service.DeleteOneCardByUserid(idUser!!)
-            "ExchangeCards" -> rep = service.ExchangeCards(idUser!!, idUserTwo!!, cardUserOne!!.toString(), cardUserTwo!!.toString())
-            "GetRandomCard" -> rep = service.GetRandomCard(idUser!!)
-            "MeltCards" -> rep = service.MeltCards(idUser!!, cards!!.toString())
-            "CraftOneCard" -> rep = service.CraftOneCard(idUser!!, cards!!.toString())
-            "getQuestion" -> rep = service.getQuestion(idUser!!)
-            "setAnswer" -> rep = service.setAnswer(idUser!!, answser!!)
+            "GetRandomCard" -> rep = service.GetRandomCard()
             "GetAllParameter" -> rep = service.GetAllParameter()
-            "Connect" -> rep = service.connect(login!!, pass!!)
-            "ConnectFacebook" -> rep = service.connectFacebook(key!!)
-            "ConnectGoogle" -> rep = service.connectGoogle(key!!)
-            "Register" -> rep = service.connect(login!!, pass!!)
-            "RegisterFacebook" -> rep = service.connectFacebook(key!!)
-            "RegisterGoogle" -> rep = service.connectGoogle(key!!)
-
-            else -> rep = service.getQuestion(idUser!!)
+            "GetQuestion" -> rep = service.GetQuestion()
+            "GetCardByFilter" -> rep = service.GetCardByFilter(typeFilter!!,valueFilter!!)
+            "SetOneCard" -> rep = service.SetOneCard(idUser!!,idCard!!)
+            "SetOneMoney" -> rep = service.SetOneMoney(idUser!!, value!!)
+            "SetAnswer" -> rep = service.SetAnswer(idUser!!, answser!!)
+            "ExchangeCards" -> rep = service.ExchangeCards(idUser!!, idUserTwo!!, cardUserOne!!.toString(), cardUserTwo!!.toString())
+            "MeltCards" -> rep = service.MeltCards(idUser!!,idCard!!)
+            "CraftOneCard" -> rep = service.CraftOneCard(idUser!!,idCardOne!!,idCardTwo!!,idCardThree!!)
+            "Connect" -> rep = service.SimpleLogin(login!!, pass!!)
+            "ConnectFacebook" -> rep = service.FacebookLogin(key!!)
+            "ConnectGoogle" -> rep = service.GoogleLogin(key!!)
+            "Register" -> rep = service.SimpleRegister(login!!, pass!!)
+            "RegisterFacebook" -> rep = service.FacebookRegister(key!!)
+            "RegisterGoogle" -> rep = service.GoogleRegister(key!!)
+            else -> rep = service.GetAllCard()
         }
 
         try {

@@ -1,4 +1,4 @@
-package fr.coopuniverse.api.pokeapi.activity.fragment.recyclerViewFrag.dummy
+package fr.coopuniverse.api.pokeapi.activity.fragment.fragRecyclView.dummy
 
 import java.util.ArrayList
 import java.util.HashMap

@@ -5,6 +5,7 @@ import java.util.HashMap
 
 class Card {
 
+
     var name: String? = null
     var id: String? = null
     var cardClass: String? = null
@@ -34,9 +35,10 @@ class Card {
     fun getImage():String {
 
         var url: String = "https://art.hearthstonejson.com/v1/render/latest/frFR/512x/"
-        this.image = url + id.toString()
+        this.image = url + id + ".png"
         return image as String
     }
+
 
 
 

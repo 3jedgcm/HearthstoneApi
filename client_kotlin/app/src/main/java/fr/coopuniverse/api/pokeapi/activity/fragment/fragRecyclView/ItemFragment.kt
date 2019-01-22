@@ -1,4 +1,4 @@
-package fr.coopuniverse.api.pokeapi.activity.fragment.recyclerViewFrag
+package fr.coopuniverse.api.pokeapi.activity.fragment.fragRecyclView
 
 import android.content.Context
 import android.os.Bundle
@@ -11,8 +11,9 @@ import android.view.View
 import android.view.ViewGroup
 import fr.coopuniverse.api.pokeapi.R
 
-import fr.coopuniverse.api.pokeapi.activity.fragment.recyclerViewFrag.dummy.DummyContent
-import fr.coopuniverse.api.pokeapi.activity.fragment.recyclerViewFrag.dummy.DummyContent.DummyItem
+
+import fr.coopuniverse.api.pokeapi.activity.fragment.fragRecyclView.dummy.DummyContent
+import fr.coopuniverse.api.pokeapi.activity.fragment.fragRecyclView.dummy.DummyContent.DummyItem
 
 /**
  * A fragment representing a list of Items.

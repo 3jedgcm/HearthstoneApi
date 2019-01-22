@@ -1,4 +1,4 @@
-package fr.coopuniverse.api.pokeapi.activity.fragment.recyclerViewFrag
+package fr.coopuniverse.api.pokeapi.activity.fragment.fragRecyclView
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -8,16 +8,15 @@ import android.widget.TextView
 import fr.coopuniverse.api.pokeapi.R
 
 
-import fr.coopuniverse.api.pokeapi.activity.fragment.recyclerViewFrag.ItemFragment.OnListFragmentInteractionListener
-import fr.coopuniverse.api.pokeapi.activity.fragment.recyclerViewFrag.dummy.DummyContent.DummyItem
+import fr.coopuniverse.api.pokeapi.activity.fragment.fragRecyclView.ItemFragment.OnListFragmentInteractionListener
+import fr.coopuniverse.api.pokeapi.activity.fragment.fragRecyclView.dummy.DummyContent.DummyItem
 
 import kotlinx.android.synthetic.main.fragment_item.view.*
 
-/**
- * [RecyclerView.Adapter] that can display a [DummyItem] and makes a call to the
- * specified [OnListFragmentInteractionListener].
- * TODO: Replace the implementation with code for your data type.
- */
+
+
+
+
 class MyItemRecyclerViewAdapter(
         private val mValues: List<DummyItem>,
         private val mListener: OnListFragmentInteractionListener?)

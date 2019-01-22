@@ -16,22 +16,38 @@ import fr.coopuniverse.api.pokeapi.activity.adapter.CardsListAdapter
 import fr.coopuniverse.api.pokeapi.activity.httpRequestManager.CallBackGenerator
 import fr.coopuniverse.api.pokeapi.activity.httpRequestManager.Card
 import fr.coopuniverse.api.pokeapi.activity.httpRequestManager.Reponse
+import android.widget.Toast
 
-class InventoryFragment : Fragment(), CallBackDisplay  {
 
+
+
+class InventoryFragment : Fragment(), CallBackDisplay, CallBackOnClickCard  {
+
+    var recView_Inventory:RecyclerView? = null;
     var anotherView: View? = null;
 
-    override fun display(rep: Reponse, action: String) {
-        var cards = rep.data.cards
-        Log.d("Chaton",cards.toString())
-        val  recView_Inventory:RecyclerView = anotherView!!.findViewById(R.id.recView_Inventory)
-        var adapterReclView: CardsListAdapter = CardsListAdapter(cards, targetFragment, listener)
-        recView_Inventory.layoutManager = GridLayoutManager(this.context,3)
-        recView_Inventory.adapter=  adapterReclView
+    override fun onClickCard(card: Card) {
+        Log.d("Chaton","prout")
+    }
+
+    fun onClick(view: View) {
+        val itemPosition = recView_Inventory?.getChildLayoutPosition(view)
+
+        /*val item = mList.get(itemPosition)
+        Toast.makeText(mContext, item, Toast.LENGTH_LONG).show()*/
     }
 
 
-    private var listener:CallBackOnClickCard?= null
+
+
+    override fun display(rep: Reponse, action: String) {
+        var cards = rep.data.cards
+
+        this.recView_Inventory = anotherView!!.findViewById(R.id.recView_Inventory)
+        var adapterReclView: CardsListAdapter = CardsListAdapter(cards, targetFragment, this)
+        recView_Inventory?.layoutManager = GridLayoutManager(this.context,3)
+        recView_Inventory?.adapter=  adapterReclView
+    }
 
 
     companion object {
@@ -41,11 +57,10 @@ class InventoryFragment : Fragment(), CallBackDisplay  {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-
        anotherView =  inflater.inflate(R.layout.inventory_fragment, container, false)
-        CallBackGenerator(callback = this,action = "GetAllCard",isActivateCallBack = true, url = "https://api.coopuniverse.fr/").execute()
-
-        return anotherView
-
+       CallBackGenerator(callback = this,action = "GetAllCard",isActivateCallBack = true, url = "https://api.coopuniverse.fr/").execute()
+       return anotherView
     }
+
+
 }

@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorAccent"
+    android:background="@color/colorBackground"
     tools:context=".activity.fragment.HomeFragment">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:background="@color/colorAccent">
+        tools:background="@color/colorBackground">
 
         <TextView
             android:id="@+id/textView"
@@ -18,15 +18,18 @@
             android:layout_height="51dp"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
-            android:layout_marginTop="52dp"
+            android:layout_marginTop="112dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
+            android:fontFamily="sans-serif"
             android:gravity="center"
+            android:lineSpacingExtra="8sp"
             android:text="Game Lobby"
-            android:textSize="30sp"
+            android:textColor="@color/colorTitleText"
+            android:textSize="36sp"
             android:textStyle="bold"
+            android:typeface="sans"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.503"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -39,9 +42,11 @@
             android:layout_marginTop="88dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
-            android:background="@color/colorPrimary"
-            android:text="Forge"
-            android:textColor="@color/com_facebook_button_background_color_focused"
+            android:background="@drawable/shape"
+            android:text="@str"
+            android:textColor="@color/colorText"
+            android:textSize="@dimen/textSize"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView" />
@@ -55,15 +60,18 @@
             android:layout_marginTop="40dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
-            android:background="@color/colorPrimary"
+            android:background="@drawable/shape"
             android:text="FUSION"
-            android:textColor="@color/com_facebook_button_background_color_focused"
+            android:textColor="@color/colorText"
+            android:textSize="@dimen/textSize"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/shopButton" />
 
         <Button
             android:id="@+id/quizzbutton"
+
             android:layout_width="229dp"
             android:layout_height="45dp"
             android:layout_marginStart="8dp"
@@ -72,9 +80,12 @@
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginBottom="8dp"
-            android:background="@color/colorPrimary"
+            android:background="@drawable/shape"
+            android:elevation="2dp"
             android:text="QUIZZ"
-            android:textColor="@color/com_facebook_button_background_color_focused"
+            android:textColor="@color/colorText"
+            android:textSize="@dimen/textSize"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

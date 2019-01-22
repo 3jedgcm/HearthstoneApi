@@ -1,6 +1,7 @@
 package fr.coopuniverse.api.pokeapi.activity.activity
 
 import android.content.Intent
+import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -29,8 +30,8 @@ import com.shobhitpuri.custombuttons.GoogleSignInButton
 import org.json.JSONException
 
 import fr.coopuniverse.api.pokeapi.R
-import fr.coopuniverse.api.pokeapi.activity.InventoryActivity
-import fr.coopuniverse.api.pokeapi.activity.UserData
+
+import fr.coopuniverse.api.pokeapi.activity.data.Account
 import fr.coopuniverse.api.pokeapi.activity.httpRequestManager.CallBackGenerator
 import fr.coopuniverse.api.pokeapi.activity.httpRequestManager.Reponse
 import kotlinx.android.synthetic.main.activity_main.*
@@ -41,6 +42,7 @@ class MainActivity : AppCompatActivity(), CallBackDisplay  {
     lateinit var callbackManager: CallbackManager
     lateinit var signInFacebookButton: LoginButton
     var accessToken: AccessToken? = null
+    var account: Account? = null
     var id: TextView? = null
     var name: TextView? = null
     var mail: TextView? = null
@@ -53,7 +55,6 @@ class MainActivity : AppCompatActivity(), CallBackDisplay  {
     lateinit var signInGoogleButton: GoogleSignInButton
     lateinit var mGoogleSignInClient: GoogleSignInClient
     var imageView: ImageView? = null
-
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -83,21 +84,6 @@ class MainActivity : AppCompatActivity(), CallBackDisplay  {
             this.simpleSignIn()
         }
 
-
-
-/*        disconnectButton.setOnClickListener {
-            mGoogleSignInClient.signOut().addOnCompleteListener(this@MainActivity) {
-                //mail.setText("Mail : ");
-                //name.setText("Name : ");
-                //id.setText("Id : ");
-                //imageView.setVisibility(View.INVISIBLE);
-                disconnectButton.isEnabled = false
-                signInGoogleButton.isEnabled = true
-                signInFacebookButton.isEnabled = true
-            }
-        }
-
-*/
         val account = GoogleSignIn.getLastSignedInAccount(this)
 
         this.callbackManager = CallbackManager.Factory.create()
@@ -123,7 +109,8 @@ class MainActivity : AppCompatActivity(), CallBackDisplay  {
                     override fun onSuccess(loginResult: LoginResult) {
                         val request = GraphRequest.newMeRequest(loginResult.accessToken) { `object`, response ->
                             try {
-                                facebookSignIn(`object`.get("id").toString())
+                                facebookSignIn(`object`.get("id").toString(),Account(`object`.get("name").toString(),"",`object`.get("id").toString(), "","Facebook"))
+
                                 //changeActivity(UserData(`object`.get("id").toString(), `object`.get("name").toString(), ""))
                             } catch (e: JSONException) {e.printStackTrace()}
                         }
@@ -162,18 +149,18 @@ class MainActivity : AppCompatActivity(), CallBackDisplay  {
 
     private fun simpleSignIn()
     {
+        this.account = Account(login?.text.toString(),"","","","simple account")
         CallBackGenerator(callback = this,action = "Connect",isActivateCallBack = true, login = login?.text.toString() ,pass = pass?.text.toString(), url = "https://api.coopuniverse.fr/").execute()
     }
 
-    private fun facebookSignIn(id:String)
+    private fun facebookSignIn(id: String, account: Account)
     {
-        Log.d("Chaton","Login with facebook " + id)
+        this.account = account
         CallBackGenerator(callback = this,action = "ConnectFacebook",isActivateCallBack = true, key = id , url = "https://api.coopuniverse.fr/").execute()
     }
 
     private fun googleSignIn(id:String)
     {
-        Log.d("Chaton","Login with Google " + id)
         CallBackGenerator(callback = this,action = "ConnectGoogle",isActivateCallBack = true, key = id , url = "https://api.coopuniverse.fr/").execute()
     }
 
@@ -184,15 +171,22 @@ class MainActivity : AppCompatActivity(), CallBackDisplay  {
         Log.d("Chaton",rep.toString())
         if(!rep.connect)
         {
-
         when (action) {
             "ConnectFacebook" -> {
-                Log.d("Chaton","Register with Facebook")
-                CallBackGenerator(callback = this,action = "RegisterGoogle",isActivateCallBack = true, key = rep.id , url = "https://api.coopuniverse.fr/").execute()
+                Log.d("Chaton","No account - register with Facebook")
+                CallBackGenerator(callback = this,action = "RegisterFacebook",isActivateCallBack = true, key = rep.id , url = "https://api.coopuniverse.fr/").execute()
             }
             "ConnectGoogle" -> {
-                Log.d("Chaton","Register with Google")
-                CallBackGenerator(callback = this,action = "RegisterFacebook",isActivateCallBack = true, key = rep.id , url = "https://api.coopuniverse.fr/").execute()
+                Log.d("Chaton","No account - Register with Google")
+                CallBackGenerator(callback = this,action = "RegisterGoogle",isActivateCallBack = true, key = rep.id , url = "https://api.coopuniverse.fr/").execute()
+            }
+            "RegisterGoogle" -> {
+                Log.d("Chaton","Connect with Google")
+                CallBackGenerator(callback = this,action = "ConnectGoogle",isActivateCallBack = true, key = rep.id , url = "https://api.coopuniverse.fr/").execute()
+            }
+            "RegisterFacebook" -> {
+                Log.d("Chaton","Connect with Facebook")
+                CallBackGenerator(callback = this,action = "ConnectFacebook",isActivateCallBack = true, key = rep.id , url = "https://api.coopuniverse.fr/").execute()
             }
             "Connect" -> {
                 errorView.text = "Mauvais login ou mot de passe"
@@ -201,22 +195,21 @@ class MainActivity : AppCompatActivity(), CallBackDisplay  {
         }
         else
         {
-            changeActivity(UserData("Kikoo","Kikoo","Kikoo"))
+            changeActivity(account)
         }
     }
 
-    private fun changeActivity(ud: UserData)
+    private fun changeActivity(ud: Account?)
     {
+        Log.d("Chaton",ud?.name)
         val inventoryIntent = Intent(this, HomeActivity::class.java)
         CallBackGenerator(MainActivity(),false)
-        inventoryIntent.putExtra("PERSONNAL_INFORMATION", ud.toString())
+        inventoryIntent.putExtra("connectWith", ud?.connectWith )
+        inventoryIntent.putExtra("name", ud?.name )
+        inventoryIntent.putExtra("lastname", ud?.surname )
+        inventoryIntent.putExtra("id", ud?.id )
+        inventoryIntent.putExtra("url", ud?.urlPicture.toString() )
         startActivityForResult(inventoryIntent, 1)
-    }
-
-    private fun enableConnection() {
-//        disconnectButton.isEnabled = true
-        signInGoogleButton.isEnabled = false
-        signInFacebookButton.isEnabled = false
     }
 
     private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>)
@@ -224,30 +217,11 @@ class MainActivity : AppCompatActivity(), CallBackDisplay  {
         try
         {
             val acct = completedTask.getResult<ApiException>(ApiException::class.java!!)
-            Log.d("Chaton","Login with Google ")
             if (acct != null)
             {
-
-                //enableConnection()
-                //imageView.setVisibility(View.VISIBLE);
-                val personName = acct.displayName
-                val personGivenName = acct.givenName
-                val personFamilyName = acct.familyName
-                val personEmail = acct.email
-                val personId = acct.id
-                val personPhoto = acct.photoUrl
-                Log.d("Chaton","Login with Google " + personId)
-                this.googleSignIn(personId!!)
-
-                /*  if (personPhoto != null) {
-                    Picasso.get().load(personPhoto).into(imageView);
-                }*/
-                //changeActivity(UserData(acct.id, acct.displayName, acct.familyName))
+                account = Account(acct.displayName,acct.familyName,acct.id,acct.photoUrl,"Google")
+                this.googleSignIn(acct.id!!)
             }
         } catch (e: ApiException) {}
-
-
-
     }
-
 }

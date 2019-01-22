@@ -7,18 +7,18 @@
         <item
             android:id="@+id/nav_inventory"
             android:icon="@drawable/baseline"
-            android:title="Inventaire" />
+            android:title="@string/nav_button_inventory" />
         <item
             android:id="@+id/nav_market"
             android:icon="@drawable/market"
-            android:title="Magasin" />
+            android:title="@string/nav_button_shop" />
         <item
             android:id="@+id/nav_game"
             android:icon="@drawable/videogame"
-            android:title="Jeu" />
+            android:title="@string/nav_button_game" />
         <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/settings"
-            android:title="Settings" />
+            android:title="@string/nav_button_settings" />
     </group>
 </menu>

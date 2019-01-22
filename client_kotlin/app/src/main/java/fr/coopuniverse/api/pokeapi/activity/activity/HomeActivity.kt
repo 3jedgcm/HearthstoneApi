@@ -7,23 +7,25 @@ import android.support.v4.app.FragmentTransaction
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.TextView
 import fr.coopuniverse.api.pokeapi.R
 import fr.coopuniverse.api.pokeapi.activity.fragment.*
 import fr.coopuniverse.api.pokeapi.activity.httpRequestManager.Card
 import fr.coopuniverse.api.pokeapi.activity.httpRequestManager.Reponse
+import fr.coopuniverse.api.pokeapi.activity.singleton.Store
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.app_bar_home.*
+import kotlinx.android.synthetic.main.nav_header_home.*
 
-class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, CallBackFragment, CallBackOnClickCard,CallBackDisplay
+
+
+
+class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, CallBackFragment, CallBackOnClickCard
 {
-    override fun display(rep: Reponse, action: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-
-
-    }
-
     override fun onClickCard(card: Card) {
         var fragment = CardDetailFragment()
         fragment.updateCard(card)
@@ -54,18 +56,28 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
+
         setSupportActionBar(toolbar)
-
-
         val toggle = ActionBarDrawerToggle(
                 this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
+        var name = intent.extras.getString("name")
+        var lastname = intent.extras.getString("lastname")
+        var id = intent.extras.getString("id")
+        var url = intent.extras.getString("url")
+        var connectWith = intent.extras.getString("connectWith")
 
         supportFragmentManager.beginTransaction().add(R.id.contentHome, HomeFragment()).commit()
 
-
         nav_view.setNavigationItemSelectedListener(this)
+
+        var header: View = nav_view.getHeaderView(0)
+        var userNameField: TextView = header.findViewById(R.id.userNameField);
+        var connectWithField: TextView = header.findViewById(R.id.connectWithField);
+        userNameField.text = name
+        connectWithField.text = "Connect with " + connectWith
+
     }
 
     override fun onBackPressed()

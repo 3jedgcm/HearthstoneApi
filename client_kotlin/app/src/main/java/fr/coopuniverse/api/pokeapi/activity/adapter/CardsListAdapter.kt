@@ -20,8 +20,8 @@ import kotlinx.android.synthetic.main.fragment_item.view.*
 
 import java.text.SimpleDateFormat
 
-
-
+import android.graphics.drawable.Drawable
+import com.bumptech.glide.RequestBuilder
 
 
 class CardsListAdapter : RecyclerView.Adapter<CardsListAdapter.ViewHolder>{
@@ -64,13 +64,15 @@ class CardsListAdapter : RecyclerView.Adapter<CardsListAdapter.ViewHolder>{
 
 
 
+
+
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): CardsListAdapter.ViewHolder {
 
         this.context= viewGroup.context;
 
         val itemLayoutView = LayoutInflater.from(viewGroup.context).inflate(R.layout.custom_card_view, viewGroup, false)
 
-        this.currentViewHolder = ViewHolder(itemLayoutView)
+        this.currentViewHolder = ViewHolder(itemLayoutView).bind(this.mListener)
 
         return ViewHolder(itemLayoutView)!!
 
@@ -116,6 +118,11 @@ class CardsListAdapter : RecyclerView.Adapter<CardsListAdapter.ViewHolder>{
 
         val iCardImage: ImageView = mView.iCard // findViewById(R.id.iCard);
 
+        fun bind(clickListener: CallBackOnClickCard? ): ViewHolder {
+
+            itemView.setOnClickListener {clickListener?.onClickCard(Card())}
+            return this
+        }
 
         override fun toString(): String {
 

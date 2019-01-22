@@ -31,7 +31,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/craftButton"
+            android:id="@+id/shopButton"
             android:layout_width="229dp"
             android:layout_height="45dp"
             android:layout_marginStart="8dp"
@@ -60,7 +60,7 @@
             android:textColor="@color/com_facebook_button_background_color_focused"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/craftButton" />
+            app:layout_constraintTop_toBottomOf="@+id/shopButton" />
 
         <Button
             android:id="@+id/quizzbutton"

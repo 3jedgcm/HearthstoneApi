@@ -8,9 +8,10 @@ import android.widget.Spinner
 import android.widget.TextView
 import fr.coopuniverse.api.pokeapi.activity.httpRequestManager.*
 import fr.coopuniverse.api.pokeapi.R
+import fr.coopuniverse.api.pokeapi.activity.activity.CallBackDisplay
 
 
-class InventoryActivity : CallBackDisplay,AppCompatActivity() {
+class InventoryActivity : AppCompatActivity() {
 
 
     private var profilTV: TextView? = null
@@ -41,14 +42,10 @@ class InventoryActivity : CallBackDisplay,AppCompatActivity() {
         sendButton!!.setOnClickListener {
             // new CallBackGenerator().setUrl("https://api.coopuniverse.fr").setAction(actionSpinner.getSelectedItem().toString()).setIdUser(idUser.getText().toString()).generateCallBack();
             var s = actionSpinner!!.selectedItem.toString()
-            CallBackGenerator(callback = this, url ="https://api.coopuniverse.fr", action =s).execute()
+
         }
     }
 
-    override fun display(rep: Reponse)
-    {
-        respond!!.text = rep.toString()
-    }
 
 
 

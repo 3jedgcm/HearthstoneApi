@@ -10,40 +10,15 @@ import android.view.ViewGroup
 
 import fr.coopuniverse.api.pokeapi.R
 import fr.coopuniverse.api.pokeapi.activity.activity.CallBackFragment
-import fr.coopuniverse.api.pokeapi.activity.activity.Destination
-import kotlinx.android.synthetic.main.market_fragment.*
 
 
-class MarketFragment : Fragment() {
-
+class ExchangeFragment : Fragment() {
     var callback: CallBackFragment? = null
-
-    companion object {
-        fun newInstance() = MarketFragment()
-    }
-
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        shopButton.setOnClickListener {
-            callback?.setFragment(Destination.Shop)
-        }
-        exchangeButton.setOnClickListener {
-            callback?.setFragment(Destination.Exchange  )
-        }
-
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.market_fragment, container, false)
-    }
-
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.exchange_fragment, container, false)
     }
 
     override fun onAttach(context: Context?) {
@@ -57,4 +32,7 @@ class MarketFragment : Fragment() {
         super.onDetach()
         callback = null
     }
+
+
+
 }

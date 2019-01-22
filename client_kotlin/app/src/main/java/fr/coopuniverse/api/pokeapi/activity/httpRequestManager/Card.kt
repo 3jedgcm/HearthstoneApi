@@ -39,7 +39,9 @@ class Card {
         return image as String
     }
 
-
+    override fun toString(): String {
+        return "Card(name=$name, id=$id, cardClass=$cardClass, cost=$cost, playerClass=$playerClass, health=$health, attack=$attack, text=$text, type=$type, rarity=$rarity)"
+    }
 
 
 }

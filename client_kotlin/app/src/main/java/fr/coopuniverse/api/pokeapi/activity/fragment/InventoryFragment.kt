@@ -4,16 +4,31 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
 import fr.coopuniverse.api.pokeapi.R
+import fr.coopuniverse.api.pokeapi.activity.activity.CallBackDisplay
 import fr.coopuniverse.api.pokeapi.activity.activity.CallBackOnClickCard
 import fr.coopuniverse.api.pokeapi.activity.adapter.CardsListAdapter
+import fr.coopuniverse.api.pokeapi.activity.httpRequestManager.CallBackGenerator
 import fr.coopuniverse.api.pokeapi.activity.httpRequestManager.Card
+import fr.coopuniverse.api.pokeapi.activity.httpRequestManager.Reponse
 
-class InventoryFragment : Fragment() {
+class InventoryFragment : Fragment(), CallBackDisplay  {
+
+    var anotherView: View? = null;
+
+    override fun display(rep: Reponse, action: String) {
+        var cards = rep.data.cards
+        Log.d("Chaton",cards.toString())
+        val  recView_Inventory:RecyclerView = anotherView!!.findViewById(R.id.recView_Inventory)
+        var adapterReclView: CardsListAdapter = CardsListAdapter(cards, targetFragment, listener)
+        recView_Inventory.layoutManager = GridLayoutManager(this.context,3)
+        recView_Inventory.adapter=  adapterReclView
+    }
 
 
     private var listener:CallBackOnClickCard?= null
@@ -27,72 +42,10 @@ class InventoryFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-       val view =  inflater.inflate(R.layout.inventory_fragment, container, false)
+       anotherView =  inflater.inflate(R.layout.inventory_fragment, container, false)
+        CallBackGenerator(callback = this,action = "GetAllCard",isActivateCallBack = true, url = "https://api.coopuniverse.fr/").execute()
 
-
-       // Set the adapter
-
-
-        val  recView_Inventory:RecyclerView = view.findViewById(R.id.recView_Inventory)
-        var listCards : ArrayList<Card> = ArrayList()
-        listCards= initList()
-
-        var adapterReclView: CardsListAdapter = CardsListAdapter(listCards, targetFragment, listener)
-
-        recView_Inventory.layoutManager = GridLayoutManager(this.context,3)
-        recView_Inventory.adapter=  adapterReclView
-
-        return view
+        return anotherView
 
     }
-
-
-    fun initList(): ArrayList<Card> {
-
-        val list: ArrayList<Card> = ArrayList()
-
-        val iterator = (1..3).iterator()
-       // skip an element
-        if (iterator.hasNext()) {
-            iterator.next()
-
-        }
-
-     // do something with the rest of elements
-    /*    iterator.forEach {
-            var card : Card = Card()
-            card.attack=1
-            card.name="CardPI"
-            card.id= "EX1_349"
-            card.getImage()
-            list.add(card)
-
-            println("The element is $it")
-        }
-*/
-        var card : Card = Card()
-        card.attack=1
-        card.name="CardP1"
-        card.id= "EX1_349"
-        card.getImage()
-        list.add(card)
-
-        var card1 : Card = Card()
-        card1.attack=2
-        card1.name="CardP2"
-        card1.id= "CS2_038"
-        card1.getImage()
-        list.add(card)
-
-
-        //println(list)
-        return list
-    }
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-
-
-    }
-
 }

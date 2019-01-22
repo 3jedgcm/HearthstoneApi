@@ -12,11 +12,18 @@ import android.view.MenuItem
 import fr.coopuniverse.api.pokeapi.R
 import fr.coopuniverse.api.pokeapi.activity.fragment.*
 import fr.coopuniverse.api.pokeapi.activity.httpRequestManager.Card
+import fr.coopuniverse.api.pokeapi.activity.httpRequestManager.Reponse
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.app_bar_home.*
 
-class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, CallBackFragment, CallBackOnClickCard
+class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, CallBackFragment, CallBackOnClickCard,CallBackDisplay
 {
+    override fun display(rep: Reponse, action: String) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
+
+    }
+
     override fun onClickCard(card: Card) {
         var fragment = CardDetailFragment()
         fragment.updateCard(card)

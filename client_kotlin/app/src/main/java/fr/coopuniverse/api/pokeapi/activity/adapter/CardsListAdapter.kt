@@ -33,7 +33,7 @@ class CardsListAdapter : RecyclerView.Adapter<CardsListAdapter.ViewHolder>{
 
     private var context: Context? = null
     private var mListener: CallBackOnClickCard? = null
-    // private ComicsFragmentPresenter mPresenter;
+
     private var currentViewHolder: RecyclerView.ViewHolder? = null
 
 
@@ -65,8 +65,6 @@ class CardsListAdapter : RecyclerView.Adapter<CardsListAdapter.ViewHolder>{
 
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): CardsListAdapter.ViewHolder {
-        //Context context = viewGroup.getContext();
-        // LayoutInflater inflater = LayoutInflater.from(context);
 
         this.context= viewGroup.context;
 
@@ -83,16 +81,7 @@ class CardsListAdapter : RecyclerView.Adapter<CardsListAdapter.ViewHolder>{
 
         val cardsItem = cardsObjectsList!![viewHolder.getAdapterPosition()]
 
-        /* val tvTitle = viewHolder.tvTitle
-         val tvDate = viewHolder.tvDate
-         val tvPageCount = viewHolder.tvPageCount
-         val ivComics = viewHolder.ivComics
 
-
-         tvTitle.append(cardsObjectsList!![i].getTitle())
-         tvDate.append(date)
-         tvPageCount.append(Integer.toString(cardsObjectsList!![i].getPageCount()))
-       */
         Glide.with(this.context!!)
                 .load(cardsObjectsList!![p1].getImage())
                 .into(viewHolder.iCardImage)
@@ -104,8 +93,7 @@ class CardsListAdapter : RecyclerView.Adapter<CardsListAdapter.ViewHolder>{
 
         if (p1 == lastObject) {
             Log.d("debug:", "lastObject=  $p1")
-         //   viewHolder.init(itemLayoutView)
-            // mListener.finishedInit(true);
+
         }
 
 
@@ -135,39 +123,6 @@ class CardsListAdapter : RecyclerView.Adapter<CardsListAdapter.ViewHolder>{
         }
 
     }
-
-  /*  inner class ViewHolder(itemView: View) : BaseViewHolder(itemView), ComicsView//RecyclerView.ViewHolder
-    {
-
-        var tvTitle: TextView
-        var tvDate: TextView
-        var tvPageCount: TextView
-        var ivComics: ImageView
-
-
-        init {
-
-
-            this.setLayoutId(R.layout.custom_comics_view)
-            // this.setPresenter(mPresenter);
-
-            tvTitle = itemView.findViewById(R.id.tvTitle)
-            tvDate = itemView.findViewById(R.id.tvDate)
-            tvPageCount = itemView.findViewById(R.id.tvPageCount)
-            ivComics = itemView.findViewById(R.id.ivComics)
-
-            ivComics.setOnClickListener {
-                val position = getAdapterPosition()
-                val comicsItem = cardsObjectsList!![getAdapterPosition()]
-                //notificaton send to Fragment via this listener
-                mListener!!.onClickCard(comicsItem)
-            }
-
-
-        }
-    }
-    */
-
 
 
 }

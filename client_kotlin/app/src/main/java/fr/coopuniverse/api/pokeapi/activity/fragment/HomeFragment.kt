@@ -6,11 +6,22 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TableLayout
 
 import fr.coopuniverse.api.pokeapi.R
 import fr.coopuniverse.api.pokeapi.activity.activity.CallBackFragment
 import fr.coopuniverse.api.pokeapi.activity.activity.Destination
 import kotlinx.android.synthetic.main.home_fragment.*
+import SimpleFragmentPagerAdapter
+
+
+
+
+
+
+
+
+
 
 class HomeFragment : androidx.fragment.app.Fragment() {
     var callback: CallBackFragment? = null
@@ -22,17 +33,19 @@ class HomeFragment : androidx.fragment.app.Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        shopButton.setOnClickListener {
-            callback?.setFragment(Destination.Craft)
-        }
-        meltbutton.setOnClickListener {
-            callback?.setFragment(Destination.Melt)
-        }
-        quizzbutton.setOnClickListener {
-            callback?.setFragment(Destination.Quizz)
-        }
+
+        val adapter = SimpleFragmentPagerAdapter(context, activity?.supportFragmentManager!!)
+
+        viewer.adapter = adapter
+
+        tab_navigation.setupWithViewPager(viewer)
+
+
 
     }
+
+
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -47,6 +60,8 @@ class HomeFragment : androidx.fragment.app.Fragment() {
     }
 
     override fun onAttach(context: Context?) {
+
+
         super.onAttach(context)
         if (context is CallBackFragment) {
             callback = context

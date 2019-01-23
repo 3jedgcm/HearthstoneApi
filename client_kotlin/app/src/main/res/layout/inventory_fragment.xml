@@ -13,8 +13,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recView_Inventory"
             android:layout_width="0dp"
-            android:layout_height="559dp"
-            android:layout_marginTop="160dp"
+            android:layout_height="wrap_content"
             android:onClick="onClick"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

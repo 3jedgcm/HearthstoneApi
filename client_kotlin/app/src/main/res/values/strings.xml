@@ -28,6 +28,21 @@
     <string name="label_connexion">Connexion</string>
     <string name="label_connect_with">Connexion with</string>
     <string name="label_login_or_name">Login or Name</string>
+
+    <string name="label_card_id">Id: </string>
+    <string name="label_card_name">Name: </string>
+    <string name="label_card_cardClass">Card Class: </string>
+    <string name="label_card_cost">Cost: </string>
+    <string name="label_card_playerClass">Player class: </string>
+    <string name="label_card_health">Health: </string>
+    <string name="label_card_attack">Attack: </string>
+    <string name="label_card_text">Text: </string>
+    <string name="label_card_type">Type: </string>
+    <string name="label_card_rarity">Rarity: </string>
+    <string name="title_quizz">Super Quizz</string>
+
+
+
     <string name="content_description">Card</string>
 </resources>
 

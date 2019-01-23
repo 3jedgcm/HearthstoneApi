@@ -31,14 +31,19 @@
             android:id="@+id/shopButton"
             android:layout_width="229dp"
             android:layout_height="45dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="80dp"
+            android:layout_marginEnd="8dp"
             android:background="@drawable/shape"
             android:fontFamily="@font/roboto_slab_bold"
             android:text="Market"
             android:textColor="@color/colorText"
             android:textSize="18sp"
             android:textStyle="bold"
-            tools:layout_editor_absoluteX="91dp"
-            tools:layout_editor_absoluteY="191dp" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.503"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
 
         <Button
             android:id="@+id/exchangeButton"

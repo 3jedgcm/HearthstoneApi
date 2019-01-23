@@ -1,36 +1,25 @@
 package fr.coopuniverse.api.pokeapi.activity.activity
 
+import android.net.Uri
 import android.os.Bundle
 import com.google.android.material.navigation.NavigationView
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
 import androidx.core.view.GravityCompat
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import fr.coopuniverse.api.pokeapi.R
 import fr.coopuniverse.api.pokeapi.activity.fragment.*
-import fr.coopuniverse.api.pokeapi.activity.httpRequestManager.Card
-import fr.coopuniverse.api.pokeapi.activity.httpRequestManager.Reponse
-import fr.coopuniverse.api.pokeapi.activity.singleton.Store
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.app_bar_home.*
 import kotlinx.android.synthetic.main.nav_header_home.*
 
 
-
-
-class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, CallBackFragment, CallBackOnClickCard
+class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, CallBackFragment
 {
-    override fun onClickCard(card: Card) {
-        var fragment = CardDetailFragment()
-        fragment.updateCard(card)
-        supportFragmentManager.beginTransaction().replace(R.id.contentHome,fragment).commit()
-    }
+
 
     override fun setFragment(dest: Destination) {
 
@@ -77,6 +66,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         var connectWithField: TextView = header.findViewById(R.id.connectWithField);
         userNameField.text = name
         connectWithField.text = "Connect with " + connectWith
+
 
     }
 

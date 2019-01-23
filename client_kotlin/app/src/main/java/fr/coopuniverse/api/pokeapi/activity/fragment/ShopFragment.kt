@@ -26,8 +26,8 @@ class ShopFragment  : androidx.fragment.app.Fragment(), CallBackDisplay, CallBac
     var recView_Shop: androidx.recyclerview.widget.RecyclerView? = null;
     var anotherView: View? = null
 
-    override fun onClickCard(card: Card) {
-        Log.d("Chaton",card.toString())
+    override fun onClickCard(str: String) {
+        Log.d("Chaton",str.toString())
 
     }
 

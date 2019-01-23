@@ -136,7 +136,7 @@ class CardsListAdapterStore : androidx.recyclerview.widget.RecyclerView.Adapter<
         fun bind(clickListener: CallBackOnClickCard? ): ViewHolder {
 
            // itemView.setOnClickListener {clickListener?.onClickCard(Card())}
-           bBuy.setOnClickListener {clickListener?.onClickCard(Card())}
+           bBuy.setOnClickListener {clickListener?.onClickCard("")}
 
             Log.d("chat","Shop4: ")
             return this

@@ -18,7 +18,7 @@ import fr.coopuniverse.api.pokeapi.activity.httpRequestManager.Card
 import kotlinx.android.synthetic.main.custom_card_view.view.*
 import com.bumptech.glide.module.AppGlideModule
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import fr.coopuniverse.api.pokeapi.activity.data.GlideApp
+import fr.coopuniverse.api.pokeapi.activity.data.MyGlideAppModule
 
 
 class CardsListAdapter : androidx.recyclerview.widget.RecyclerView.Adapter<CardsListAdapter.ViewHolder>{
@@ -86,9 +86,9 @@ class CardsListAdapter : androidx.recyclerview.widget.RecyclerView.Adapter<Cards
 
         val cardsItem = cardsObjectsList!![viewHolder.getAdapterPosition()]
 
-        GlideApp.with(viewHolder.iCardImage)
+        Glide.with(viewHolder.iCardImage)
                 .load(cardsObjectsList!![p1].getImage())
-                .thumbnail(GlideApp
+                .thumbnail(Glide
                         .with(viewHolder.iCardImage)
                         .load(R.drawable.card_default))
                 .into(viewHolder.iCardImage)

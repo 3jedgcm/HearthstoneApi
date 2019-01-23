@@ -29,5 +29,7 @@
     <string name="label_connect_with">Connexion with</string>
     <string name="label_login_or_name">Login or Name</string>
     <string name="content_description">Card</string>
+    <string name="label_price">Price : </string>
+    <string name="label_StateAccount">You have : </string>
 </resources>
 

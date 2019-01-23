@@ -9,23 +9,32 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#000">
+        android:background="@color/colorBackground">
 
-        <Button
-            android:id="@+id/button5"
+        <TextView
+            android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="72dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginBottom="8dp"
-            android:text="quizz"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:fontFamily="@font/roboto_slab_bold"
+            android:text="@string/title_quizz"
+            android:textSize="30sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.502"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/went"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onClick"
+            android:text="One question"
+            tools:layout_editor_absoluteX="131dp"
+            tools:layout_editor_absoluteY="233dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

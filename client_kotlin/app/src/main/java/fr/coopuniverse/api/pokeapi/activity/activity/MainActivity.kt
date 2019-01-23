@@ -211,7 +211,7 @@ class MainActivity : AppCompatActivity(), CallBackDisplay  {
         inventoryIntent.putExtra("url", ud?.urlPicture.toString() )
         startActivityForResult(inventoryIntent, 1)
     }
-//
+
     private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>)
     {
         try

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<scale xmlns:android="http://schemas.android.com/apk/res/android"
+android:drawable="@drawable/card_default"
+android:scaleGravity="center_vertical|center_horizontal"
+android:scaleHeight="5%"
+android:scaleWidth="5%" />

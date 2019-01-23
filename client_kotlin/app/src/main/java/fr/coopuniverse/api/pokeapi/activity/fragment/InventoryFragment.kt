@@ -1,9 +1,6 @@
 package fr.coopuniverse.api.pokeapi.activity.fragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -16,8 +13,6 @@ import fr.coopuniverse.api.pokeapi.activity.adapter.CardsListAdapter
 import fr.coopuniverse.api.pokeapi.activity.httpRequestManager.CallBackGenerator
 import fr.coopuniverse.api.pokeapi.activity.httpRequestManager.Card
 import fr.coopuniverse.api.pokeapi.activity.httpRequestManager.Reponse
-import android.widget.Toast
-
 
 
 
@@ -25,9 +20,20 @@ class InventoryFragment : androidx.fragment.app.Fragment(), CallBackDisplay, Cal
 
     var recView_Inventory: androidx.recyclerview.widget.RecyclerView? = null;
     var anotherView: View? = null;
+    lateinit var cards: ArrayList<Card>;
+    override fun onClickCard(cardId: String) {
+        var fragment = CardDetailFragment()
+        for (c:Card in cards)
+        {
+            if (c.id.equals(cardId))
+           {
+            fragment.updateCard(c)
+            activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.contentHome,fragment)?.commit()
+           }
+        }
 
-    override fun onClickCard(card: Card) {
-        Log.d("Chaton","prout")
+
+
     }
 
     fun onClick(view: View) {
@@ -41,7 +47,7 @@ class InventoryFragment : androidx.fragment.app.Fragment(), CallBackDisplay, Cal
 
 
     override fun display(rep: Reponse, action: String) {
-        var cards = rep.data.cards
+        cards = rep.data.cards
 
         this.recView_Inventory = anotherView!!.findViewById(R.id.recView_Inventory)
         var adapterReclView: CardsListAdapter = CardsListAdapter(cards, targetFragment, this)

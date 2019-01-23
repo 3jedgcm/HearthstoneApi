@@ -12,80 +12,42 @@
         android:layout_height="match_parent"
         tools:background="@color/colorBackground">
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="237dp"
-            android:layout_height="51dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="112dp"
-            android:layout_marginEnd="8dp"
-            android:fontFamily="@font/roboto_slab_bold"
-            android:gravity="center"
-            android:lineSpacingExtra="8sp"
-            android:text="Game Lobby"
-            android:textColor="@color/colorTitleText"
-            android:textSize="36sp"
-            android:textStyle="bold"
-            android:typeface="sans"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <Button
-            android:id="@+id/shopButton"
-            android:layout_width="229dp"
-            android:layout_height="45dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="88dp"
-            android:layout_marginEnd="8dp"
-            android:background="@drawable/shape"
-            android:fontFamily="@font/roboto_slab_bold"
-            android:text="@string/button_craft"
-            android:textColor="@color/colorText"
-            android:textSize="@dimen/textSize"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView" />
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/tabItem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/button_craft" />
 
-        <Button
-            android:id="@+id/meltbutton"
-            android:layout_width="229dp"
-            android:layout_height="45dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="40dp"
-            android:layout_marginEnd="8dp"
-            android:background="@drawable/shape"
-            android:fontFamily="@font/roboto_slab_bold"
-            android:text="@string/button_melt"
-            android:textColor="@color/colorText"
-            android:textSize="@dimen/textSize"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/shopButton" />
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/tabItem2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/button_melt" />
 
-        <Button
-            android:id="@+id/quizzbutton"
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/tabItem3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/button_quizz" />
+        </com.google.android.material.tabs.TabLayout>
 
-            android:layout_width="229dp"
-            android:layout_height="45dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="40dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/shape"
-            android:elevation="2dp"
-            android:fontFamily="@font/roboto_slab_bold"
-            android:text="@string/button_quizz"
-            android:textColor="@color/colorText"
-            android:textSize="@dimen/textSize"
-            android:textStyle="bold"
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/viewer"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/meltbutton"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toBottomOf="@+id/tab_navigation" />
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

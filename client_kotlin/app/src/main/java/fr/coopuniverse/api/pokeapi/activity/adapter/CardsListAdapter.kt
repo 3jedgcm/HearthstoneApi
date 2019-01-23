@@ -8,13 +8,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.GlideBuilder
+import com.bumptech.glide.GlideContext
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
+import com.bumptech.glide.request.RequestOptions
 import fr.coopuniverse.api.pokeapi.R
 import fr.coopuniverse.api.pokeapi.activity.activity.CallBackOnClickCard
 import fr.coopuniverse.api.pokeapi.activity.httpRequestManager.Card
-
-
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import kotlinx.android.synthetic.main.custom_card_view.view.*
+import com.bumptech.glide.module.AppGlideModule
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import fr.coopuniverse.api.pokeapi.activity.data.GlideApp
 
 
 class CardsListAdapter : androidx.recyclerview.widget.RecyclerView.Adapter<CardsListAdapter.ViewHolder>{
@@ -82,11 +86,15 @@ class CardsListAdapter : androidx.recyclerview.widget.RecyclerView.Adapter<Cards
 
         val cardsItem = cardsObjectsList!![viewHolder.getAdapterPosition()]
 
-
-        Glide.with(this.context!!)
+        GlideApp.with(viewHolder.iCardImage)
                 .load(cardsObjectsList!![p1].getImage())
-                .transition(withCrossFade())
+                .thumbnail(GlideApp
+                        .with(viewHolder.iCardImage)
+                        .load(R.drawable.card_default))
                 .into(viewHolder.iCardImage)
+
+
+        viewHolder.iCardImage.contentDescription = cardsObjectsList!![p1].id
 
         val itemLayoutView = viewHolder.itemView
 
@@ -121,7 +129,9 @@ class CardsListAdapter : androidx.recyclerview.widget.RecyclerView.Adapter<Cards
 
         fun bind(clickListener: CallBackOnClickCard? ): ViewHolder {
 
-            itemView.setOnClickListener {clickListener?.onClickCard(Card())}
+            itemView.setOnClickListener {
+                clickListener?.onClickCard(iCardImage.contentDescription.toString())
+            }
             return this
         }
 

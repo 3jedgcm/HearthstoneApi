@@ -7,7 +7,7 @@
     android:background="@color/colorBackground"
     tools:context=".activity.fragment.HomeFragment">
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:background="@color/colorBackground">
@@ -17,11 +17,9 @@
             android:layout_width="237dp"
             android:layout_height="51dp"
             android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
             android:layout_marginTop="112dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:fontFamily="sans-serif"
+            android:fontFamily="@font/roboto_slab_bold"
             android:gravity="center"
             android:lineSpacingExtra="8sp"
             android:text="Game Lobby"
@@ -38,12 +36,11 @@
             android:layout_width="229dp"
             android:layout_height="45dp"
             android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
             android:layout_marginTop="88dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
             android:background="@drawable/shape"
-            android:text="@str"
+            android:fontFamily="@font/roboto_slab_bold"
+            android:text="@string/button_craft"
             android:textColor="@color/colorText"
             android:textSize="@dimen/textSize"
             android:textStyle="bold"
@@ -56,12 +53,11 @@
             android:layout_width="229dp"
             android:layout_height="45dp"
             android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
             android:layout_marginTop="40dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
             android:background="@drawable/shape"
-            android:text="FUSION"
+            android:fontFamily="@font/roboto_slab_bold"
+            android:text="@string/button_melt"
             android:textColor="@color/colorText"
             android:textSize="@dimen/textSize"
             android:textStyle="bold"
@@ -75,14 +71,13 @@
             android:layout_width="229dp"
             android:layout_height="45dp"
             android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
             android:layout_marginTop="40dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
             android:layout_marginBottom="8dp"
             android:background="@drawable/shape"
             android:elevation="2dp"
-            android:text="QUIZZ"
+            android:fontFamily="@font/roboto_slab_bold"
+            android:text="@string/button_quizz"
             android:textColor="@color/colorText"
             android:textSize="@dimen/textSize"
             android:textStyle="bold"
@@ -91,6 +86,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/meltbutton"
             app:layout_constraintVertical_bias="0.0" />
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

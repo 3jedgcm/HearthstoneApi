@@ -2,8 +2,8 @@
 <resources>
     <color name="colorPrimary">#1A237E</color>
     <color name="colorButton">#F9AA33</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#d81b60</color>
+    <color name="colorPrimaryDark">#1A237E</color>
+    <color name="colorAccent">#1A237E</color>
     <color name="colorBackground">#FAFAFA</color>
     <color name="colorText">#232F34</color>
     <color name="colorTitleText">#1A237E</color>

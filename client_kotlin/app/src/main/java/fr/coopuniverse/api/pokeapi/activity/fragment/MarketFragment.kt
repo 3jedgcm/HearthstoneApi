@@ -3,7 +3,7 @@ package fr.coopuniverse.api.pokeapi.activity.fragment
 
 import android.content.Context
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +14,7 @@ import fr.coopuniverse.api.pokeapi.activity.activity.Destination
 import kotlinx.android.synthetic.main.market_fragment.*
 
 
-class MarketFragment : Fragment() {
+class MarketFragment : androidx.fragment.app.Fragment() {
 
     var callback: CallBackFragment? = null
 

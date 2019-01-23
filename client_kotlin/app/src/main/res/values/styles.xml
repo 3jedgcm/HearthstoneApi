@@ -10,6 +10,11 @@
         <item name="android:windowNoTitle">true</item>
     </style>
 
+    <style name="SpecialEditText" parent="Widget.AppCompat.EditText">
+        <item name="colorControlActivated">#dc8f41</item>
+        <item name="colorControlNormal">#d11472</item>
+    </style>
+
     <style name="FacebookLoginButton">
         <item name="android:textSize">@dimen/com_facebook_auth_dialog_corner_radius</item>
         <item name="android:background">@color/com_facebook_button_login_silver_background_color

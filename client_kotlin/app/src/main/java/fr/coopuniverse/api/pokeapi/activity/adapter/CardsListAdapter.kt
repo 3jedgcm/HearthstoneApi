@@ -2,8 +2,8 @@ package fr.coopuniverse.api.pokeapi.activity.adapter
 
 
 import android.content.Context
-import android.support.v4.app.Fragment
-import android.support.v7.widget.RecyclerView
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +15,7 @@ import fr.coopuniverse.api.pokeapi.R
 import fr.coopuniverse.api.pokeapi.activity.activity.CallBackOnClickCard
 import fr.coopuniverse.api.pokeapi.activity.httpRequestManager.Card
 import kotlinx.android.synthetic.main.custom_card_view.view.*
-import kotlinx.android.synthetic.main.fragment_item.view.*
+
 
 
 import java.text.SimpleDateFormat
@@ -24,33 +24,33 @@ import android.graphics.drawable.Drawable
 import com.bumptech.glide.RequestBuilder
 
 
-class CardsListAdapter : RecyclerView.Adapter<CardsListAdapter.ViewHolder>{
+class CardsListAdapter : androidx.recyclerview.widget.RecyclerView.Adapter<CardsListAdapter.ViewHolder>{
 
 
 
     private var cardsObjectsList: ArrayList<Card>? = null
-    private var fragment: Fragment? = null
+    private var fragment: androidx.fragment.app.Fragment? = null
 
     private var context: Context? = null
     private var mListener: CallBackOnClickCard? = null
 
-    private var currentViewHolder: RecyclerView.ViewHolder? = null
+    private var currentViewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder? = null
 
 
-    constructor(comicsObjectsList: ArrayList<Card>, fragment: Fragment) {
+    constructor(comicsObjectsList: ArrayList<Card>, fragment: androidx.fragment.app.Fragment) {
         this.cardsObjectsList = comicsObjectsList
         this.fragment = fragment
 
     }
 
-    constructor(cardsObjectsList: ArrayList<Card>, fragment: Fragment?, listenerOfAdapter: CallBackOnClickCard?) {
+    constructor(cardsObjectsList: ArrayList<Card>, fragment: androidx.fragment.app.Fragment?, listenerOfAdapter: CallBackOnClickCard?) {
         this.cardsObjectsList = cardsObjectsList;
         this.fragment = fragment
         this.mListener = listenerOfAdapter
 
     }
 
-    constructor(context: Context, cardsObjectsList: ArrayList<Card>, cardsFragment: Fragment?, mListener: CallBackOnClickCard?) {
+    constructor(context: Context, cardsObjectsList: ArrayList<Card>, cardsFragment: androidx.fragment.app.Fragment?, mListener: CallBackOnClickCard?) {
 
         this.context = context
         this.cardsObjectsList = cardsObjectsList
@@ -113,7 +113,7 @@ class CardsListAdapter : RecyclerView.Adapter<CardsListAdapter.ViewHolder>{
             0
     }
 
-    inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
+    inner class ViewHolder(val mView: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(mView) {
 
 
         val iCardImage: ImageView = mView.iCard // findViewById(R.id.iCard);

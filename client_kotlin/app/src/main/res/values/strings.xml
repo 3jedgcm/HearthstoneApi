@@ -46,5 +46,8 @@
     <string name="content_description">Card</string>
     <string name="label_price">Price : </string>
     <string name="label_StateAccount">You have : </string>
+
+    <string name="label_answer_quizz">Answer : </string>
+
 </resources>
 

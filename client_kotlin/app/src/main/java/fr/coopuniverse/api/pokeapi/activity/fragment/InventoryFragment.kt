@@ -21,7 +21,7 @@ class InventoryFragment : androidx.fragment.app.Fragment(), CallBackDisplay, Cal
     var recView_Inventory: androidx.recyclerview.widget.RecyclerView? = null;
     var anotherView: View? = null;
     lateinit var cards: ArrayList<Card>;
-    override fun onClickCard(cardId: String) {
+    override fun onClickCard(cardId: String,cost:String) {
         var fragment = CardDetailFragment()
         for (c:Card in cards)
         {

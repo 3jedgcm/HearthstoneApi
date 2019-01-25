@@ -33,6 +33,8 @@ class CardsListAdapter : androidx.recyclerview.widget.RecyclerView.Adapter<Cards
 
     private var currentViewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder? = null
 
+    private var costCard: String?= null
+
 
     constructor(comicsObjectsList: ArrayList<Card>, fragment: androidx.fragment.app.Fragment) {
         this.cardsObjectsList = comicsObjectsList
@@ -95,6 +97,7 @@ class CardsListAdapter : androidx.recyclerview.widget.RecyclerView.Adapter<Cards
 
 
         viewHolder.iCardImage.contentDescription = cardsObjectsList!![p1].id
+        costCard = cardsObjectsList!![p1].cost.toString();
 
         val itemLayoutView = viewHolder.itemView
 
@@ -130,7 +133,7 @@ class CardsListAdapter : androidx.recyclerview.widget.RecyclerView.Adapter<Cards
         fun bind(clickListener: CallBackOnClickCard? ): ViewHolder {
 
             itemView.setOnClickListener {
-                clickListener?.onClickCard(iCardImage.contentDescription.toString())
+                clickListener?.onClickCard(iCardImage.contentDescription.toString(),costCard.toString())
             }
             return this
         }

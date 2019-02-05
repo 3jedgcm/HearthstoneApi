@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.card_detail_fragment.*
 
 class CardDetailFragment : androidx.fragment.app.Fragment() {
 
-    var card: Card? = null;
+    var card: Card? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {

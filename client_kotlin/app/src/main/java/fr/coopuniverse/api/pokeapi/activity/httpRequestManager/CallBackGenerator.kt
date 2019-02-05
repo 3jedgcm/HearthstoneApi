@@ -53,7 +53,7 @@ class CallBackGenerator(
             "GetCardByFilter" -> rep = service.GetCardByFilter(typeFilter!!,valueFilter!!)
             "SetOneCard" -> rep = service.SetOneCard(idUser!!,idCard!!)
             "SetOneMoney" -> rep = service.SetOneMoney(idUser!!, value!!)
-            "SetAnswer" -> rep = service.SetAnswer(idUser!!, answser!!)
+            "SetAnswer" -> rep = service.SetAnswer(answser!!,value!!)
             "ExchangeCards" -> rep = service.ExchangeCards(idUser!!, idUserTwo!!, cardUserOne!!.toString(), cardUserTwo!!.toString())
             "MeltCards" -> rep = service.MeltCards(idUser!!,idCard!!)
             "CraftOneCard" -> rep = service.CraftOneCard(idUser!!,idCardOne!!,idCardTwo!!,idCardThree!!)

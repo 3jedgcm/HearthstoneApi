@@ -2,6 +2,7 @@ package fr.coopuniverse.api.pokeapi.activity.activity
 
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import com.google.android.material.navigation.NavigationView
 import androidx.core.view.GravityCompat
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -20,7 +21,7 @@ import kotlinx.android.synthetic.main.nav_header_home.*
 class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, CallBackFragment
 {
 
-
+    var id: String? = null;
     override fun setFragment(dest: Destination) {
 
         var fragment = when(dest)
@@ -36,7 +37,10 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             Destination.Inventory -> InventoryFragment()
             Destination.CardDetail -> CardDetailFragment()
         }
+        var bundle: Bundle? = Bundle()
+        bundle?.putString("id",id)
 
+        fragment.arguments = bundle
         supportFragmentManager.beginTransaction().replace(R.id.contentHome,fragment).commit()
     }
 
@@ -53,21 +57,21 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
         var name = intent.extras.getString("name")
         var lastname = intent.extras.getString("lastname")
-        var id = intent.extras.getString("id")
+        this.id = intent.extras.getString("id")
         var url = intent.extras.getString("url")
         var connectWith = intent.extras.getString("connectWith")
-
-        supportFragmentManager.beginTransaction().add(R.id.contentHome, HomeFragment()).commit()
-
+        Log.d("Chaton",this.id)
+        var bundle: Bundle? = Bundle()
+        bundle?.putString("id",id)
+        var fr = HomeFragment()
+        fr.arguments = bundle;
+        supportFragmentManager.beginTransaction().add(R.id.contentHome,fr).commit()
         nav_view.setNavigationItemSelectedListener(this)
-
         var header: View = nav_view.getHeaderView(0)
         var userNameField: TextView = header.findViewById(R.id.userNameField);
         var connectWithField: TextView = header.findViewById(R.id.connectWithField);
         userNameField.text = name
         connectWithField.text = "Connect with " + connectWith
-
-
     }
 
     override fun onBackPressed()

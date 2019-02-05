@@ -1,6 +1,11 @@
 <?php
 require_once $_SERVER["DOCUMENT_ROOT"] . "/auto_load.php"; //Inclusion du chargement de tout les fichiers
 
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+header('Content-type: application/json; charset=UTF-8');
+header('Access-Control-Allow-Headers: X-Requested-With');
+
 $errorCode = EXIT_CODE_OK;
 
 $arrayUri = getArrayUri();
@@ -154,7 +159,8 @@ if(!$errorCode)
       {
         $resultat = connect($DAO,$_POST['login'],$_POST['pass'],$_POST['key'],$arrayUri[2]);
         $errorCode = $resultat["error"];
-        $connect = $resultat["connect"];
+        $connect = $resultat["connect"]?true:false;
+        $user = $resultat["connect"];
       }
       else
       {
@@ -341,6 +347,7 @@ function sendHttpRespond($firstArgR,$pDAO,$secondArgR,$pMoney,$pInventory,$pErro
         break;
         case ROUTE_CARD:
         {
+
           $data = $pCard;
         }
         break;
@@ -365,7 +372,7 @@ function sendHttpRespond($firstArgR,$pDAO,$secondArgR,$pMoney,$pInventory,$pErro
     {
       if($firstArgR == ROUTE_CONNECT)
       {
-        echo json_encode(["exitCode"=>$pErrorCode,"connect"=>$pConnect]);
+        echo json_encode(["exitCode"=>$pErrorCode,"connect"=>$pConnect,"user"=>$pUser]);
       }
       else if($firstArgR == ROUTE_OTHER)
       {

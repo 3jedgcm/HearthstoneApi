@@ -109,8 +109,7 @@ class MainActivity : AppCompatActivity(), CallBackDisplay  {
                     override fun onSuccess(loginResult: LoginResult) {
                         val request = GraphRequest.newMeRequest(loginResult.accessToken) { `object`, response ->
                             try {
-                                facebookSignIn(`object`.get("id").toString(),Account(`object`.get("name").toString(),"",`object`.get("id").toString(), "","Facebook"))
-
+                                facebookSignIn(`object`.get("id").toString(),Account(`object`.get("name").toString(),"","",`object`.get("id").toString(), "","Facebook"))
                                 //changeActivity(UserData(`object`.get("id").toString(), `object`.get("name").toString(), ""))
                             } catch (e: JSONException) {e.printStackTrace()}
                         }
@@ -149,7 +148,7 @@ class MainActivity : AppCompatActivity(), CallBackDisplay  {
 
     private fun simpleSignIn()
     {
-        this.account = Account(login?.text.toString(),"","","","simple account")
+        this.account = Account(login?.text.toString(),"","","","","simple account")
         CallBackGenerator(callback = this,action = "Connect",isActivateCallBack = true, login = login?.text.toString() ,pass = pass?.text.toString(), url = "https://api.coopuniverse.fr/").execute()
     }
 
@@ -195,6 +194,7 @@ class MainActivity : AppCompatActivity(), CallBackDisplay  {
         }
         else
         {
+            account?.id = rep.user?.IdUser;
             changeActivity(account)
         }
     }
@@ -219,7 +219,7 @@ class MainActivity : AppCompatActivity(), CallBackDisplay  {
             val acct = completedTask.getResult<ApiException>(ApiException::class.java!!)
             if (acct != null)
             {
-                account = Account(acct.displayName,acct.familyName,acct.id,acct.photoUrl,"Google")
+                account = Account(acct.displayName,acct.familyName,"",acct.id,acct.photoUrl,"Google")
                 this.googleSignIn(acct.id!!)
             }
         } catch (e: ApiException) {}

@@ -34,7 +34,7 @@ class HomeFragment : androidx.fragment.app.Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = SimpleFragmentPagerAdapter(context, activity?.supportFragmentManager!!)
+        val adapter = SimpleFragmentPagerAdapter(context, activity?.supportFragmentManager!!,this.getArguments()?.getString("id")!!)
 
         viewer.adapter = adapter
 

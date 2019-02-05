@@ -1,6 +1,7 @@
 
 
 import android.content.Context
+import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
@@ -10,17 +11,21 @@ import fr.coopuniverse.api.pokeapi.activity.fragment.MeltFragment
 import fr.coopuniverse.api.pokeapi.activity.fragment.QuizzFragment
 
 
-class SimpleFragmentPagerAdapter(private val mContext: Context?, fm: FragmentManager) : FragmentPagerAdapter(fm) {
+class SimpleFragmentPagerAdapter(private val mContext: Context?, fm: FragmentManager,var id: String): FragmentPagerAdapter(fm) {
 
     // This determines the fragment for each tab
     override fun getItem(position: Int): Fragment {
-        return if (position == 0) {
+        var fr: Fragment = if (position == 0) {
             CraftFragment()
         } else if (position == 1) {
             MeltFragment()
         } else{
             QuizzFragment()
         }
+        var b: Bundle = Bundle()
+        b?.putString("id",this.id)
+        fr.arguments = b;
+        return fr;
     }
 
     // This determines the number of tabs

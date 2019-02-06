@@ -1,4 +1,4 @@
-package fr.coopuniverse.api.pokeapi.activity.httpRequestManager
+package fr.coopuniverse.api.pokeapi.activity.data
 
 import java.util.HashMap
 

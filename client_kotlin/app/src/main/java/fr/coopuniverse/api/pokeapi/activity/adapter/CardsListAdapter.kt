@@ -21,6 +21,16 @@ class CardsListAdapter : androidx.recyclerview.widget.RecyclerView.Adapter<Cards
     private var context: Context? = null
     private var mListener: CallBackOnClickCard? = null
     private var currentViewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder? = null
+
+    private var costCard: String?= null
+
+
+    constructor(comicsObjectsList: ArrayList<Card>, fragment: androidx.fragment.app.Fragment) {
+        this.cardsObjectsList = comicsObjectsList
+        this.fragment = fragment
+
+    }
+
     constructor(cardsObjectsList: ArrayList<Card>, fragment: androidx.fragment.app.Fragment?, listenerOfAdapter: CallBackOnClickCard?) {
         this.cardsObjectsList = cardsObjectsList
         this.fragment = fragment
@@ -40,6 +50,19 @@ class CardsListAdapter : androidx.recyclerview.widget.RecyclerView.Adapter<Cards
                         .load(R.drawable.card_default))
                 .into(viewHolder.iCardImage)
         viewHolder.iCardImage.contentDescription = cardsObjectsList!![p1].id
+        costCard = cardsObjectsList!![p1].cost.toString();
+
+        val itemLayoutView = viewHolder.itemView
+
+
+        val lastObject = cardsObjectsList!!.size - 1
+
+        if (p1 == lastObject) {
+            Log.d("debug:", "lastObject=  $p1")
+
+        }
+
+
     }
 
     override fun getItemCount(): Int {
@@ -53,7 +76,7 @@ class CardsListAdapter : androidx.recyclerview.widget.RecyclerView.Adapter<Cards
         val iCardImage: ImageView = mView.iCard // findViewById(R.id.iCard);
         fun bind(clickListener: CallBackOnClickCard? ): ViewHolder {
             itemView.setOnClickListener {
-                clickListener?.onClickCard(iCardImage.contentDescription.toString())
+                clickListener?.onClickCard(iCardImage.contentDescription.toString(),costCard.toString())
             }
             return this
         }

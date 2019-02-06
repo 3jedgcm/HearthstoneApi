@@ -30,6 +30,7 @@ class CardsListAdapterStore : androidx.recyclerview.widget.RecyclerView.Adapter<
 
     private var currentViewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder? = null
 
+    private var costCard: String?= null
 
     constructor(comicsObjectsList: ArrayList<Card>, fragment: androidx.fragment.app.Fragment) {
         this.cardsObjectsList = comicsObjectsList
@@ -85,12 +86,24 @@ class CardsListAdapterStore : androidx.recyclerview.widget.RecyclerView.Adapter<
         val cardsItem = cardsObjectsList!![viewHolder.getAdapterPosition()]
 
 
-
-        Glide.with(this.context!!)
+        Glide.with(viewHolder.iCardImage)
                 .load(cardsObjectsList!![p1].getImage())
+                .thumbnail(Glide
+                .with(viewHolder.iCardImage)
+                .load(R.drawable.card_default))
                 .transition(withCrossFade())
                 .into(viewHolder.iCardImage)
 
+
+        viewHolder.iCardImage.contentDescription = cardsObjectsList!![p1].id
+        viewHolder.bBuy.contentDescription = cardsObjectsList!![p1].id
+        costCard = cardsObjectsList!![p1].cost.toString();
+
+      /*  Glide.with(this.context!!)
+                .load(cardsObjectsList!![p1].getImage())
+                .transition(withCrossFade())
+                .into(viewHolder.iCardImage)
+           */
         val itemLayoutView = viewHolder.itemView
 
 
@@ -106,7 +119,7 @@ class CardsListAdapterStore : androidx.recyclerview.widget.RecyclerView.Adapter<
         val lastObject = cardsObjectsList!!.size - 1
 
         if (p1 == lastObject) {
-         //   Log.d("chat:", "lastObject=  $p1")
+           Log.d("chat:", "lastObject=  $p1")
 
         }
 
@@ -136,7 +149,9 @@ class CardsListAdapterStore : androidx.recyclerview.widget.RecyclerView.Adapter<
         fun bind(clickListener: CallBackOnClickCard? ): ViewHolder {
 
            // itemView.setOnClickListener {clickListener?.onClickCard(Card())}
-           bBuy.setOnClickListener {clickListener?.onClickCard("")}
+
+           bBuy.setOnClickListener {clickListener?.onClickCard(iCardImage.contentDescription.toString(),costCard.toString())}
+
 
             Log.d("chat","Shop4: ")
             return this

@@ -10,6 +10,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import fr.coopuniverse.api.pokeapi.R
+import fr.coopuniverse.api.pokeapi.activity.callback.CallBackFragment
 import fr.coopuniverse.api.pokeapi.activity.data.Account
 import fr.coopuniverse.api.pokeapi.activity.fragment.*
 import kotlinx.android.synthetic.main.activity_home.*
@@ -18,7 +19,7 @@ import kotlinx.android.synthetic.main.app_bar_home.*
 
 class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, CallBackFragment
 {
-    var acc: Account? = Account()
+    private var acc = Account()
 
     override fun setFragment(dest: Destination) {
         var fragment = when(dest)
@@ -47,10 +48,10 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
 
-        var defaultFragment = HomeFragment()
-        var header: View
-        var userNameField: TextView
-        var connectWithField: TextView
+        val defaultFragment = InventoryFragment()
+        val header: View
+        val userNameField: TextView
+        val connectWithField: TextView
 
         this.acc?.name = intent.extras.getString("name")
         this.acc?.surname = intent.extras.getString("lastname")
@@ -88,10 +89,10 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean
     {
-        when (item.itemId)
+        return when (item.itemId)
         {
-            R.id.action_settings -> return true
-            else -> return super.onOptionsItemSelected(item)
+            R.id.action_settings -> true
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
@@ -121,9 +122,9 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return true
     }
 
-    fun getBundle(): Bundle?
+    private fun getBundle(): Bundle?
     {
-        var bundle: Bundle? = Bundle()
+        val bundle: Bundle? = Bundle()
         bundle?.putString("id",acc?.id)
         bundle?.putString("money",acc?.money)
         return bundle

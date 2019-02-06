@@ -3,21 +3,16 @@ package fr.coopuniverse.api.pokeapi.activity.fragment
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.GridLayoutManager
 
 import fr.coopuniverse.api.pokeapi.R
-import fr.coopuniverse.api.pokeapi.activity.activity.CallBackDisplay
-import fr.coopuniverse.api.pokeapi.activity.activity.CallBackOnClickCard
-import fr.coopuniverse.api.pokeapi.activity.adapter.CardsListAdapter
+import fr.coopuniverse.api.pokeapi.activity.callback.CallBackDisplay
+import fr.coopuniverse.api.pokeapi.activity.callback.CallBackOnClickCard
 import fr.coopuniverse.api.pokeapi.activity.adapter.CardsListAdapterStore
 import fr.coopuniverse.api.pokeapi.activity.httpRequestManager.CallBackGenerator
-import fr.coopuniverse.api.pokeapi.activity.httpRequestManager.Card
-import fr.coopuniverse.api.pokeapi.activity.httpRequestManager.Reponse
+import fr.coopuniverse.api.pokeapi.activity.data.Reponse
 import kotlinx.android.synthetic.main.inventory_fragment.*
 
 class ShopFragment  : androidx.fragment.app.Fragment(), CallBackDisplay, CallBackOnClickCard {

@@ -10,8 +10,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import fr.coopuniverse.api.pokeapi.R
-import fr.coopuniverse.api.pokeapi.activity.activity.CallBackOnClickCard
-import fr.coopuniverse.api.pokeapi.activity.httpRequestManager.Card
+import fr.coopuniverse.api.pokeapi.activity.callback.CallBackOnClickCard
+import fr.coopuniverse.api.pokeapi.activity.data.Card
 
 
 import android.widget.Button

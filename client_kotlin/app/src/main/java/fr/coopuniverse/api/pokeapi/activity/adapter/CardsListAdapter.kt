@@ -8,17 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.GlideBuilder
-import com.bumptech.glide.GlideContext
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
-import com.bumptech.glide.request.RequestOptions
 import fr.coopuniverse.api.pokeapi.R
-import fr.coopuniverse.api.pokeapi.activity.activity.CallBackOnClickCard
-import fr.coopuniverse.api.pokeapi.activity.httpRequestManager.Card
+import fr.coopuniverse.api.pokeapi.activity.callback.CallBackOnClickCard
+import fr.coopuniverse.api.pokeapi.activity.data.Card
 import kotlinx.android.synthetic.main.custom_card_view.view.*
-import com.bumptech.glide.module.AppGlideModule
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import fr.coopuniverse.api.pokeapi.activity.data.MyGlideAppModule
 
 
 class CardsListAdapter : androidx.recyclerview.widget.RecyclerView.Adapter<CardsListAdapter.ViewHolder>{

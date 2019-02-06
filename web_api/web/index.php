@@ -160,7 +160,7 @@ if(!$errorCode)
         $resultat = connect($DAO,$_POST['login'],$_POST['pass'],$_POST['key'],$arrayUri[2]);
         $errorCode = $resultat["error"];
         $connect = $resultat["connect"]?true:false;
-        $user = $resultat["connect"];
+        $user = $resultat["connect"]?$resultat["connect"]:json_decode('{}');
       }
       else
       {

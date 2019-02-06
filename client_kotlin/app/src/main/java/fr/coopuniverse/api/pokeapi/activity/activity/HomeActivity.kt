@@ -52,7 +52,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val header: View
         val userNameField: TextView
         val connectWithField: TextView
-
+        this.acc?.money = intent.extras.getString("money")
         this.acc?.name = intent.extras.getString("name")
         this.acc?.surname = intent.extras.getString("lastname")
         this.acc?.id = intent.extras.getString("id")

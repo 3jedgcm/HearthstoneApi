@@ -35,9 +35,8 @@ class QuizzFragment : androidx.fragment.app.Fragment() , CallBackDisplay {
             }
             "GetOneMoney" ->
             {
-                Log.d("Chaton","Get one money " +rep.data.money )
                 this.acc.money = (rep.data.money!!.toInt() - 10).toString()
-                currentMoney.text = this.acc.money
+                currentMoney.text = "You have " + this.acc.money + " golds"
                 if(this.acc.money!!.toInt() >= 0)
                 {
                     info.text = ""
@@ -66,7 +65,7 @@ class QuizzFragment : androidx.fragment.app.Fragment() , CallBackDisplay {
                 if(rep.result == true)
                 {
                     this.acc.money = (this.acc.money!!.toInt() + 20).toString()
-                    currentMoney.text = this.acc.money
+                    currentMoney.text = "You have " + this.acc.money + " golds"
                     info.text = "Bonne reponse ! Vous gagnez 20 Golds"
                     CallBackGenerator(callback = this,action = "SetOneMoney",isActivateCallBack = false,idUser = this.acc.id,value = this.acc.money, url = "https://api.coopuniverse.fr/").execute()
                 }
@@ -88,7 +87,7 @@ class QuizzFragment : androidx.fragment.app.Fragment() , CallBackDisplay {
         this.enableButton()
         this.acc.id = this.getArguments()?.getString("id")!!
         this.acc.money = this.getArguments()?.getString("money")
-        currentMoney.text = this.acc.money
+        currentMoney.text = "You have " + this.acc.money + " golds"
 
         went.setOnClickListener {
             CallBackGenerator(callback = this,action = "GetOneMoney",isActivateCallBack = true,idUser = this.acc.id, url = "https://api.coopuniverse.fr/").execute()

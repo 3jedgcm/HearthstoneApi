@@ -16,11 +16,11 @@ class SimpleFragmentPagerAdapter(private val mContext: Context?, fm: FragmentMan
     override fun getItem(position: Int): Fragment {
 
         var fr: Fragment = if (position == 0) {
-            QuizzFragment()
+            CraftFragment()
         } else if (position == 1) {
             MeltFragment()
         } else{
-            CraftFragment()
+            QuizzFragment()
         }
         var b = Bundle()
         b?.putString("id",this.acc.id)
@@ -34,12 +34,11 @@ class SimpleFragmentPagerAdapter(private val mContext: Context?, fm: FragmentMan
     }
 
     override fun getPageTitle(position: Int): CharSequence? {
-
-        when (position) {
-            0 -> return mContext?.getString(R.string.button_quizz)
-            1 -> return mContext?.getString(R.string.button_melt)
-            2 -> return mContext?.getString(R.string.button_craft)
-            else -> return null
+        return when (position) {
+            0 -> mContext?.getString(R.string.button_craft)
+            1 -> mContext?.getString(R.string.button_melt)
+            2 -> mContext?.getString(R.string.button_quizz)
+            else -> null
         }
     }
 

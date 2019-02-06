@@ -14,13 +14,7 @@ import kotlinx.android.synthetic.main.market_fragment.*
 
 
 class MarketFragment : androidx.fragment.app.Fragment() {
-
     var callback: CallBackFragment? = null
-
-    companion object {
-        fun newInstance() = MarketFragment()
-    }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -30,19 +24,11 @@ class MarketFragment : androidx.fragment.app.Fragment() {
         exchangeButton.setOnClickListener {
             callback?.setFragment(Destination.Exchange  )
         }
-
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.market_fragment, container, false)
-    }
-
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-
     }
 
     override fun onAttach(context: Context?) {

@@ -17,10 +17,6 @@ class CardDetailFragment : androidx.fragment.app.Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-
-
-
-
         return inflater.inflate(R.layout.card_detail_fragment, container, false)
     }
 
@@ -32,11 +28,4 @@ class CardDetailFragment : androidx.fragment.app.Fragment() {
         idCard.text =  "Id: " + this.card?.id
         super.onViewCreated(view, savedInstanceState)
     }
-
-    fun updateCard(card: Card)
-    {
-        this.card = card;
-    }
-
-
 }

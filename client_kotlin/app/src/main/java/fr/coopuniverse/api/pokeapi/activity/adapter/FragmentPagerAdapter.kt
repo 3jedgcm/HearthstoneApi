@@ -16,11 +16,11 @@ class SimpleFragmentPagerAdapter(private val mContext: Context?, fm: FragmentMan
     // This determines the fragment for each tab
     override fun getItem(position: Int): Fragment {
         var fr: Fragment = if (position == 0) {
-            CraftFragment()
+            QuizzFragment()
         } else if (position == 1) {
             MeltFragment()
         } else{
-            QuizzFragment()
+            CraftFragment()
         }
         var b: Bundle = Bundle()
         b?.putString("id",this.id)
@@ -37,9 +37,9 @@ class SimpleFragmentPagerAdapter(private val mContext: Context?, fm: FragmentMan
     override fun getPageTitle(position: Int): CharSequence? {
         // Generate title based on item position
         when (position) {
-            0 -> return mContext?.getString(R.string.button_craft)
+            0 -> return mContext?.getString(R.string.button_quizz)
             1 -> return mContext?.getString(R.string.button_melt)
-            2 -> return mContext?.getString(R.string.button_quizz)
+            2 -> return mContext?.getString(R.string.button_craft)
             else -> return null
         }
     }

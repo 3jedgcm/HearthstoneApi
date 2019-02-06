@@ -39,99 +39,58 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity(), CallBackDisplay  {
 
 
-    lateinit var callbackManager: CallbackManager
-    lateinit var signInFacebookButton: LoginButton
-    var accessToken: AccessToken? = null
+    var callbackManager: CallbackManager? = null
     var account: Account? = null
-    var id: TextView? = null
-    var name: TextView? = null
-    var mail: TextView? = null
-    var isLoggedIn: Boolean = false
-    var test: Button? = null
-    var signInSimpleButton: Button? = null
-    var login: EditText? = null
-    var pass: EditText? = null
-    lateinit var disconnectButton: Button
-    lateinit var signInGoogleButton: GoogleSignInButton
-    lateinit var mGoogleSignInClient: GoogleSignInClient
-    var imageView: ImageView? = null
+    var mGoogleSignInClient: GoogleSignInClient? = null
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        // All findView
-        login = findViewById(R.id.login_field)
-        pass = findViewById(R.id.pass_field)
-        signInGoogleButton = findViewById<View>(R.id.sign_in_google) as GoogleSignInButton
-        signInSimpleButton = findViewById(R.id.sign_in_simple)
-        signInFacebookButton = findViewById(R.id.sign_in_facebook)
-      //  disconnectButton = findViewById(R.id.sign_out)
-
-
-
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build()
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
-//        disconnectButton.isEnabled = false
-        signInGoogleButton.setOnClickListener {
-            googleSignIn()
+        this.mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
+
+        sign_in_google.setOnClickListener {
+            this.googleSignIn()
         }
 
-        signInSimpleButton!!.setOnClickListener {
-
+        sign_in_simple!!.setOnClickListener {
             this.simpleSignIn()
         }
-
-        val account = GoogleSignIn.getLastSignedInAccount(this)
-
         this.callbackManager = CallbackManager.Factory.create()
-        this.signInFacebookButton.setReadPermissions("email")
-        this.signInFacebookButton.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
-            override fun onSuccess(loginResult: LoginResult) {
+        sign_in_facebook.setReadPermissions("email")
+        sign_in_facebook.registerCallback(this.callbackManager, object : FacebookCallback<LoginResult> {
+            override fun onSuccess(result: LoginResult?) {}
 
-            }
+            override fun onCancel() {}
 
-            override fun onCancel() {
-                // App code
-            }
-
-            override fun onError(exception: FacebookException) {
-                // App code
-            }
+            override fun onError(error: FacebookException?) {}
         })
 
 
-        callbackManager = CallbackManager.Factory.create()
-        LoginManager.getInstance().registerCallback(callbackManager,
+        this.callbackManager = CallbackManager.Factory.create()
+        LoginManager.getInstance().registerCallback(this.callbackManager,
                 object : FacebookCallback<LoginResult> {
                     override fun onSuccess(loginResult: LoginResult) {
                         val request = GraphRequest.newMeRequest(loginResult.accessToken) { `object`, response ->
                             try {
-                                facebookSignIn(`object`.get("id").toString(),Account(`object`.get("name").toString(),"","",`object`.get("id").toString(), "","Facebook"))
-                                //changeActivity(UserData(`object`.get("id").toString(), `object`.get("name").toString(), ""))
+                                facebookSignIn(`object`.get("id").toString(),Account(name = `object`.get("name").toString(),id =`object`.get("id").toString(),connectWith = "Facebook"))
                             } catch (e: JSONException) {e.printStackTrace()}
                         }
-
                         val parameters = Bundle()
                         parameters.putString("fields", "id,name,link")
                         request.parameters = parameters
                         request.executeAsync()
                     }
 
-                    override fun onCancel() {
-
-                    }
-                    override fun onError(exception: FacebookException) {
-
-                    }
+                    override fun onCancel() {}
+                    override fun onError(exception: FacebookException) {}
                 })
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
     {
-        callbackManager.onActivityResult(requestCode, resultCode, data)
+        this.callbackManager?.onActivityResult(requestCode, resultCode, data)
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 1)
         {
@@ -142,14 +101,14 @@ class MainActivity : AppCompatActivity(), CallBackDisplay  {
 
     private fun googleSignIn()
     {
-        val signInIntent = mGoogleSignInClient.signInIntent
+        val signInIntent = this.mGoogleSignInClient?.signInIntent
         startActivityForResult(signInIntent, 1)
     }
 
     private fun simpleSignIn()
     {
-        this.account = Account(login?.text.toString(),"","","","","simple account")
-        CallBackGenerator(callback = this,action = "Connect",isActivateCallBack = true, login = login?.text.toString() ,pass = pass?.text.toString(), url = "https://api.coopuniverse.fr/").execute()
+        this.account = Account(name = login_field?.text.toString(), connectWith = "simple account")
+        CallBackGenerator(callback = this,action = "Connect",isActivateCallBack = true, login = login_field?.text.toString() ,pass = pass_field?.text.toString(), url = "https://api.coopuniverse.fr/").execute()
     }
 
     private fun facebookSignIn(id: String, account: Account)
@@ -167,7 +126,6 @@ class MainActivity : AppCompatActivity(), CallBackDisplay  {
 
     override fun display(rep: Reponse,action: String)
     {
-        Log.d("Chaton",rep.toString())
         if(!rep.connect)
         {
         when (action) {
@@ -194,14 +152,14 @@ class MainActivity : AppCompatActivity(), CallBackDisplay  {
         }
         else
         {
-            account?.id = rep.user?.IdUser;
+            account?.id = rep.user?.IdUser
+            account?.money = rep.user?.Money
             changeActivity(account)
         }
     }
 
     private fun changeActivity(ud: Account?)
     {
-        Log.d("Chaton",ud?.name)
         val inventoryIntent = Intent(this, HomeActivity::class.java)
         CallBackGenerator(MainActivity(),false)
         inventoryIntent.putExtra("connectWith", ud?.connectWith )
@@ -209,6 +167,7 @@ class MainActivity : AppCompatActivity(), CallBackDisplay  {
         inventoryIntent.putExtra("lastname", ud?.surname )
         inventoryIntent.putExtra("id", ud?.id )
         inventoryIntent.putExtra("url", ud?.urlPicture.toString() )
+        inventoryIntent.putExtra("money", ud?.money )
         startActivityForResult(inventoryIntent, 1)
     }
 
@@ -219,7 +178,7 @@ class MainActivity : AppCompatActivity(), CallBackDisplay  {
             val acct = completedTask.getResult<ApiException>(ApiException::class.java!!)
             if (acct != null)
             {
-                account = Account(acct.displayName,acct.familyName,"",acct.id,acct.photoUrl,"Google")
+                this.account = Account(name = acct.displayName, surname = acct.familyName,id = acct.id,urlPicture = acct.photoUrl,connectWith = "Google")
                 this.googleSignIn(acct.id!!)
             }
         } catch (e: ApiException) {}

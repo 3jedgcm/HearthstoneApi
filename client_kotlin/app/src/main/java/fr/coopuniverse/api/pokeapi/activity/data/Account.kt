@@ -3,7 +3,15 @@ package fr.coopuniverse.api.pokeapi.activity.data
 import android.net.Uri
 
 
-class Account(var name: String?,var surname: String?,var user: Any?,var id: String?, var urlPicture: Any?, var connectWith: String?) {
+class Account(
+        var name: String? = null,
+        var surname: String? = null,
+        var user: Any? = null,
+        var money: String? = null,
+        var id: String? = null,
+        var urlPicture: Any? = null,
+        var connectWith: String? = null
+) {
 
 
     fun getUserName(): String? {

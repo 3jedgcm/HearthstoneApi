@@ -6,20 +6,20 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import fr.coopuniverse.api.pokeapi.R
-import fr.coopuniverse.api.pokeapi.activity.callback.CallBackOnClickCard
-import fr.coopuniverse.api.pokeapi.activity.data.Card
-
-
+import fr.coopuniverse.api.pokeapi.activity.activity.CallBackOnClickCard
+import fr.coopuniverse.api.pokeapi.activity.httpRequestManager.Card
 import android.widget.Button
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import kotlinx.android.synthetic.main.custom_card_view_shop.view.*
 
 
-class CardsListAdapterStore : androidx.recyclerview.widget.RecyclerView.Adapter<CardsListAdapterStore.ViewHolder>{
+class CardsListAdapterStore : androidx.recyclerview.widget.RecyclerView.Adapter<CardsListAdapterStore.ViewHolder> {
 
 
     private var cardsObjectsList: ArrayList<Card>? = null
@@ -30,7 +30,7 @@ class CardsListAdapterStore : androidx.recyclerview.widget.RecyclerView.Adapter<
 
     private var currentViewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder? = null
 
-    private var costCard: String?= null
+    private var costCard: String? = null
 
     constructor(comicsObjectsList: ArrayList<Card>, fragment: androidx.fragment.app.Fragment) {
         this.cardsObjectsList = comicsObjectsList
@@ -42,7 +42,7 @@ class CardsListAdapterStore : androidx.recyclerview.widget.RecyclerView.Adapter<
         this.cardsObjectsList = cardsObjectsList;
         this.fragment = fragment
         this.mListener = listenerOfAdapter
-        Log.d("chat","Shop5: "+ fragment.toString())
+        Log.d("chat", "Shop5: " + fragment.toString())
 
     }
 
@@ -59,13 +59,13 @@ class CardsListAdapterStore : androidx.recyclerview.widget.RecyclerView.Adapter<
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
 
-        this.context= parent.context;
+        this.context = parent.context;
 
-        Log.d("chat","Shop6: "+ this.context )
-        var itemLayoutView:View ;
+        Log.d("chat", "Shop6: " + this.context)
+        var itemLayoutView: View;
 
 
-        Log.d("chat","Shop2: " )
+        Log.d("chat", "Shop2: ")
         itemLayoutView = LayoutInflater.from(parent.context).inflate(R.layout.custom_card_view_shop, parent, false)
 
 
@@ -80,7 +80,7 @@ class CardsListAdapterStore : androidx.recyclerview.widget.RecyclerView.Adapter<
 
     override fun onBindViewHolder(viewHolder: ViewHolder, p1: Int) {
 
-        Log.d("chat","Shop2.1: "  )
+        Log.d("chat", "Shop2.1: ")
 
 
         val cardsItem = cardsObjectsList!![viewHolder.getAdapterPosition()]
@@ -89,8 +89,8 @@ class CardsListAdapterStore : androidx.recyclerview.widget.RecyclerView.Adapter<
         Glide.with(viewHolder.iCardImage)
                 .load(cardsObjectsList!![p1].getImage())
                 .thumbnail(Glide
-                .with(viewHolder.iCardImage)
-                .load(R.drawable.card_default))
+                        .with(viewHolder.iCardImage)
+                        .load(R.drawable.card_default))
                 .transition(withCrossFade())
                 .into(viewHolder.iCardImage)
 
@@ -99,11 +99,11 @@ class CardsListAdapterStore : androidx.recyclerview.widget.RecyclerView.Adapter<
         viewHolder.bBuy.contentDescription = cardsObjectsList!![p1].id
         costCard = cardsObjectsList!![p1].cost.toString();
 
-      /*  Glide.with(this.context!!)
-                .load(cardsObjectsList!![p1].getImage())
-                .transition(withCrossFade())
-                .into(viewHolder.iCardImage)
-           */
+        /*  Glide.with(this.context!!)
+                  .load(cardsObjectsList!![p1].getImage())
+                  .transition(withCrossFade())
+                  .into(viewHolder.iCardImage)
+             */
         val itemLayoutView = viewHolder.itemView
 
 
@@ -111,15 +111,13 @@ class CardsListAdapterStore : androidx.recyclerview.widget.RecyclerView.Adapter<
         txtCost = cardsObjectsList!![p1].cost.toString()
 
 
-        viewHolder.tPrice.text= this.context!!.getString(R.string.label_price) +  txtCost;
-
-
+        viewHolder.tPrice.text = this.context!!.getString(R.string.label_price) + txtCost;
 
 
         val lastObject = cardsObjectsList!!.size - 1
 
         if (p1 == lastObject) {
-           Log.d("chat:", "lastObject=  $p1")
+            Log.d("chat:", "lastObject=  $p1")
 
         }
 
@@ -137,23 +135,21 @@ class CardsListAdapterStore : androidx.recyclerview.widget.RecyclerView.Adapter<
     inner class ViewHolder(val mView: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(mView) {
 
 
-
-       val tPrice:TextView = mView.findViewById(R.id.tPrice) ;
-       val bBuy:Button =mView.findViewById(R.id.bBuy);
-
+        val tPrice: TextView = mView.findViewById(R.id.tPrice);
+        val bBuy: Button = mView.findViewById(R.id.bBuy);
 
 
-       val iCardImage: ImageView = mView.iCardStore // findViewById(R.id.iCard);
+        val iCardImage: ImageView = mView.iCardStore // findViewById(R.id.iCard);
 
 
-        fun bind(clickListener: CallBackOnClickCard? ): ViewHolder {
+        fun bind(clickListener: CallBackOnClickCard?): ViewHolder {
 
-           // itemView.setOnClickListener {clickListener?.onClickCard(Card())}
+            // itemView.setOnClickListener {clickListener?.onClickCard(Card())}
 
-           bBuy.setOnClickListener {clickListener?.onClickCard(iCardImage.contentDescription.toString(),costCard.toString())}
+            bBuy.setOnClickListener { clickListener?.onClickCard(iCardImage.contentDescription.toString(), costCard.toString()) }
 
 
-            Log.d("chat","Shop4: ")
+            Log.d("chat", "Shop4: ")
             return this
         }
 

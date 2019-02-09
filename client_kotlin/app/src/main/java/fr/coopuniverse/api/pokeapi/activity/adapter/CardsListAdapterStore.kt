@@ -96,7 +96,7 @@ class CardsListAdapterStore : androidx.recyclerview.widget.RecyclerView.Adapter<
 
         viewHolder.iCardImage.contentDescription = cardsObjectsList!![p1].id
         viewHolder.bBuy.contentDescription = cardsObjectsList!![p1].id
-        costCard = cardsObjectsList!![p1].cost.toString();
+        costCard = cardsObjectsList!![p1].getMoneyByTypeCard().toString() //cardsObjectsList!![p1].cost.toString();
 
         /*  Glide.with(this.context!!)
                   .load(cardsObjectsList!![p1].getImage())
@@ -107,7 +107,7 @@ class CardsListAdapterStore : androidx.recyclerview.widget.RecyclerView.Adapter<
 
 
         var txtCost: String = ""
-        txtCost = cardsObjectsList!![p1].cost.toString()
+        txtCost = cardsObjectsList!![p1].getMoneyByTypeCard().toString()// cardsObjectsList!![p1].cost.toString()
 
 
         viewHolder.tPrice.text = this.context!!.getString(R.string.label_price) + txtCost;

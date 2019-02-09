@@ -41,6 +41,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/label_StateAccount"
                 android:textColor="@android:color/white"
+                android:textSize="24sp"
                 tools:layout_editor_absoluteX="84dp"
                 tools:layout_editor_absoluteY="372dp" />
 
@@ -50,6 +51,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/label_StateAccount"
                 android:textColor="@android:color/white"
+                android:textSize="24sp"
                 tools:layout_editor_absoluteX="84dp"
                 tools:layout_editor_absoluteY="421dp" />
         </LinearLayout>

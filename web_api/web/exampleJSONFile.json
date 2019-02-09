@@ -1,25 +1,18 @@
-  GET("parameter") -
-  GET("money/{idUser}") -
-  GET("money") -
-  GET("user/{idUser}") -
-  GET("user") -
-  GET("card/{idUser}")
-  GET("card")
-  GET("card/random") -
-  GET("card?filter={TYPE_FILTER}&value_filter={VALUE_FILTER}") -
-  GET("inventory/{idUser}") -
-  GET("other/quizz") -
-  DELETE("inventory/{idUser}")
-  DELETE("inventory/{idUser}/{idCard}")
-
-  POST("money/{idUser}")                                           KEY = value
-  POST("inventory/{idUser}")                                       KEY = idCard
-  POST("inventory/exchange")                                       KEY = idUserOne KEY = cardUserOne KEY = idUserTwo  KEY = cardUserTwo
-  POST("other/meltCard/{idUser}")                                  KEY = idCard
-  POST("other/craftCard/{idUser}")                                 KEY = idCardOne KEY = idCardTwo KEY = idCardThree
-  POST("other/quizz")                                              KEY = answer KEY = question
-  POST("register")                                                 KEY = login KEY = pass
-  POST("register/facebook")                                        KEY = key
-  POST("connect")                                                  KEY = login KEY = pass
-  POST("connect/google")                                           KEY = key
-  POST("connect/facebook")                                         KEY = key
+  @GET("parameter")
+  @GET("money/{idUser}")
+  @GET("money")
+  @GET("user/{idUser}")
+  @GET("user")
+  @GET("card")
+  @GET("card/random")
+  @GET("card?filter={TYPE_FILTER}&value_filter={VALUE_FILTER}")
+  @GET("inventory/{idUser}")
+  @DELETE("inventory/{idUser}")
+  @DELETE("inventory/{idUser}/{idCard}")
+  @GET("other/quizz")
+  @POST("money/{idUser}")                                           KEY = value
+  @POST("inventory/{idUser}")                                       KEY = idCard
+  @POST("inventory/exchange")                                       KEY = idUserOne KEY = cardUserOne KEY = idUserTwo  KEY = cardUserTwo
+  @POST("other/meltCard/{idUser}")                                  KEY = idCard
+  @POST("other/craftCard/{idUser}")                                 KEY = idCardOne KEY = idCardTwo KEY = idCardThree
+  @POST("other/quizz")                                              KEY = answer KEY = question

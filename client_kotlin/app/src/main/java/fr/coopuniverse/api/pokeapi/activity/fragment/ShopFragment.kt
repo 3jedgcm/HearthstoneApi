@@ -159,7 +159,7 @@ class ShopFragment : androidx.fragment.app.Fragment(), CallBackDisplay, CallBack
         var txt = tCredits!!.text.toString();
         var txtCredit = " credits ";
         textView.text = txt + " " + text + txtCredit;
-        return inflater.inflate(R.layout.inventory_fragment, container, false)
+
     }
 
     fun setTextCards(text: String) {

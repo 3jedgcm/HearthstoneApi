@@ -1,6 +1,7 @@
 package fr.coopuniverse.api.pokeapi.activity.httpRequestManager
 
-import java.util.HashMap
+import android.util.Log
+import java.util.*
 
 
 class Card {
@@ -14,10 +15,11 @@ class Card {
     var health: Int = 0
     var attack: Int = 0
     var text: String? = null
-    var type: String? = null
-    var rarity: String? = null
+    var type: String? = null //important  pour classification de prix
+    var rarity: String? = null //pour classification de prix
+    var money: String? = null
 
-    private var image:String? = null
+    private var image: String? = null
 
     private val additionalProperties = HashMap<String, Any>()
 
@@ -32,11 +34,37 @@ class Card {
     }
 
 
-    fun getImage():String {
+    fun getImage(): String {
 
         var url: String = "https://art.hearthstonejson.com/v1/render/latest/frFR/512x/"
         this.image = url + id + ".png"
         return image as String
+    }
+
+    fun getMoneyByTypeCard(): Int {
+
+        var money: Int = 0
+        var strRarity = "NULL"
+        if (this.rarity != null) {
+            strRarity = this.rarity.toString()
+        }
+
+        var strTypeRarity = (this.type + "_" + strRarity).toString().toUpperCase()
+
+        Log.d("Moneytype", this.type + "_" + this.rarity)
+
+        var moneyTypeInt = Money.valueOf(strTypeRarity).getValueMoney();
+
+        var moneyType = Money.valueOf(strTypeRarity)
+
+
+        Log.d("Moneytype2", moneyType.getRarityCard() + "/ " + moneyType.getTypeCard())
+        if (this.type != null && moneyType != null) {
+            money = moneyType.getValueMoney()
+        }
+
+        return money
+
     }
 
     override fun toString(): String {

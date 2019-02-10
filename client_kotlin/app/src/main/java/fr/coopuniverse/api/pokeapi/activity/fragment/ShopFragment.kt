@@ -35,7 +35,7 @@ class ShopFragment : androidx.fragment.app.Fragment(), CallBackDisplay, CallBack
     var flagUpdateListofItems = true
     private var acc: Account = Account()
 
-    override fun onClickCard(idCard: String, cost: Int) {
+    override fun onClickCard(idCard: String, cost: Int,costStr:String) {
         Log.d("Chaton", idCard.toString())
         _cost = cost
         _idCard = idCard

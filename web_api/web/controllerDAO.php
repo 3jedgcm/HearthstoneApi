@@ -462,7 +462,7 @@ function setAnswer($pDAO,$idUser,$hashAnswer,$question)  //Non Fonctionnel
 function getInventory($pDAO,$pIdUser) //100%
 {
   $resultat["error"] = EXIT_CODE_OK;
-  $resultat["inventory"]=  $pDAO["Inventory"]->getAllCardByUserId($pIdUser);
+  $resultat["inventory"]=  $pDAO["Inventory"]->getAllCardByUserId($pDAO,$pIdUser);
   return $resultat;
 }
 

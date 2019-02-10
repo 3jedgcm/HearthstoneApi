@@ -14,9 +14,11 @@ class MarketPagerAdapter(private val mContext: Context?, fm: FragmentManager, va
     override fun getItem(position: Int): Fragment {
 
         var fr: Fragment = if (position == 0) {
-            ShopFragment()
-        } else {
             ExchangeFragment()
+        } else if (position == 1) {
+            ShopFragment()
+        } else{
+            ShopFragment()
         }
         var b = Bundle()
         b?.putString(mContext?.getString(R.string.idUser),this.acc.id)
@@ -26,13 +28,14 @@ class MarketPagerAdapter(private val mContext: Context?, fm: FragmentManager, va
     }
 
     override fun getCount(): Int {
-        return 2
+        return 3
     }
 
     override fun getPageTitle(position: Int): CharSequence? {
         return when (position) {
-            0 -> mContext?.getString(R.string.button_market)
+            0 -> mContext?.getString(R.string.button_exchange)
             1 -> mContext?.getString(R.string.button_exchange)
+            2 -> mContext?.getString(R.string.button_market)
             else -> null
         }
     }

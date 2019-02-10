@@ -51,50 +51,23 @@ enum class Money(  var type: String, var rarity: String, var valueCard: Int)
 
 
    fun Money(  type: String,  rarity: String,  valueCard: Int){
-
         this.type = type
         this.rarity = rarity
         this.valueCard = valueCard
-
     }
   fun getTypeCard():String {
-
         return this.type
     }
 
     fun getNameOfEnum():String {
-
         return this.name
     }
 
     fun getRarityCard():String {
-
         return this.rarity
     }
 
     fun getValueMoney():Int {
-
         return this.valueCard
     }
-
-
-
 }
-
-
-   /*  Type de carte :
-
-             "HERO_POWER":
-             "MINION"
-             "SPELL"
-             "HERO"
-
-             "HERO" -> 100 GOLD
-
-     SPELL WITH RARITY -> null -> 250
-                       common -> 25 rare -> 50 epic -> 75 legendary -> 100
-     MINION WITH RARITY -> null
-                       -> 250 common -> 25 rare -> 50 epic -> 75 legendary -> 100
-             "HERO_POWER": 150
-
- */

@@ -2,13 +2,11 @@ package fr.coopuniverse.api.pokeapi.activity.fragment
 
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
-import androidx.recyclerview.widget.RecyclerView
 import fr.coopuniverse.api.pokeapi.R
 import fr.coopuniverse.api.pokeapi.activity.adapter.CardsListAdapterStore
 import fr.coopuniverse.api.pokeapi.activity.callback.CallBackDisplay
@@ -22,33 +20,28 @@ import kotlinx.android.synthetic.main.inventory_fragment.*
 
 class ShopFragment : androidx.fragment.app.Fragment(), CallBackDisplay, CallBackOnClickCard {
 
-
-    var recView_Shop: androidx.recyclerview.widget.RecyclerView? = null;
-    var anotherView: View? = null
-    var tCredits: TextView? = null
-    var tCards: TextView? = null
-    var _idUser = "23"
-    var _cost = 0
-    var _idCard = "N/A"
-    var userCards_total = 0
-    var userMoney_total = 0
-    var flagUpdateListofItems = true
-    private var acc: Account = Account()
+    private var tCredits: TextView? = null
+    private var tCards: TextView? = null
+    private var cost = 0
+    private var idCard = "N/A"
+    private var userCards_total = 0
+    private var userMoney_total = 0
+    private var flagUpdateListofItems = true
+    private var acc = Account()
 
     override fun onClickCard(idCard: String, cost: Int,costStr:String) {
-        Log.d("Chaton", idCard.toString())
-        _cost = cost
-        _idCard = idCard
-        if (_idCard != null) {
-            if (this.userMoney_total < _cost) {
+        this.cost = cost
+        this.idCard = idCard
+        if (this.idCard != null) {
+            if (this.userMoney_total < this.cost) {
                 Toast.makeText(context, "Attention: Your Credit is insufficient! The operation canceled", Toast.LENGTH_LONG).show()
                 return
-            } else if (this.userMoney_total == _cost) {
+            } else if (this.userMoney_total == this.cost) {
                 Toast.makeText(context, "Attention: Your will use all your Credit! ", Toast.LENGTH_LONG).show()
             }
             this.userCards_total++
             setTextCards(this.userCards_total.toString())
-            CallBackGenerator(callback = this, action = "SetOneCard", isActivateCallBack = true, idUser = _idUser, idCard = idCard, url = "https://api.coopuniverse.fr/").execute()
+            CallBackGenerator(callback = this, action = "SetOneCard", isActivateCallBack = true, idUser = this.acc.id, idCard = idCard, url = "https://api.coopuniverse.fr/").execute()
         }
     }
 
@@ -56,28 +49,23 @@ class ShopFragment : androidx.fragment.app.Fragment(), CallBackDisplay, CallBack
 
         var data: ArrayList<Card>? = null
         var money: String? = null
-        var user: Int? = null
-        var question: ArrayList<Any>? = null
-        var userCards: ArrayList<String>? = null
+        var userCards: ArrayList<Card>? = null
         if (rep != null && rep.data != null) {
             data = rep.data.cards
             money = rep.data.money
-            user = rep.data.user
-            question = rep.data.question
             userCards = rep.data.inventory
         }
 
         when (action) {
             "GetAllCard" -> {
-                var adapterReclViewcard: CardsListAdapterStore = CardsListAdapterStore(data, targetFragment, this)
+                var adapterReclViewcard = CardsListAdapterStore(data, targetFragment, this)
                 recView_Inventory?.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this.context)
                 recView_Inventory?.adapter = adapterReclViewcard
             }
             "GetOneMoney" -> {
                 if (money != null) {
-                    var _money = money.toString()
-                    if (_money.toIntOrNull() != null) {
-                        this.userMoney_total = _money.toIntOrNull()!!
+                    if (money.toIntOrNull() != null) {
+                        this.userMoney_total = money.toIntOrNull()!!
                     }
                     setTextCredits(money.toString())
                 }
@@ -86,8 +74,6 @@ class ShopFragment : androidx.fragment.app.Fragment(), CallBackDisplay, CallBack
             "GetCardByUserId" -> {
                 if (userCards != null) {
                     var userCardsCount = userCards.size
-
-
                     if (userCards != null) {
                         this.userCards_total = userCardsCount
                     }
@@ -100,12 +86,12 @@ class ShopFragment : androidx.fragment.app.Fragment(), CallBackDisplay, CallBack
                 }
             }
             "SetOneMoney" -> {
-                if (_cost != null) {
+                if (this.cost != null) {
                     flagUpdateListofItems = false
                 }
             }
             "SetOneCard" -> {
-                this.userMoney_total = this.userMoney_total.minus(_cost)
+                this.userMoney_total = this.userMoney_total.minus(this.cost)
                 setTextCredits(this.userMoney_total.toString())
                 CallBackGenerator(callback = this, action = "SetOneMoney", isActivateCallBack = true, idUser = this.acc.id, value = userMoney_total.toString(), url = "https://api.coopuniverse.fr/").execute()
             }

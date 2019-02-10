@@ -9,7 +9,7 @@ class InventoryDAO extends DAO {
       return ["inventory"=>$row];
     }
 
-    public function getAllCardByUserId($pIdUser)
+    public function getAllCardByUserId($pDAO,$pIdUser)
     {
       $stmt = $this->pdo->prepare("SELECT * FROM Inventory WHERE idUser = ?");
       $stmt->execute(array($pIdUser));
@@ -17,6 +17,15 @@ class InventoryDAO extends DAO {
       {
         $result[] = $row['idCard'];
       }
+
+      return $pDAO["Card"]->getCardsByArrayId($result);
+
+
+      $result = false;
+
+
+
+
       return $result;
     }
 

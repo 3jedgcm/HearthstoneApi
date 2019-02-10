@@ -6,7 +6,6 @@ class CardAPI {
 
   public function getOne($id_card)
   {
-
     $cards = $this->getApiJson();
     foreach($cards as $card)
     {
@@ -14,10 +13,29 @@ class CardAPI {
       {
         return ["cards" => $card];
       }
-
     }
     return null;
   }
+
+  public function getCardsByArrayId($array_id)
+  {
+    $cards = $this->getApiJson();
+    $userCards = [];
+    foreach((array)$array_id as $idCard)
+    {
+      foreach($cards as $card)
+      {
+        if($card["id"] == $idCard)
+        {
+          $userCards[] = $card;
+          break;
+        }
+      }
+    }
+    return $userCards;
+  }
+
+
 
   public function getAll()
   {
@@ -26,12 +44,15 @@ class CardAPI {
 
   public function getAllByFilter($typeFilter,$valuefilter)
   {
-
-    return array_filter($this->getApiJson(), function($card) use($typeFilter,$valuefilter)
+    $temp = array_filter($this->getApiJson(), function($card) use($typeFilter,$valuefilter)
     {
-
-      return strpos($card[$typeFilter], $valuefilter) !== false;
+      return strpos(strtoupper($card[$typeFilter]), strtoupper($valuefilter)) !== false;
     });
+    foreach($temp as $element)
+    {
+      $tempArray[] = $element;
+    }
+    return ["cards"=>$tempArray];
   }
 
   public function getRandomCard()

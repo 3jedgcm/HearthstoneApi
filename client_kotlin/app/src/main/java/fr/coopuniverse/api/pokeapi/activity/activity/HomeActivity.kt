@@ -52,10 +52,10 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val header: View
         val userNameField: TextView
         val connectWithField: TextView
-        this.acc?.money = intent.extras.getString(this.getString(R.string.idMoney))
+        this.acc?.money = intent.extras.getString("money")
         this.acc?.name = intent.extras.getString("name")
         this.acc?.surname = intent.extras.getString("lastname")
-        this.acc?.id = intent.extras.getString(this.getString(R.string.idUser))
+        this.acc?.id = intent.extras.getString("id")
         this.acc?.urlPicture = intent.extras.getString("url")
         this.acc?.connectWith = intent.extras.getString("connectWith")
 
@@ -125,8 +125,8 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun getBundle(): Bundle?
     {
         val bundle: Bundle? = Bundle()
-        bundle?.putString(this.getString(R.string.idUser),acc?.id)
-        bundle?.putString(this.getString(R.string.idMoney),acc?.money)
+        bundle?.putString("id",acc?.id)
+        bundle?.putString("money",acc?.money)
         return bundle
     }
 }

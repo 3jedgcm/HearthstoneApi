@@ -1,7 +1,8 @@
 package fr.coopuniverse.api.pokeapi.activity.httpRequestManager
 
-enum class Money(var type: String, var rarity: String, var valueCard: Int)
+enum class Money(  var type: String, var rarity: String, var valueCard: Int)
 {
+
 
     HERO_NULL("HERO", "NULL", 250),
     HERO_COMMON("HERO", "COMMON", 25),
@@ -50,6 +51,7 @@ enum class Money(var type: String, var rarity: String, var valueCard: Int)
 
 
    fun Money(  type: String,  rarity: String,  valueCard: Int){
+
         this.type = type
         this.rarity = rarity
         this.valueCard = valueCard
@@ -58,6 +60,11 @@ enum class Money(var type: String, var rarity: String, var valueCard: Int)
   fun getTypeCard():String {
 
         return this.type
+    }
+
+    fun getNameOfEnum():String {
+
+        return this.name
     }
 
     fun getRarityCard():String {
@@ -70,22 +77,24 @@ enum class Money(var type: String, var rarity: String, var valueCard: Int)
         return this.valueCard
     }
 
-    /*  Type de carte :
-
-              "HERO_POWER":
-              "MINION"
-              "SPELL"
-              "HERO"
-
-              "HERO" -> 100 GOLD
-
-      SPELL WITH RARITY -> null -> 250
-                        common -> 25 rare -> 50 epic -> 75 legendary -> 100
-      MINION WITH RARITY -> null
-                        -> 250 common -> 25 rare -> 50 epic -> 75 legendary -> 100
-              "HERO_POWER": 150
-
-  */
 
 
 }
+
+
+   /*  Type de carte :
+
+             "HERO_POWER":
+             "MINION"
+             "SPELL"
+             "HERO"
+
+             "HERO" -> 100 GOLD
+
+     SPELL WITH RARITY -> null -> 250
+                       common -> 25 rare -> 50 epic -> 75 legendary -> 100
+     MINION WITH RARITY -> null
+                       -> 250 common -> 25 rare -> 50 epic -> 75 legendary -> 100
+             "HERO_POWER": 150
+
+ */

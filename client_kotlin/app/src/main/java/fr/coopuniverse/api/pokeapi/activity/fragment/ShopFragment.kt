@@ -37,7 +37,7 @@ class ShopFragment : androidx.fragment.app.Fragment(), CallBackDisplay, CallBack
     var flagUpdateListofItems: Boolean = true
 
 
-    override fun onClickCard(idCard: String, cost: Int) {
+    override fun onClickCard(idCard: String, cost: Int,costStr:String) {
         Log.d("Chaton", idCard.toString())
         _cost = cost;
         _idCard = idCard;
@@ -132,7 +132,6 @@ class ShopFragment : androidx.fragment.app.Fragment(), CallBackDisplay, CallBack
                     //Toast.makeText(context, _cost.toString(), Toast.LENGTH_LONG).show()
                     // this.userMoney_total= this.userMoney_total - _cost.
 
-
                     //update status of cardsNb et Money of user without reloading of List of items
                     flagUpdateListofItems = false
                     // getUserData()
@@ -162,7 +161,7 @@ class ShopFragment : androidx.fragment.app.Fragment(), CallBackDisplay, CallBack
         tCredits = inflater.inflate(R.layout.inventory_fragment, container, false).findViewById(R.id.tCredits);
         tCards = inflater.inflate(R.layout.inventory_fragment, container, false).findViewById(R.id.tCards)
 
-        //on execute trois requetes , comment les mettre en ordre  pour qu'un ne derrange à l'autre de recuperer les results ?
+        //on execute trois requetes , comment les mettre en ordre  pour qu'une ne derrange à l'autre de recuperer les results ?
         // CallBackGenerator(callback = this,action = "GetAllCard",isActivateCallBack = true, url = "https://api.coopuniverse.fr/").execute()
         getUserData();
         // CallBackGenerator(callback = this,action = "GetOneMoney",isActivateCallBack = true, idUser="23", url = "https://api.coopuniverse.fr/").execute()

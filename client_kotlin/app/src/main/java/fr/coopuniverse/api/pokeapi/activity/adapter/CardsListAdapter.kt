@@ -76,7 +76,7 @@ class CardsListAdapter : androidx.recyclerview.widget.RecyclerView.Adapter<Cards
         val iCardImage: ImageView = mView.iCard // findViewById(R.id.iCard);
         fun bind(clickListener: CallBackOnClickCard? ): ViewHolder {
             itemView.setOnClickListener {
-                clickListener?.onClickCard(iCardImage.contentDescription.toString(),costCard)
+                clickListener?.onClickCard(iCardImage.contentDescription.toString(),costCard,iCardImage.contentDescription.toString())
             }
             return this
         }

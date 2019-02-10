@@ -90,6 +90,7 @@ class MainActivity : AppCompatActivity(), CallBackDisplay {
     }
 
     private fun simpleSignIn() {
+        sign_in_simple.isEnabled = false
         this.account = Account(name = login_field?.text.toString(), connectWith = this.getString(R.string.simple))
         CallBackGenerator(callback = this, action = "Connect", isActivateCallBack = true, login = login_field?.text.toString(), pass = pass_field?.text.toString(), url = this.getString(R.string.url)).execute()
     }
@@ -105,22 +106,19 @@ class MainActivity : AppCompatActivity(), CallBackDisplay {
 
 
     override fun display(rep: Reponse, action: String) {
+        sign_in_simple.isEnabled = true
         if (!rep.connect) {
             when (action) {
                 "ConnectFacebook" -> {
-                    Log.d("Chaton", "No account - register with Facebook")
                     CallBackGenerator(callback = this, action = "RegisterFacebook", isActivateCallBack = true, key = rep.id, url = this.getString(R.string.url)).execute()
                 }
                 "ConnectGoogle" -> {
-                    Log.d("Chaton", "No account - Register with Google")
                     CallBackGenerator(callback = this, action = "RegisterGoogle", isActivateCallBack = true, key = rep.id, url = this.getString(R.string.url)).execute()
                 }
                 "RegisterGoogle" -> {
-                    Log.d("Chaton", "Connect with Google")
                     CallBackGenerator(callback = this, action = "ConnectGoogle", isActivateCallBack = true, key = rep.id, url = this.getString(R.string.url)).execute()
                 }
                 "RegisterFacebook" -> {
-                    Log.d("Chaton", "Connect with Facebook")
                     CallBackGenerator(callback = this, action = "ConnectFacebook", isActivateCallBack = true, key = rep.id, url = this.getString(R.string.url)).execute()
                 }
                 "Connect" -> {

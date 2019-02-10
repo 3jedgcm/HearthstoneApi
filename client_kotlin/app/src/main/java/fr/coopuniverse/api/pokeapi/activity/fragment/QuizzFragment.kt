@@ -27,7 +27,7 @@ class QuizzFragment : androidx.fragment.app.Fragment() , CallBackDisplay {
                 answer.text = rep.data.question[0].toString()
                 this.hashAnswer = rep.data.question[2] as String
                 var reps: ArrayList<String> = rep.data.question[1] as ArrayList<String>
-                this.disableButton()
+
                 reponse_one.text = reps[0]
                 reponse_two.text = reps[1]
                 reponse_three.text = reps[2]
@@ -90,6 +90,7 @@ class QuizzFragment : androidx.fragment.app.Fragment() , CallBackDisplay {
 
 
         went.setOnClickListener {
+            this.disableButton()
             CallBackGenerator(callback = this,action = "GetOneMoney",isActivateCallBack = true,idUser = this.acc.id, url = this.activity?.getString(R.string.url)).execute()
         }
         reponse_one.setOnClickListener {

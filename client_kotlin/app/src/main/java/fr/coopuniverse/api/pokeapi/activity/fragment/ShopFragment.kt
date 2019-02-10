@@ -10,11 +10,12 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import fr.coopuniverse.api.pokeapi.R
+import fr.coopuniverse.api.pokeapi.activity.adapter.CardsListAdapterStore
 import fr.coopuniverse.api.pokeapi.activity.callback.CallBackDisplay
 import fr.coopuniverse.api.pokeapi.activity.callback.CallBackOnClickCard
-import fr.coopuniverse.api.pokeapi.activity.adapter.CardsListAdapterStore
-import fr.coopuniverse.api.pokeapi.activity.httpRequestManager.CallBackGenerator
+import fr.coopuniverse.api.pokeapi.activity.data.Card
 import fr.coopuniverse.api.pokeapi.activity.data.Reponse
+import fr.coopuniverse.api.pokeapi.activity.httpRequestManager.CallBackGenerator
 import kotlinx.android.synthetic.main.inventory_fragment.*
 
 
@@ -26,35 +27,59 @@ class ShopFragment : androidx.fragment.app.Fragment(), CallBackDisplay, CallBack
     var tCredits: TextView? = null  //credit/money par user
     var tCards: TextView? = null //nb cards par user
     var _idUser = "23"
-    var _cost = "0"
+    var _cost: Int = 0
     var _idCard = "N/A"
 
 
     var userCards_total = 0
     var userMoney_total = 0
 
+    var flagUpdateListofItems: Boolean = true
 
-    override fun onClickCard(idCard: String, cost: String) {
+
+    override fun onClickCard(idCard: String, cost: Int) {
         Log.d("Chaton", idCard.toString())
         _cost = cost;
         _idCard = idCard;
 
-        //  CallBackGenerator(callback = this,action = "SetOneMoney",isActivateCallBack = true,idUser=_idUser ,value=cost, url = "https://api.coopuniverse.fr/").execute()
-        CallBackGenerator(callback = this, action = "SetOneCard", isActivateCallBack = true, idUser = _idUser, idCard = idCard, url = "https://api.coopuniverse.fr/").execute()
+        if (_idCard != null) {
 
+            // Toast.makeText(context, _idCard, Toast.LENGTH_LONG).show()
+            //      this.userCards_total = this.userCards_total +
+
+            if (this.userMoney_total < _cost) {
+
+                Toast.makeText(context, "Attention: Your Credit is insufficient! The operation canceled", Toast.LENGTH_LONG).show()
+                return
+            } else if (this.userMoney_total == _cost) {
+                Toast.makeText(context, "Attention: Your will use all your Credit! ", Toast.LENGTH_LONG).show()
+            }
+
+            this.userCards_total++
+            setTextCards(this.userCards_total.toString())
+            //  CallBackGenerator(callback = this,action = "SetOneMoney",isActivateCallBack = true,idUser=_idUser ,value=cost, url = "https://api.coopuniverse.fr/").execute()
+            CallBackGenerator(callback = this, action = "SetOneCard", isActivateCallBack = true, idUser = _idUser, idCard = idCard, url = "https://api.coopuniverse.fr/").execute()
+
+        }
     }
 
 
     override fun display(rep: Reponse, action: String) {
 
-        if (rep == null || rep.data == null) {
-            return
+        var data: ArrayList<Card>? = null
+        var money: String? = null
+        var user: Int? = null
+        var question: ArrayList<Any>? = null
+        var userCards: ArrayList<String>? = null
+
+        if (rep != null && rep.data != null) {
+            data = rep.data.cards
+            money = rep.data.money;//.toString();
+            user = rep.data.user;//.toString();
+            question = rep.data.question;
+            userCards = rep.data.inventory;
+
         }
-        var data = rep.data.cards
-        var money = rep.data.money;//.toString();
-        var user = rep.data.user;//.toString();
-        var question = rep.data.question;
-        var userCards = rep.data.cards;
 
 
 //        Log.d("chat","Shop1: " +data.toString() )
@@ -83,27 +108,34 @@ class ShopFragment : androidx.fragment.app.Fragment(), CallBackDisplay, CallBack
 
             }       //-> rep = service.GetOneMoney(idUser!!) //alimenter le popup
             "GetCardByUserId" -> {
-                if (data != null) {
-                    var userCards = rep.data.cards.size.toString();
-                    var str: String = data.size.toString()
+                if (userCards != null) {
+                    var userCardsCount = userCards.size
 
-                    if (userCards.toIntOrNull() != null) {
-                        this.userCards_total = userCards.toIntOrNull()!!
+
+                    if (userCards != null) {
+                        this.userCards_total = userCardsCount
                     }
-                    setTextCards(userCards);
+                    setTextCards(userCardsCount.toString());
                 } else {
                     setTextCards("0");
                 }
-                CallBackGenerator(callback = this, action = "GetAllCard", isActivateCallBack = true, url = "https://api.coopuniverse.fr/").execute()
+                if (flagUpdateListofItems) {
+                    CallBackGenerator(callback = this, action = "GetAllCard", isActivateCallBack = true, url = "https://api.coopuniverse.fr/").execute()
+                }
 
             }   //-> rep = service.GetCardByUserId(idUser!!)    //alimenter le popup
 
 
             "SetOneMoney" -> {
 
-                if (data != null) {
-                    Toast.makeText(context, data.toString(), Toast.LENGTH_LONG).show()
-                    // this.userMoney_total= this.userMoney_total - data.
+                if (_cost != null) {
+                    //Toast.makeText(context, _cost.toString(), Toast.LENGTH_LONG).show()
+                    // this.userMoney_total= this.userMoney_total - _cost.
+
+
+                    //update status of cardsNb et Money of user without reloading of List of items
+                    flagUpdateListofItems = false
+                    // getUserData()
 
 
                 }
@@ -111,38 +143,30 @@ class ShopFragment : androidx.fragment.app.Fragment(), CallBackDisplay, CallBack
             }       // -> rep = service.SetOneMoney(idUser!!, value!!) //après achat
             "SetOneCard" -> {
 
-                if (data != null) {
-                    Toast.makeText(context, data.toString(), Toast.LENGTH_LONG).show()
-                    //      this.userCards_total = this.userCards_total +
+                this.userMoney_total = this.userMoney_total.minus(_cost)
+                setTextCredits(this.userMoney_total.toString())
 
-                    //  setTextCards( "0");
-                    CallBackGenerator(callback = this, action = "SetOneMoney", isActivateCallBack = true, idUser = _idUser, value = _cost, url = "https://api.coopuniverse.fr/").execute()
-                }
-            }        //rep = service.SetOneCard(idUser!!,idCard!!)     //après achat
-
-
-        }
+                //  setTextCards( "0");
+                CallBackGenerator(callback = this, action = "SetOneMoney", isActivateCallBack = true, idUser = _idUser, value = userMoney_total.toString(), url = "https://api.coopuniverse.fr/").execute()
+            }
+        }        //rep = service.SetOneCard(idUser!!,idCard!!)     //après achat
 
 
     }
 
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        // var view:View = inflater.inflate(R.layout.inventory_fragment, container, false)  //inflater.inflate(R.layout.shop_fragment, container, false)
-
-        //anotherView= inflater.inflate(R.layout.inventory_fragment, container, false)
 
         tCredits = inflater.inflate(R.layout.inventory_fragment, container, false).findViewById(R.id.tCredits);
-
-        // tCredits.addTextChangedListener(new TextWatcher);
         tCards = inflater.inflate(R.layout.inventory_fragment, container, false).findViewById(R.id.tCards)
 
-        //on execute trois requetes , comment les mettre en ordre  pour qu'un ne derrange à l'autre de recouperer les results ?
+        //on execute trois requetes , comment les mettre en ordre  pour qu'un ne derrange à l'autre de recuperer les results ?
         // CallBackGenerator(callback = this,action = "GetAllCard",isActivateCallBack = true, url = "https://api.coopuniverse.fr/").execute()
         getUserData();
         // CallBackGenerator(callback = this,action = "GetOneMoney",isActivateCallBack = true, idUser="23", url = "https://api.coopuniverse.fr/").execute()
-        //   CallBackGenerator(callback = this,action = "GetCardByUserId",isActivateCallBack = true,idUser="23", url = "https://api.coopuniverse.fr/").execute()
+        // CallBackGenerator(callback = this,action = "GetCardByUserId",isActivateCallBack = true,idUser="23", url = "https://api.coopuniverse.fr/").execute()
 
 
         return inflater.inflate(fr.coopuniverse.api.pokeapi.R.layout.inventory_fragment, container, false)

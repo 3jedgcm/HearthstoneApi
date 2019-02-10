@@ -22,7 +22,7 @@ class CardsListAdapter : androidx.recyclerview.widget.RecyclerView.Adapter<Cards
     private var mListener: CallBackOnClickCard? = null
     private var currentViewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder? = null
 
-    private var costCard: String?= null
+    private var costCard: Int= 0
 
 
     constructor(comicsObjectsList: ArrayList<Card>, fragment: androidx.fragment.app.Fragment) {
@@ -50,7 +50,7 @@ class CardsListAdapter : androidx.recyclerview.widget.RecyclerView.Adapter<Cards
                         .load(R.drawable.card_default))
                 .into(viewHolder.iCardImage)
         viewHolder.iCardImage.contentDescription = cardsObjectsList!![p1].id
-        costCard = cardsObjectsList!![p1].cost.toString();
+        costCard = cardsObjectsList!![p1].getMoneyByTypeCard();
 
         val itemLayoutView = viewHolder.itemView
 
@@ -76,7 +76,7 @@ class CardsListAdapter : androidx.recyclerview.widget.RecyclerView.Adapter<Cards
         val iCardImage: ImageView = mView.iCard // findViewById(R.id.iCard);
         fun bind(clickListener: CallBackOnClickCard? ): ViewHolder {
             itemView.setOnClickListener {
-                clickListener?.onClickCard(iCardImage.contentDescription.toString(),costCard.toString())
+                clickListener?.onClickCard(iCardImage.contentDescription.toString(),costCard)
             }
             return this
         }

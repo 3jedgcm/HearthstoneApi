@@ -29,7 +29,7 @@ class CardsListAdapterStore : androidx.recyclerview.widget.RecyclerView.Adapter<
 
     private var currentViewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder? = null
 
-    private var costCard: String? = null
+    private var costCard: Int = 0
 
     constructor(comicsObjectsList: ArrayList<Card>, fragment: androidx.fragment.app.Fragment) {
         this.cardsObjectsList = comicsObjectsList
@@ -37,7 +37,7 @@ class CardsListAdapterStore : androidx.recyclerview.widget.RecyclerView.Adapter<
 
     }
 
-    constructor(cardsObjectsList: ArrayList<Card>, fragment: androidx.fragment.app.Fragment?, listenerOfAdapter: CallBackOnClickCard?) {
+    constructor(cardsObjectsList: ArrayList<Card>?, fragment: androidx.fragment.app.Fragment?, listenerOfAdapter: CallBackOnClickCard?) {
         this.cardsObjectsList = cardsObjectsList;
         this.fragment = fragment
         this.mListener = listenerOfAdapter
@@ -96,7 +96,7 @@ class CardsListAdapterStore : androidx.recyclerview.widget.RecyclerView.Adapter<
 
         viewHolder.iCardImage.contentDescription = cardsObjectsList!![p1].id
         viewHolder.bBuy.contentDescription = cardsObjectsList!![p1].id
-        costCard = cardsObjectsList!![p1].getMoneyByTypeCard().toString() //cardsObjectsList!![p1].cost.toString();
+        costCard = cardsObjectsList!![p1].getMoneyByTypeCard() //cardsObjectsList!![p1].cost.toString();
 
         /*  Glide.with(this.context!!)
                   .load(cardsObjectsList!![p1].getImage())
@@ -145,7 +145,7 @@ class CardsListAdapterStore : androidx.recyclerview.widget.RecyclerView.Adapter<
 
             // itemView.setOnClickListener {clickListener?.onClickCard(Card())}
 
-            bBuy.setOnClickListener { clickListener?.onClickCard(iCardImage.contentDescription.toString(), costCard.toString()) }
+            bBuy.setOnClickListener { clickListener?.onClickCard(iCardImage.contentDescription.toString(), costCard) }
 
 
             Log.d("chat", "Shop4: ")

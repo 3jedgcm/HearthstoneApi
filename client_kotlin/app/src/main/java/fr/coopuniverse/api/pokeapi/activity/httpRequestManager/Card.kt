@@ -17,7 +17,7 @@ class Card {
     var text: String? = null
     var type: String? = null //important  pour classification de prix
     var rarity: String? = null //pour classification de prix
-    var money: String? = null
+    var money: Int = 0
 
     private var image: String? = null
 
@@ -43,7 +43,6 @@ class Card {
 
     fun getMoneyByTypeCard(): Int {
 
-        var money: Int = 0
         var strRarity = "NULL"
         if (this.rarity != null) {
             strRarity = this.rarity.toString()
@@ -53,9 +52,32 @@ class Card {
 
         Log.d("Moneytype", this.type + "_" + this.rarity)
 
-        var moneyTypeInt = Money.valueOf(strTypeRarity).getValueMoney();
+        var moneyTypeInt: Int
+        var moneyType: Money
+        try {
 
-        var moneyType = Money.valueOf(strTypeRarity)
+            //verif if Enum exists
+            var arrMoney: Array<Money>? = null
+            arrMoney = Money.values()
+            var flagExistinEnum: Boolean = false
+            for (f: Money in arrMoney) {
+
+                if (f.name.equals(strTypeRarity)) {
+                    flagExistinEnum = true
+                }
+
+            }
+            if (!flagExistinEnum) {
+                return money
+            }
+
+            moneyTypeInt = Money.valueOf(strTypeRarity).getValueMoney();
+            moneyType = Money.valueOf(strTypeRarity)
+        } catch (e: EnumConstantNotPresentException) {
+            return money
+        }
+
+
 
 
         Log.d("Moneytype2", moneyType.getRarityCard() + "/ " + moneyType.getTypeCard())

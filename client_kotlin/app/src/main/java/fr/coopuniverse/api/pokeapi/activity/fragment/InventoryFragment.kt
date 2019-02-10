@@ -1,10 +1,12 @@
 package fr.coopuniverse.api.pokeapi.activity.fragment
 
+import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 
 import fr.coopuniverse.api.pokeapi.R
 import fr.coopuniverse.api.pokeapi.activity.activity.CallBackDisplay
@@ -64,6 +66,8 @@ class InventoryFragment : androidx.fragment.app.Fragment(), CallBackDisplay, Cal
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
        anotherView =  inflater.inflate(R.layout.inventory_fragment, container, false)
+        var linearL: View = anotherView!!.findViewById(R.id.layoutText)
+        linearL.visibility =  View.GONE
        CallBackGenerator(callback = this,action = "GetAllCard",isActivateCallBack = true, url = "https://api.coopuniverse.fr/").execute()
        return anotherView
     }

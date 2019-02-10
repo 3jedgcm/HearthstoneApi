@@ -49,7 +49,7 @@ class InventoryFragment : androidx.fragment.app.Fragment(), CallBackDisplay, Cal
         this.acc.id = this.getArguments()?.getString(this.activity?.getString(R.string.idUser))!!
         this.acc.money = this.getArguments()?.getString(this.activity?.getString(R.string.idMoney))
         linearL.visibility =  View.GONE
-        CallBackGenerator(callback = this,action = "GetCardByUserId", idUser = this.acc.id,isActivateCallBack = true, url = "https://api.coopuniverse.fr/").execute()
+        CallBackGenerator(callback = this,action = "GetCardByUserId", idUser = this.acc.id,isActivateCallBack = true, url = this.activity?.getString(R.string.url)).execute()
        return this.anotherView
     }
 }

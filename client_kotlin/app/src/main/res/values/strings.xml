@@ -29,7 +29,10 @@
     <string name="label_connexion">Connexion</string>
     <string name="label_connect_with">Connexion with</string>
     <string name="label_login_or_name">Login or Name</string>
-
+    <string name="bad_answer">Its not good answer :(</string>
+    <string name="you_have">You have</string>
+    <string name="golds">Golds</string>
+    <string name="good_answer">Good answer you win 20 golds</string>
     <string name="label_card_id">Id: </string>
     <string name="label_card_name">Name: </string>
     <string name="label_card_cardClass">Card Class: </string>
@@ -47,8 +50,12 @@
     <string name="content_description">Card</string>
     <string name="label_price">Price : </string>
     <string name="label_StateAccount">You have : </string>
-
+    <string name="url">https://api.coopuniverse.fr/</string>
     <string name="label_answer_quizz">Answer : </string>
-
+    <string name="google">Google</string>
+    <string name="facebook">Facebook</string>
+    <string name="simple">Simple connect</string>
+    <string name="insufficient_credit">Attention: Your Credit is insufficient! The operation canceled</string>
+    <string name="attention_credit">Attention: Your will use all your Credit!</string>
 </resources>
 

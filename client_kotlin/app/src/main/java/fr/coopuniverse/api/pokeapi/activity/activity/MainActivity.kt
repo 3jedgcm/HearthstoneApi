@@ -90,17 +90,17 @@ class MainActivity : AppCompatActivity(), CallBackDisplay {
     }
 
     private fun simpleSignIn() {
-        this.account = Account(name = login_field?.text.toString(), connectWith = "simple account")
-        CallBackGenerator(callback = this, action = "Connect", isActivateCallBack = true, login = login_field?.text.toString(), pass = pass_field?.text.toString(), url = "https://api.coopuniverse.fr/").execute()
+        this.account = Account(name = login_field?.text.toString(), connectWith = this.getString(R.string.simple))
+        CallBackGenerator(callback = this, action = "Connect", isActivateCallBack = true, login = login_field?.text.toString(), pass = pass_field?.text.toString(), url = this.getString(R.string.url)).execute()
     }
 
     private fun facebookSignIn(id: String, account: Account) {
         this.account = account
-        CallBackGenerator(callback = this, action = "ConnectFacebook", isActivateCallBack = true, key = id, url = "https://api.coopuniverse.fr/").execute()
+        CallBackGenerator(callback = this, action = "ConnectFacebook", isActivateCallBack = true, key = id, url = this.getString(R.string.url)).execute()
     }
 
     private fun googleSignIn(id: String) {
-        CallBackGenerator(callback = this, action = "ConnectGoogle", isActivateCallBack = true, key = id, url = "https://api.coopuniverse.fr/").execute()
+        CallBackGenerator(callback = this, action = "ConnectGoogle", isActivateCallBack = true, key = id, url = this.getString(R.string.url)).execute()
     }
 
 
@@ -109,19 +109,19 @@ class MainActivity : AppCompatActivity(), CallBackDisplay {
             when (action) {
                 "ConnectFacebook" -> {
                     Log.d("Chaton", "No account - register with Facebook")
-                    CallBackGenerator(callback = this, action = "RegisterFacebook", isActivateCallBack = true, key = rep.id, url = "https://api.coopuniverse.fr/").execute()
+                    CallBackGenerator(callback = this, action = "RegisterFacebook", isActivateCallBack = true, key = rep.id, url = this.getString(R.string.url)).execute()
                 }
                 "ConnectGoogle" -> {
                     Log.d("Chaton", "No account - Register with Google")
-                    CallBackGenerator(callback = this, action = "RegisterGoogle", isActivateCallBack = true, key = rep.id, url = "https://api.coopuniverse.fr/").execute()
+                    CallBackGenerator(callback = this, action = "RegisterGoogle", isActivateCallBack = true, key = rep.id, url = this.getString(R.string.url)).execute()
                 }
                 "RegisterGoogle" -> {
                     Log.d("Chaton", "Connect with Google")
-                    CallBackGenerator(callback = this, action = "ConnectGoogle", isActivateCallBack = true, key = rep.id, url = "https://api.coopuniverse.fr/").execute()
+                    CallBackGenerator(callback = this, action = "ConnectGoogle", isActivateCallBack = true, key = rep.id, url = this.getString(R.string.url)).execute()
                 }
                 "RegisterFacebook" -> {
                     Log.d("Chaton", "Connect with Facebook")
-                    CallBackGenerator(callback = this, action = "ConnectFacebook", isActivateCallBack = true, key = rep.id, url = "https://api.coopuniverse.fr/").execute()
+                    CallBackGenerator(callback = this, action = "ConnectFacebook", isActivateCallBack = true, key = rep.id, url = this.getString(R.string.url)).execute()
                 }
                 "Connect" -> {
                     errorView.text = "Mauvais login ou mot de passe"
@@ -150,7 +150,7 @@ class MainActivity : AppCompatActivity(), CallBackDisplay {
         try {
             val acct = completedTask.getResult<ApiException>(ApiException::class.java)
             if (acct != null) {
-                this.account = Account(name = acct.displayName, surname = acct.familyName, id = acct.id!!, urlPicture = acct.photoUrl, connectWith = "Google")
+                this.account = Account(name = acct.displayName, surname = acct.familyName, id = acct.id!!, urlPicture = acct.photoUrl, connectWith = this.getString(R.string.google))
                 this.googleSignIn(acct.id!!)
             }
         } catch (e: ApiException) {

@@ -36,11 +36,11 @@ class QuizzFragment : androidx.fragment.app.Fragment() , CallBackDisplay {
             "GetOneMoney" ->
             {
                 this.acc.money = (rep.data.money!!.toInt() - 10).toString()
-                currentMoney.text = "You have " + this.acc.money + " golds"
+                currentMoney.text = this.activity?.getString(R.string.you_have) + this.acc.money + " " + this.activity?.getString(R.string.golds)
                 if(this.acc.money!!.toInt() >= 0)
                 {
                     info.text = ""
-                    CallBackGenerator(callback = this,action = "SetOneMoney",isActivateCallBack = true,idUser = this.acc.id,value = this.acc.money, url = "https://api.coopuniverse.fr/").execute()
+                    CallBackGenerator(callback = this,action = "SetOneMoney",isActivateCallBack = true,idUser = this.acc.id,value = this.acc.money, url = this.activity?.getString(R.string.url)).execute()
                 }
                 else
                 {
@@ -49,10 +49,9 @@ class QuizzFragment : androidx.fragment.app.Fragment() , CallBackDisplay {
             }
             "SetOneMoney" ->
             {
-                Log.d("Chaton","Set one money " +rep.exitCode)
                 if(rep.exitCode == 0)
                 {
-                    CallBackGenerator(callback = this,action = "GetQuestion",isActivateCallBack = true, url = "https://api.coopuniverse.fr/").execute()
+                    CallBackGenerator(callback = this,action = "GetQuestion",isActivateCallBack = true, url = this.activity?.getString(R.string.url)).execute()
                 }
                 else
                 {
@@ -65,13 +64,13 @@ class QuizzFragment : androidx.fragment.app.Fragment() , CallBackDisplay {
                 if(rep.result == true)
                 {
                     this.acc.money = (this.acc.money!!.toInt() + 20).toString()
-                    currentMoney.text = "You have " + this.acc.money + " golds"
-                    info.text = "Bonne reponse ! Vous gagnez 20 Golds"
-                    CallBackGenerator(callback = this,action = "SetOneMoney",isActivateCallBack = false,idUser = this.acc.id,value = this.acc.money, url = "https://api.coopuniverse.fr/").execute()
+                    currentMoney.text = this.activity?.getString(R.string.you_have) + this.acc.money + " " + this.activity?.getString(R.string.golds)
+                    info.text = this.activity?.getString(R.string.good_answer)
+                    CallBackGenerator(callback = this,action = "SetOneMoney",isActivateCallBack = false,idUser = this.acc.id,value = this.acc.money, url = this.activity?.getString(R.string.url)).execute()
                 }
                 else
                 {
-                    info.text = "C'etait la mauvaise reponse :)"
+                    info.text = this.activity?.getString(R.string.bad_answer)
                 }
             }
         }
@@ -87,19 +86,20 @@ class QuizzFragment : androidx.fragment.app.Fragment() , CallBackDisplay {
         this.enableButton()
         this.acc.id = this.getArguments()?.getString(this.activity?.getString(R.string.idUser))!!
         this.acc.money = this.getArguments()?.getString(this.activity?.getString(R.string.idMoney))
-        currentMoney.text = "You have " + this.acc.money + " golds"
+        currentMoney.text = this.activity?.getString(R.string.you_have) + this.acc.money + " " + this.activity?.getString(R.string.golds)
+
 
         went.setOnClickListener {
-            CallBackGenerator(callback = this,action = "GetOneMoney",isActivateCallBack = true,idUser = this.acc.id, url = "https://api.coopuniverse.fr/").execute()
+            CallBackGenerator(callback = this,action = "GetOneMoney",isActivateCallBack = true,idUser = this.acc.id, url = this.activity?.getString(R.string.url)).execute()
         }
         reponse_one.setOnClickListener {
-            CallBackGenerator(callback = this,action = "SetAnswer",isActivateCallBack = true,answser = this.hashAnswer,value = reponse_one.text.toString(), url = "https://api.coopuniverse.fr/").execute()
+            CallBackGenerator(callback = this,action = "SetAnswer",isActivateCallBack = true,answser = this.hashAnswer,value = reponse_one.text.toString(), url = this.activity?.getString(R.string.url)).execute()
         }
         reponse_two.setOnClickListener {
-            CallBackGenerator(callback = this,action = "SetAnswer",isActivateCallBack = true,answser = this.hashAnswer,value = reponse_two.text.toString(), url = "https://api.coopuniverse.fr/").execute()
+            CallBackGenerator(callback = this,action = "SetAnswer",isActivateCallBack = true,answser = this.hashAnswer,value = reponse_two.text.toString(), url = this.activity?.getString(R.string.url)).execute()
         }
         reponse_three.setOnClickListener {
-            CallBackGenerator(callback = this,action = "SetAnswer",isActivateCallBack = true,answser = this.hashAnswer,value = reponse_three.text.toString(), url = "https://api.coopuniverse.fr/").execute()
+            CallBackGenerator(callback = this,action = "SetAnswer",isActivateCallBack = true,answser = this.hashAnswer,value = reponse_three.text.toString(), url = this.activity?.getString(R.string.url)).execute()
         }
         reponse_four.setOnClickListener {
             CallBackGenerator(callback = this,action = "SetAnswer",isActivateCallBack = true,answser = this.hashAnswer,value = reponse_four.text.toString(), url = "https://api.coopuniverse.fr/").execute()

@@ -1,12 +1,7 @@
 package fr.coopuniverse.api.pokeapi.activity.data
 
-import android.util.Log
-import fr.coopuniverse.api.pokeapi.activity.httpRequestManager.Money
-import java.util.*
-
 
 class Card {
-
 
     var name: String? = null
     var id: String? = null
@@ -19,12 +14,11 @@ class Card {
     var type: String? = null
     var rarity: String? = null
     var money: Int = 0
-    private var image: String? = null
+    private val urlArtApi: String = "https://art.hearthstonejson.com/v1/render/latest/frFR/512x/"
+    private val imageFormat: String = ".png"
 
     fun getImage(): String {
-        var url: String = "https://art.hearthstonejson.com/v1/render/latest/frFR/512x/"
-        this.image = url + id + ".png"
-        return image as String
+        return this.urlArtApi + id + this.imageFormat
     }
 
     fun getMoneyByTypeCard(): Int {
@@ -33,59 +27,27 @@ class Card {
             strRarity = this.rarity.toString()
         }
         var strTypeRarity = (this.type + "_" + strRarity).toUpperCase()
-        var moneyTypeInt: Int
         var moneyType: Money
         try {
-
-            //verif if Enum exists
-            var arrMoney: Array<Money>? = null
+            var arrMoney: Array<Money>?
             arrMoney = Money.values()
             var flagExistinEnum: Boolean = false
             for (f: Money in arrMoney) {
-
-                if (f.name.equals(strTypeRarity)) {
+                if (f.name.equals(strTypeRarity))
                     flagExistinEnum = true
-                }
-
             }
-            if (!flagExistinEnum) {
+            if (!flagExistinEnum)
                 return money
-            }
-
-            moneyTypeInt = Money.valueOf(strTypeRarity).getValueMoney();
             moneyType = Money.valueOf(strTypeRarity)
         } catch (e: EnumConstantNotPresentException) {
             return money
         }
-
         if (this.type != null && moneyType != null)
             money = moneyType.getValueMoney()
-
-
         return money
-
     }
 
     override fun toString(): String {
         return "Card(name=$name, id=$id, cardClass=$cardClass, cost=$cost, playerClass=$playerClass, health=$health, attack=$attack, text=$text, type=$type, rarity=$rarity)"
     }
-
-
 }
-
-
-/*
-
-name, "id", "cost"
-
-  "cardClass": "SHAMAN",
-                "id": "CS2_038",
-                "name": "Esprit ancestral",
-                "playerClass": "SHAMAN",
-                 "health": 10,
-                 "attack": 10,
-                  "text": "Ne peut pas avoir moins de 1 PV pendant ce tour.",
-                  type
-                  "rarity"
-
- */

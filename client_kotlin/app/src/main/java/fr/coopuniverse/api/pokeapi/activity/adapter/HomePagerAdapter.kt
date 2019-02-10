@@ -16,9 +16,9 @@ class HomePagerAdapter(private val mContext: Context?, fm: FragmentManager, var 
     override fun getItem(position: Int): Fragment {
 
         var fr: Fragment = if (position == 0) {
-            CraftFragment()
+            QuizzFragment()
         } else if (position == 1) {
-            MeltFragment()
+            QuizzFragment()
         } else{
             QuizzFragment()
         }

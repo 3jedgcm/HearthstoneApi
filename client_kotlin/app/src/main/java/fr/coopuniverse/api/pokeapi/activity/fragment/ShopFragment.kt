@@ -34,14 +34,14 @@ class ShopFragment : androidx.fragment.app.Fragment(), CallBackDisplay, CallBack
         this.idCard = idCard
         if (this.idCard != null) {
             if (this.userMoney_total < this.cost) {
-                Toast.makeText(context, "Attention: Your Credit is insufficient! The operation canceled", Toast.LENGTH_LONG).show()
+                Toast.makeText(context, this.activity?.getString(R.string.insufficient_credit), Toast.LENGTH_LONG).show()
                 return
             } else if (this.userMoney_total == this.cost) {
-                Toast.makeText(context, "Attention: Your will use all your Credit! ", Toast.LENGTH_LONG).show()
+                Toast.makeText(context, this.activity?.getString(R.string.attention_credit), Toast.LENGTH_LONG).show()
             }
             this.userCards_total++
             setTextCards(this.userCards_total.toString())
-            CallBackGenerator(callback = this, action = "SetOneCard", isActivateCallBack = true, idUser = this.acc.id, idCard = idCard, url = "https://api.coopuniverse.fr/").execute()
+            CallBackGenerator(callback = this, action = "SetOneCard", isActivateCallBack = true, idUser = this.acc.id, idCard = idCard, url = this.activity?.getString(R.string.url)).execute()
         }
     }
 
@@ -69,7 +69,7 @@ class ShopFragment : androidx.fragment.app.Fragment(), CallBackDisplay, CallBack
                     }
                     setTextCredits(money.toString())
                 }
-                CallBackGenerator(callback = this, action = "GetCardByUserId", isActivateCallBack = true, idUser = this.acc.id, url = "https://api.coopuniverse.fr/").execute()
+                CallBackGenerator(callback = this, action = "GetCardByUserId", isActivateCallBack = true, idUser = this.acc.id, url = this.activity?.getString(R.string.url)).execute()
             }
             "GetCardByUserId" -> {
                 if (userCards != null) {
@@ -82,7 +82,7 @@ class ShopFragment : androidx.fragment.app.Fragment(), CallBackDisplay, CallBack
                     setTextCards("0")
                 }
                 if (flagUpdateListofItems) {
-                    CallBackGenerator(callback = this, action = "GetAllCard", isActivateCallBack = true, url = "https://api.coopuniverse.fr/").execute()
+                    CallBackGenerator(callback = this, action = "GetAllCard", isActivateCallBack = true, url = this.activity?.getString(R.string.url)).execute()
                 }
             }
             "SetOneMoney" -> {
@@ -101,37 +101,30 @@ class ShopFragment : androidx.fragment.app.Fragment(), CallBackDisplay, CallBack
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        tCredits = inflater.inflate(R.layout.inventory_fragment, container, false).findViewById(R.id.tCredits);
-        tCards = inflater.inflate(R.layout.inventory_fragment, container, false).findViewById(R.id.tCards)
+        this.tCredits = inflater.inflate(R.layout.inventory_fragment, container, false).findViewById(R.id.tCredits);
+        this.tCards = inflater.inflate(R.layout.inventory_fragment, container, false).findViewById(R.id.tCards)
         this.acc.id = this.getArguments()?.getString(this.activity?.getString(R.string.idUser))!!
         this.acc.money = this.getArguments()?.getString(this.activity?.getString(R.string.idMoney))
-        getUserData()
+        this.getUserData()
         return inflater.inflate(fr.coopuniverse.api.pokeapi.R.layout.inventory_fragment, container, false)
     }
 
     fun getUserData() {
-        CallBackGenerator(callback = this, action = "GetOneMoney", isActivateCallBack = true, idUser = this.acc.id, url = "https://api.coopuniverse.fr/").execute()
+        CallBackGenerator(callback = this, action = "GetOneMoney", isActivateCallBack = true, idUser = this.acc.id, url = this.activity?.getString(R.string.url)).execute()
     }
 
-    fun setTextCredits(text: String) {
-        val textView = view!!.findViewById(fr.coopuniverse.api.pokeapi.R.id.tCredits) as TextView
-        var txt = tCredits!!.text.toString()
-        var txtCredit = " credits "
-        textView.text = txt + " " + text + txtCredit
-
+    fun setTextCredits(credits: String) {
+        val infoCreditView = view!!.findViewById(fr.coopuniverse.api.pokeapi.R.id.tCredits) as TextView
+        infoCreditView.text = tCredits!!.text.toString() + " " + credits + " credits "
     }
 
-    fun setTextCards(text: String) {
+    fun setTextCards(cards: String) {
         val textView = view!!.findViewById(fr.coopuniverse.api.pokeapi.R.id.tCards) as TextView
-        var txt = tCards!!.text.toString()
-        var txtCards = " cards "
-        textView.text = txt + " " + text + txtCards
+        textView.text = tCards!!.text.toString() + " " + cards + " cards "
     }
-
 
     companion object {
         fun newInstance() = ShopFragment()
     }
-
 
 }

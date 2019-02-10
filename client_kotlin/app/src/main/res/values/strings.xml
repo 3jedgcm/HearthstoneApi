@@ -42,8 +42,8 @@
     <string name="label_card_rarity">Rarity: </string>
     <string name="title_quizz">Super Quizz</string>
     <string name="coming">Coming soon ... </string>
-
-
+    <string name="idMoney">money</string>
+    <string name="idUser">id</string>
     <string name="content_description">Card</string>
     <string name="label_price">Price : </string>
     <string name="label_StateAccount">You have : </string>

@@ -9,61 +9,35 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="237dp"
-            android:layout_height="51dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="52dp"
-            android:layout_marginEnd="8dp"
-            android:fontFamily="@font/roboto_slab_bold"
-            android:gravity="center"
-            android:text="@string/title_shop"
-            android:textColor="@color/colorTitleText"
-            android:textSize="36sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.503"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <Button
-            android:id="@+id/shopButton"
-            android:layout_width="229dp"
-            android:layout_height="45dp"
-            android:layout_marginStart="78dp"
-            android:layout_marginTop="117dp"
-            android:layout_marginEnd="77dp"
-            android:background="@drawable/shape"
-            android:fontFamily="@font/roboto_slab_bold"
-            android:text="Market"
-            android:textColor="@color/colorText"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView" />
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/tabItem1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Monday" />
 
-        <Button
-            android:id="@+id/exchangeButton"
-            android:layout_width="229dp"
-            android:layout_height="45dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/shape"
-            android:fontFamily="@font/roboto_slab_bold"
-            android:text="EXCHANGE"
-            android:textColor="@color/colorText"
-            android:textSize="18sp"
-            android:textStyle="bold"
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/tabItem2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tuesday" />
+
+        </com.google.android.material.tabs.TabLayout>
+
+        <androidx.viewpager.widget.ViewPager
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.503"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/shopButton"
-            app:layout_constraintVertical_bias="0.185" />
+            app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

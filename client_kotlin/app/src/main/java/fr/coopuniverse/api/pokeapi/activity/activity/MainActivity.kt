@@ -140,9 +140,9 @@ class MainActivity : AppCompatActivity(), CallBackDisplay {
         inventoryIntent.putExtra("connectWith", ud?.connectWith)
         inventoryIntent.putExtra("name", ud?.name)
         inventoryIntent.putExtra("lastname", ud?.surname)
-        inventoryIntent.putExtra("id", ud?.id)
+        inventoryIntent.putExtra(this.getString(R.string.idUser), ud?.id)
         inventoryIntent.putExtra("url", ud?.urlPicture.toString())
-        inventoryIntent.putExtra("money", ud?.money)
+        inventoryIntent.putExtra(this.getString(R.string.idMoney), ud?.money)
         startActivityForResult(inventoryIntent, 1)
     }
 

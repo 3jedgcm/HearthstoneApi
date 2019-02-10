@@ -85,8 +85,8 @@ class QuizzFragment : androidx.fragment.app.Fragment() , CallBackDisplay {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         this.enableButton()
-        this.acc.id = this.getArguments()?.getString("id")!!
-        this.acc.money = this.getArguments()?.getString("money")
+        this.acc.id = this.getArguments()?.getString(this.activity?.getString(R.string.idUser))!!
+        this.acc.money = this.getArguments()?.getString(this.activity?.getString(R.string.idMoney))
         currentMoney.text = "You have " + this.acc.money + " golds"
 
         went.setOnClickListener {

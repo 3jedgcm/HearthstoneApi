@@ -11,7 +11,7 @@ import fr.coopuniverse.api.pokeapi.activity.fragment.MeltFragment
 import fr.coopuniverse.api.pokeapi.activity.fragment.QuizzFragment
 
 
-class SimpleFragmentPagerAdapter(private val mContext: Context?, fm: FragmentManager,var acc: Account): FragmentPagerAdapter(fm) {
+class HomePagerAdapter(private val mContext: Context?, fm: FragmentManager, var acc: Account): FragmentPagerAdapter(fm) {
 
     override fun getItem(position: Int): Fragment {
 
@@ -23,8 +23,8 @@ class SimpleFragmentPagerAdapter(private val mContext: Context?, fm: FragmentMan
             QuizzFragment()
         }
         var b = Bundle()
-        b?.putString("id",this.acc.id)
-        b?.putString("money",this.acc.money)
+        b?.putString(mContext?.getString(R.string.idUser),this.acc.id)
+        b?.putString(mContext?.getString(R.string.idMoney),this.acc.money)
         fr.arguments = b
         return fr
     }

@@ -5,14 +5,14 @@ import android.view.View
 import android.view.ViewGroup
 import fr.coopuniverse.api.pokeapi.R
 import kotlinx.android.synthetic.main.home_fragment.*
-import SimpleFragmentPagerAdapter
+import HomePagerAdapter
 import fr.coopuniverse.api.pokeapi.activity.data.Account
 
 class HomeFragment : androidx.fragment.app.Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val adapter = SimpleFragmentPagerAdapter(context, activity?.supportFragmentManager!!, Account(id = this.getArguments()?.getString("id")!!, money = this.getArguments()?.getString("money"))!!)
+        val adapter = HomePagerAdapter(context, activity?.supportFragmentManager!!, Account(id = this.getArguments()?.getString("id")!!, money = this.getArguments()?.getString("money"))!!)
         viewer.adapter = adapter
         tab_navigation.setupWithViewPager(viewer)
 

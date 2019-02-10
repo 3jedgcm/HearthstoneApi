@@ -3,13 +3,12 @@ package fr.coopuniverse.api.pokeapi.activity.fragment
 
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
 import fr.coopuniverse.api.pokeapi.R
-import fr.coopuniverse.api.pokeapi.activity.activity.CallBackFragment
+import fr.coopuniverse.api.pokeapi.activity.callback.CallBackFragment
 
 
 class ExchangeFragment : androidx.fragment.app.Fragment() {

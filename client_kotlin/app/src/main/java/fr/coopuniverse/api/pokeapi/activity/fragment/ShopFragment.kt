@@ -10,11 +10,11 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import fr.coopuniverse.api.pokeapi.R
-import fr.coopuniverse.api.pokeapi.activity.activity.CallBackDisplay
-import fr.coopuniverse.api.pokeapi.activity.activity.CallBackOnClickCard
+import fr.coopuniverse.api.pokeapi.activity.callback.CallBackDisplay
+import fr.coopuniverse.api.pokeapi.activity.callback.CallBackOnClickCard
 import fr.coopuniverse.api.pokeapi.activity.adapter.CardsListAdapterStore
 import fr.coopuniverse.api.pokeapi.activity.httpRequestManager.CallBackGenerator
-import fr.coopuniverse.api.pokeapi.activity.httpRequestManager.Reponse
+import fr.coopuniverse.api.pokeapi.activity.data.Reponse
 import kotlinx.android.synthetic.main.inventory_fragment.*
 
 
@@ -126,10 +126,8 @@ class ShopFragment : androidx.fragment.app.Fragment(), CallBackDisplay, CallBack
 
     }
 
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
 
         // var view:View = inflater.inflate(R.layout.inventory_fragment, container, false)  //inflater.inflate(R.layout.shop_fragment, container, false)
 
@@ -161,6 +159,7 @@ class ShopFragment : androidx.fragment.app.Fragment(), CallBackDisplay, CallBack
         var txt = tCredits!!.text.toString();
         var txtCredit = " credits ";
         textView.text = txt + " " + text + txtCredit;
+
     }
 
     fun setTextCards(text: String) {

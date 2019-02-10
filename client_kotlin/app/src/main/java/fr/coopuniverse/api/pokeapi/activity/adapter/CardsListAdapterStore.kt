@@ -12,8 +12,9 @@ import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import fr.coopuniverse.api.pokeapi.R
-import fr.coopuniverse.api.pokeapi.activity.activity.CallBackOnClickCard
-import fr.coopuniverse.api.pokeapi.activity.httpRequestManager.Card
+import fr.coopuniverse.api.pokeapi.activity.callback.CallBackOnClickCard
+import fr.coopuniverse.api.pokeapi.activity.data.Card
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import kotlinx.android.synthetic.main.custom_card_view_shop.view.*
 
 

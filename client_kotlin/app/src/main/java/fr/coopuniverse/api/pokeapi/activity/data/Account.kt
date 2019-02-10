@@ -1,18 +1,12 @@
 package fr.coopuniverse.api.pokeapi.activity.data
 
-import android.net.Uri
+class Account(
+        var user: Any? = null,
+        var urlPicture: Any? = null,
+        var name: String? = "",
+        var surname: String? = "",
+        var money: String? = "",
+        var id: String = "",
+        var connectWith: String? = "")
 
 
-class Account(var name: String?,var surname: String?,var id: String?, var urlPicture: Any?, var connectWith: String?) {
-
-
-    fun getUserName(): String? {
-        return this.name
-    }
-
-    override fun toString(): String {
-        return "$name,$surname,$id,$urlPicture,$connectWith"
-    }
-
-
-}

@@ -1,9 +1,9 @@
 package fr.coopuniverse.api.pokeapi.activity.httpRequestManager
 
 import android.os.AsyncTask
-import android.util.Log
 import android.widget.TextView
-import fr.coopuniverse.api.pokeapi.activity.activity.CallBackDisplay
+import fr.coopuniverse.api.pokeapi.activity.callback.CallBackDisplay
+import fr.coopuniverse.api.pokeapi.activity.data.Reponse
 
 import java.io.IOException
 
@@ -13,30 +13,29 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class CallBackGenerator(
-        var callback: CallBackDisplay,
-        var isActivateCallBack: Boolean? = false,
-        var typeFilter: String? = null,
-        var valueFilter: String? = null,
-        var url: String? = null,
-        var idUser: String? = null,
-        var idUserTwo: String? = null,
-        var idCard: String? = null,
-        var idCardOne: String? = null,
-        var idCardTwo: String? = null,
-        var idCardThree: String? = null,
-        var cardUserOne: String? = null,
-        var cardUserTwo: String? = null,
-        var answser: String? = null,
-        var value: String? = null,
-        var action: String? = null,
-        var key: String? = "",
-        var login: String? = null,
-        var pass: String? = null)
+        private var callback: CallBackDisplay,
+        private var isActivateCallBack: Boolean? = false,
+        private var typeFilter: String? = "",
+        private var valueFilter: String? = "",
+        private var url: String? = "",
+        private var idUser: String? = "",
+        private var idUserTwo: String? = "",
+        private var idCard: String? = "",
+        private var idCardOne: String? = "",
+        private var idCardTwo: String? = "",
+        private var idCardThree: String? = "",
+        private var cardUserOne: String? = "",
+        private var cardUserTwo: String? = "",
+        private var answser: String? = "",
+        private var value: String? = "",
+        private var action: String? = "",
+        private var key: String? = "",
+        private var login: String? = "",
+        private var pass: String? = "")
     : AsyncTask<TextView, Void, Reponse>() {
 
-
-    fun generateCallBack(): Reponse {
-        var reponse: Reponse?
+    private fun generateCallBack(): Reponse {
+        val response: Reponse?
         val retrofit = Retrofit.Builder().baseUrl(url).addConverterFactory(GsonConverterFactory.create()).build()
         val service = retrofit.create(CoopUniverseService::class.java)
         val rep: Call<Reponse>
@@ -50,13 +49,13 @@ class CallBackGenerator(
             "GetRandomCard" -> rep = service.GetRandomCard()
             "GetAllParameter" -> rep = service.GetAllParameter()
             "GetQuestion" -> rep = service.GetQuestion()
-            "GetCardByFilter" -> rep = service.GetCardByFilter(typeFilter!!,valueFilter!!)
-            "SetOneCard" -> rep = service.SetOneCard(idUser!!,idCard!!)
+            "GetCardByFilter" -> rep = service.GetCardByFilter(typeFilter!!, valueFilter!!)
+            "SetOneCard" -> rep = service.SetOneCard(idUser!!, idCard!!)
             "SetOneMoney" -> rep = service.SetOneMoney(idUser!!, value!!)
-            "SetAnswer" -> rep = service.SetAnswer(idUser!!, answser!!)
+            "SetAnswer" -> rep = service.SetAnswer(answser!!, value!!)
             "ExchangeCards" -> rep = service.ExchangeCards(idUser!!, idUserTwo!!, cardUserOne!!.toString(), cardUserTwo!!.toString())
-            "MeltCards" -> rep = service.MeltCards(idUser!!,idCard!!)
-            "CraftOneCard" -> rep = service.CraftOneCard(idUser!!,idCardOne!!,idCardTwo!!,idCardThree!!)
+            "MeltCards" -> rep = service.MeltCards(idUser!!, idCard!!)
+            "CraftOneCard" -> rep = service.CraftOneCard(idUser!!, idCardOne!!, idCardTwo!!, idCardThree!!)
             "Connect" -> rep = service.SimpleLogin(login!!, pass!!)
             "ConnectFacebook" -> rep = service.FacebookLogin(key!!)
             "ConnectGoogle" -> rep = service.GoogleLogin(key!!)
@@ -65,34 +64,24 @@ class CallBackGenerator(
             "RegisterGoogle" -> rep = service.GoogleRegister(key!!)
             else -> rep = service.GetAllCard()
         }
-
         try {
-
-            reponse = rep.execute().body()
-            return reponse
+            response = rep.execute().body()
+            return response
 
         } catch (e: IOException) {
             e.printStackTrace()
-
         }
         return Reponse(key!!)
-
     }
 
     override fun doInBackground(vararg TextViews: TextView?): Reponse? {
-
         return generateCallBack()
     }
 
-    override fun onPostExecute(result: Reponse)
-    {
-
-        if(isActivateCallBack == true)
-        {
+    override fun onPostExecute(result: Reponse) {
+        if (isActivateCallBack == true) {
             result.id = key!!
-            callback.display(result,this.action!!)
+            callback.display(result, this.action!!)
         }
-
-
     }
 }

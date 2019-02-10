@@ -87,7 +87,7 @@ class UserDAO extends DAO {
       $stmt = $this->pdo->prepare("SELECT * FROM Users WHERE Login=? and Password=?");
       $stmt->execute(array($pLogin,$pHashPass));
       $row = $stmt->fetch(PDO::FETCH_ASSOC);
-      return $row == false?false:true;
+      return $row;
     }
 
     public function checkAccountWithGoogle($pKey)
@@ -96,7 +96,7 @@ class UserDAO extends DAO {
       $stmt = $this->pdo->prepare("SELECT * FROM Users WHERE KeyGoogle=?");
       $stmt->execute(array($pKey));
       $row = $stmt->fetch(PDO::FETCH_ASSOC);
-      return $row == false?false:true;
+      return $row;
     }
 
     public function checkAccountWithFacebook($pKey)
@@ -105,7 +105,7 @@ class UserDAO extends DAO {
       $stmt = $this->pdo->prepare("SELECT * FROM Users WHERE KeyFacebook=?");
       $stmt->execute(array($pKey));
       $row = $stmt->fetch(PDO::FETCH_ASSOC);
-      return $row == false?false:true;
+      return $row;
     }
 
     public function registerWithBase($pLogin,$pHashPass)

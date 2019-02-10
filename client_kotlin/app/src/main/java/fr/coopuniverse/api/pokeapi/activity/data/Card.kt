@@ -1,6 +1,7 @@
-package fr.coopuniverse.api.pokeapi.activity.httpRequestManager
+package fr.coopuniverse.api.pokeapi.activity.data
 
 import android.util.Log
+import fr.coopuniverse.api.pokeapi.activity.httpRequestManager.Money
 import java.util.*
 
 

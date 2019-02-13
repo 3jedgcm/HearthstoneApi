@@ -10,7 +10,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import fr.coopuniverse.api.pokeapi.R
-import fr.coopuniverse.api.pokeapi.activity.enum.Destination
+import fr.coopuniverse.api.pokeapi.activity.enums.Destination
 import fr.coopuniverse.api.pokeapi.activity.callback.CallBackFragment
 import fr.coopuniverse.api.pokeapi.activity.data.Account
 import fr.coopuniverse.api.pokeapi.activity.view.fragment.*

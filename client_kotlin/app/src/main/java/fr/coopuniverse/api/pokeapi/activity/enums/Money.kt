@@ -1,4 +1,4 @@
-package fr.coopuniverse.api.pokeapi.activity.enum
+package fr.coopuniverse.api.pokeapi.activity.enums
 
 enum class Money(  var type: String, var rarity: String, var valueCard: Int)
 {

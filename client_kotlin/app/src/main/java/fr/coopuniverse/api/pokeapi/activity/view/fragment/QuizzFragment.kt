@@ -7,10 +7,8 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 
 import fr.coopuniverse.api.pokeapi.R
-import fr.coopuniverse.api.pokeapi.activity.callback.CallBackDisplay
 import fr.coopuniverse.api.pokeapi.activity.data.Account
-import fr.coopuniverse.api.pokeapi.activity.manager.CallHttpManager
-import fr.coopuniverse.api.pokeapi.activity.data.Reponse
+import fr.coopuniverse.api.pokeapi.activity.enums.Info
 import fr.coopuniverse.api.pokeapi.activity.view.viewModel.QuizzViewModel
 import kotlinx.android.synthetic.main.quizz_fragment.*
 
@@ -30,7 +28,7 @@ class QuizzFragment : androidx.fragment.app.Fragment() {
         currentMoney.text = "You have " + Account.money + " golds"
 
         QuizzViewModel.money.observe(this, Observer{
-            currentMoney.text = it
+            currentMoney.text = this.context!!.getString(R.string.you_have) + " " + it + " " + this.context!!.getString(R.string.golds)
         })
 
         QuizzViewModel.response.observe(this, Observer {
@@ -49,18 +47,24 @@ class QuizzFragment : androidx.fragment.app.Fragment() {
         })
 
         QuizzViewModel.info.observe(this, Observer {
-
-
-
-
-
-
-
-
-
-
-
-            info.text = it
+            when(it)
+            {
+                Info.NO_MUCH_MONEY -> {
+                    info.text = this.context!!.getString(R.string.insufficient_credit)
+                }
+                Info.VOID -> {
+                    info.text = this.context!!.getString(R.string.voidString)
+                }
+                Info.WRONG_ANSWER -> {
+                    info.text = this.context!!.getString(R.string.wrong_answer)
+                }
+                Info.RIGHT_ANSWER -> {
+                    info.text = this.context!!.getString(R.string.right_answer)
+                }
+                Info.ERROR -> {
+                    info.text = this.context!!.getString(R.string.networkError)
+                }
+            }
         })
 
 

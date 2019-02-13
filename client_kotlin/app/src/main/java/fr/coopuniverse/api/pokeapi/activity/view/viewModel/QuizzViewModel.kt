@@ -5,15 +5,16 @@ import fr.coopuniverse.api.pokeapi.activity.callback.CallBackDisplay
 import fr.coopuniverse.api.pokeapi.activity.data.Account
 import fr.coopuniverse.api.pokeapi.activity.data.Config
 import fr.coopuniverse.api.pokeapi.activity.data.Reponse
-import fr.coopuniverse.api.pokeapi.activity.enum.Route
+import fr.coopuniverse.api.pokeapi.activity.enums.Info
+import fr.coopuniverse.api.pokeapi.activity.enums.Route
 import fr.coopuniverse.api.pokeapi.activity.manager.CallHttpManager
 
 
 object QuizzViewModel : CallBackDisplay {
     var answer = MutableLiveData<String>()
     var response = MutableLiveData<ArrayList<String>>()
-    var money = MutableLiveData<String>()
-    var info = MutableLiveData<String>()
+    var money = MutableLiveData<Int>()
+    var info = MutableLiveData<Info>()
     var enableButton = MutableLiveData<Boolean>()
     private var hashAnswer = ""
 
@@ -28,41 +29,40 @@ object QuizzViewModel : CallBackDisplay {
 
     override fun display(rep: Reponse, action: String) {
         when (action) {
-            "GetQuestion" -> {
+            Route.GET_QUESTION.get -> {
                 this.answer.postValue(rep.data.question[0].toString())
                 this.hashAnswer = rep.data.question[2] as String
                 var reps: ArrayList<String> = rep.data.question[1] as ArrayList<String>
                 response.postValue(reps)
-
             }
-            "GetOneMoney" -> {
+            Route.GET_ONE_MONEY.get -> {
                 Account.money = (rep.data.money!!.toInt() - 10).toString()
-                this.money.postValue("You have" + Account.money + " " + "golds")
+                this.money.postValue(Account.money.toInt())
 
                 if (Account.money.toInt() >= 0) {
 
-                    info.postValue("")
+                    info.postValue(Info.VOID)
                     CallHttpManager(callback = this, action = Route.SET_ONE_MONEY.get, isActivateCallBack = true, idUser = Account.id, value = Account.money, url = Config.url).execute()
                 } else {
-                    info.postValue("No much money")
+                    info.postValue(Info.NO_MUCH_MONEY)
                 }
 
             }
-            "SetOneMoney" -> {
+            Route.SET_ONE_MONEY.get -> {
                 if (rep.exitCode == 0) {
                     CallHttpManager(callback = this, action = Route.GET_QUESTION.get, isActivateCallBack = true, url = Config.url).execute()
-                } else info.postValue("Error exit code: " + rep.exitCode)
+                } else info.postValue(Info.ERROR)
 
             }
-            "SetAnswer" -> {
+            Route.SET_ANSWER.get -> {
                 this.enableButton.postValue(true)
                 if (rep.result == true) {
                     Account.money = (Account.money.toInt() + 30).toString()
-                    this.money.postValue("You have" + Account.money + " " + "golds")
-                    this.info.postValue("Good Answer you won 30 golds :D")
+                    this.money.postValue(Account.money.toInt())
+                    this.info.postValue(Info.RIGHT_ANSWER)
                     CallHttpManager(callback = this, action = Route.SET_ONE_MONEY.get, isActivateCallBack = false, idUser = Account.id, value = Account.money, url = Config.url).execute()
                 } else {
-                    info.postValue("Wrong Answer ! Sorry :( ")
+                    info.postValue(Info.WRONG_ANSWER)
                 }
             }
         }

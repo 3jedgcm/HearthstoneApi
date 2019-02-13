@@ -1,4 +1,4 @@
-package fr.coopuniverse.api.pokeapi.activity.enum
+package fr.coopuniverse.api.pokeapi.activity.enums
 
 enum class Route (var get:String)
 {

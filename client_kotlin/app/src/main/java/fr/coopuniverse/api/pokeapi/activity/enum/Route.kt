@@ -15,7 +15,7 @@ enum class Route (var get:String)
     GET_CARD_BY_FILTER("GetCardByFilter"),
     SET_ONE_CARD("SetOneCard"),
     SET_ONE_MONEY("SetOneMoney"),
-    SET_ANSWER("SetAnswser"),
+    SET_ANSWER("SetAnswer"),
     EXCHANGE_CARDS("ExchangeCards"),
     MELT_CARDS("MeltCards"),
     CRAFT_ONE_CARDS("CraftOneCard"),

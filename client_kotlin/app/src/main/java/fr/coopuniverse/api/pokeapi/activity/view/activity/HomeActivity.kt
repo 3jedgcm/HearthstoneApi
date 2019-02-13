@@ -36,7 +36,6 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             Destination.Inventory -> InventoryFragment()
             Destination.CardDetail -> CardDetailFragment()
         }
-
         supportFragmentManager.beginTransaction().replace(R.id.contentHome,fragment).commit()
     }
 
@@ -48,13 +47,10 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val toggle = ActionBarDrawerToggle(this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
-
         val defaultFragment = InventoryFragment()
         val header: View
         val userNameField: TextView
         val connectWithField: TextView
-
-
         supportFragmentManager.beginTransaction().add(R.id.contentHome,defaultFragment).commit()
         nav_view.setNavigationItemSelectedListener(this)
         header = nav_view.getHeaderView(0)
@@ -112,7 +108,6 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 this.setFragment(Destination.Home)
             }
         }
-
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
     }

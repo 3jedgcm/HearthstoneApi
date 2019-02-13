@@ -86,7 +86,6 @@ class MainActivity : AppCompatActivity() {
                     }
                 })
 
-
         ////Observe////
         MainActivityViewModel.simpleSignInStateButton.observe(this, Observer { sign_in_simple.isEnabled = it })
         MainActivityViewModel.infoError.observe(this, Observer { errorView.text = it })

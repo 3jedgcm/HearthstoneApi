@@ -125,5 +125,8 @@ class QuizzFragment : androidx.fragment.app.Fragment() , CallBackDisplay {
         went.isEnabled = false
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+    }
 
 }

@@ -24,8 +24,8 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun setFragment(dest: Destination) {
         var fragment = when(dest)
         {
-            Destination.Home -> QuizzFragment()
-            Destination.Market -> ShopFragment()
+            Destination.Home -> HomeFragment()
+            Destination.Market -> MarketFragment()
             Destination.Craft -> CraftFragment()
             Destination.Melt -> MeltFragment()
             Destination.Quizz -> QuizzFragment()

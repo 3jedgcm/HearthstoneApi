@@ -12,7 +12,7 @@ class HomeFragment : androidx.fragment.app.Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val adapter = HomePagerAdapter(context, activity?.supportFragmentManager!!, Account(id = this.getArguments()?.getString("id")!!, money = this.getArguments()?.getString("money"))!!)
+        val adapter = HomePagerAdapter(context, childFragmentManager, Account(id = this.getArguments()?.getString("id")!!, money = this.getArguments()?.getString("money"))!!)
         viewer.adapter = adapter
         tab_navigation.setupWithViewPager(viewer)
 
@@ -21,5 +21,9 @@ class HomeFragment : androidx.fragment.app.Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.home_fragment, container, false)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
     }
 }

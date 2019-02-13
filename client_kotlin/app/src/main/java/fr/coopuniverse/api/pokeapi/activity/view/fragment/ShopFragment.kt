@@ -1,4 +1,4 @@
-package fr.coopuniverse.api.pokeapi.activity.fragment
+package fr.coopuniverse.api.pokeapi.activity.view.fragment
 
 
 import android.os.Bundle
@@ -14,7 +14,7 @@ import fr.coopuniverse.api.pokeapi.activity.callback.CallBackOnClickCard
 import fr.coopuniverse.api.pokeapi.activity.data.Account
 import fr.coopuniverse.api.pokeapi.activity.data.Card
 import fr.coopuniverse.api.pokeapi.activity.data.Reponse
-import fr.coopuniverse.api.pokeapi.activity.httpRequestManager.CallBackGenerator
+import fr.coopuniverse.api.pokeapi.activity.manager.CallHttpManager
 import kotlinx.android.synthetic.main.inventory_fragment.*
 
 
@@ -41,7 +41,7 @@ class ShopFragment : androidx.fragment.app.Fragment(), CallBackDisplay, CallBack
             }
             this.userCards_total++
             setTextCards(this.userCards_total.toString())
-            CallBackGenerator(callback = this, action = "SetOneCard", isActivateCallBack = true, idUser = this.acc.id, idCard = idCard, url = this.activity?.getString(R.string.url)).execute()
+            CallHttpManager(callback = this, action = "SetOneCard", isActivateCallBack = true, idUser = this.acc.id, idCard = idCard, url = this.activity?.getString(R.string.url)).execute()
         }
     }
 
@@ -69,7 +69,7 @@ class ShopFragment : androidx.fragment.app.Fragment(), CallBackDisplay, CallBack
                     }
                     setTextCredits(money.toString())
                 }
-                CallBackGenerator(callback = this, action = "GetCardByUserId", isActivateCallBack = true, idUser = this.acc.id, url = this.activity?.getString(R.string.url)).execute()
+                CallHttpManager(callback = this, action = "GetCardByUserId", isActivateCallBack = true, idUser = this.acc.id, url = this.activity?.getString(R.string.url)).execute()
             }
             "GetCardByUserId" -> {
                 if (userCards != null) {
@@ -82,7 +82,7 @@ class ShopFragment : androidx.fragment.app.Fragment(), CallBackDisplay, CallBack
                     setTextCards("0")
                 }
                 if (flagUpdateListofItems) {
-                    CallBackGenerator(callback = this, action = "GetAllCard", isActivateCallBack = true, url = this.activity?.getString(R.string.url)).execute()
+                    CallHttpManager(callback = this, action = "GetAllCard", isActivateCallBack = true, url = this.activity?.getString(R.string.url)).execute()
                 }
             }
             "SetOneMoney" -> {
@@ -93,7 +93,7 @@ class ShopFragment : androidx.fragment.app.Fragment(), CallBackDisplay, CallBack
             "SetOneCard" -> {
                 this.userMoney_total = this.userMoney_total.minus(this.cost)
                 setTextCredits(this.userMoney_total.toString())
-                CallBackGenerator(callback = this, action = "SetOneMoney", isActivateCallBack = true, idUser = this.acc.id, value = userMoney_total.toString(), url = "https://api.coopuniverse.fr/").execute()
+                CallHttpManager(callback = this, action = "SetOneMoney", isActivateCallBack = true, idUser = this.acc.id, value = userMoney_total.toString(), url = "https://api.coopuniverse.fr/").execute()
             }
         }
     }
@@ -110,7 +110,7 @@ class ShopFragment : androidx.fragment.app.Fragment(), CallBackDisplay, CallBack
     }
 
     fun getUserData() {
-        CallBackGenerator(callback = this, action = "GetOneMoney", isActivateCallBack = true, idUser = this.acc.id, url = this.activity?.getString(R.string.url)).execute()
+        CallHttpManager(callback = this, action = "GetOneMoney", isActivateCallBack = true, idUser = this.acc.id, url = this.activity?.getString(R.string.url)).execute()
     }
 
     fun setTextCredits(credits: String) {

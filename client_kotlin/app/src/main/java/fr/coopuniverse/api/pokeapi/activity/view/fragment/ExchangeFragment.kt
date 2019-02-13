@@ -1,4 +1,4 @@
-package fr.coopuniverse.api.pokeapi.activity.fragment
+package fr.coopuniverse.api.pokeapi.activity.view.fragment
 
 
 import android.content.Context

@@ -1,4 +1,4 @@
-package fr.coopuniverse.api.pokeapi.activity.fragment
+package fr.coopuniverse.api.pokeapi.activity.view.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,7 +11,7 @@ import fr.coopuniverse.api.pokeapi.activity.callback.CallBackOnClickCard
 import fr.coopuniverse.api.pokeapi.activity.adapter.CardsListAdapter
 import fr.coopuniverse.api.pokeapi.activity.data.Account
 import fr.coopuniverse.api.pokeapi.activity.data.Card
-import fr.coopuniverse.api.pokeapi.activity.httpRequestManager.CallBackGenerator
+import fr.coopuniverse.api.pokeapi.activity.manager.CallHttpManager
 import fr.coopuniverse.api.pokeapi.activity.data.Reponse
 
 
@@ -49,7 +49,7 @@ class InventoryFragment : androidx.fragment.app.Fragment(), CallBackDisplay, Cal
         this.acc.id = this.getArguments()?.getString(this.activity?.getString(R.string.idUser))!!
         this.acc.money = this.getArguments()?.getString(this.activity?.getString(R.string.idMoney))
         linearL.visibility =  View.GONE
-        CallBackGenerator(callback = this,action = "GetCardByUserId", idUser = this.acc.id,isActivateCallBack = true, url = this.activity?.getString(R.string.url)).execute()
+        CallHttpManager(callback = this, action = "GetCardByUserId", idUser = this.acc.id, isActivateCallBack = true, url = this.activity?.getString(R.string.url)).execute()
        return this.anotherView
     }
 }

@@ -9,7 +9,7 @@
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-    tools:context=".activity.fragment.InventoryFragment"
+    tools:context=".activity.view.fragment.InventoryFragment"
     />
 
 <!-- app:layoutManager="LinearLayoutManager"-->

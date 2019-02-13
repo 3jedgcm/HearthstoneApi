@@ -1,5 +1,7 @@
 package fr.coopuniverse.api.pokeapi.activity.data
 
+import fr.coopuniverse.api.pokeapi.activity.enum.Money
+
 
 class Card {
 

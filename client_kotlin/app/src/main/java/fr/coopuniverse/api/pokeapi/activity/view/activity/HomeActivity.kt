@@ -1,4 +1,4 @@
-package fr.coopuniverse.api.pokeapi.activity.activity
+package fr.coopuniverse.api.pokeapi.activity.view.activity
 
 import android.os.Bundle
 import com.google.android.material.navigation.NavigationView
@@ -10,9 +10,10 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import fr.coopuniverse.api.pokeapi.R
+import fr.coopuniverse.api.pokeapi.activity.enum.Destination
 import fr.coopuniverse.api.pokeapi.activity.callback.CallBackFragment
 import fr.coopuniverse.api.pokeapi.activity.data.Account
-import fr.coopuniverse.api.pokeapi.activity.fragment.*
+import fr.coopuniverse.api.pokeapi.activity.view.fragment.*
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.app_bar_home.*
 

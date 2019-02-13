@@ -1,9 +1,8 @@
-package fr.coopuniverse.api.pokeapi.activity.activity
+package fr.coopuniverse.api.pokeapi.activity.view.activity
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
@@ -24,7 +23,7 @@ import fr.coopuniverse.api.pokeapi.R
 import fr.coopuniverse.api.pokeapi.activity.callback.CallBackDisplay
 
 import fr.coopuniverse.api.pokeapi.activity.data.Account
-import fr.coopuniverse.api.pokeapi.activity.httpRequestManager.CallBackGenerator
+import fr.coopuniverse.api.pokeapi.activity.manager.CallHttpManager
 import fr.coopuniverse.api.pokeapi.activity.data.Reponse
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -92,16 +91,16 @@ class MainActivity : AppCompatActivity(), CallBackDisplay {
     private fun simpleSignIn() {
         sign_in_simple.isEnabled = false
         this.account = Account(name = login_field?.text.toString(), connectWith = this.getString(R.string.simple))
-        CallBackGenerator(callback = this, action = "Connect", isActivateCallBack = true, login = login_field?.text.toString(), pass = pass_field?.text.toString(), url = this.getString(R.string.url)).execute()
+        CallHttpManager(callback = this, action = "Connect", isActivateCallBack = true, login = login_field?.text.toString(), pass = pass_field?.text.toString(), url = this.getString(R.string.url)).execute()
     }
 
     private fun facebookSignIn(id: String, account: Account) {
         this.account = account
-        CallBackGenerator(callback = this, action = "ConnectFacebook", isActivateCallBack = true, key = id, url = this.getString(R.string.url)).execute()
+        CallHttpManager(callback = this, action = "ConnectFacebook", isActivateCallBack = true, key = id, url = this.getString(R.string.url)).execute()
     }
 
     private fun googleSignIn(id: String) {
-        CallBackGenerator(callback = this, action = "ConnectGoogle", isActivateCallBack = true, key = id, url = this.getString(R.string.url)).execute()
+        CallHttpManager(callback = this, action = "ConnectGoogle", isActivateCallBack = true, key = id, url = this.getString(R.string.url)).execute()
     }
 
 
@@ -110,16 +109,16 @@ class MainActivity : AppCompatActivity(), CallBackDisplay {
         if (!rep.connect) {
             when (action) {
                 "ConnectFacebook" -> {
-                    CallBackGenerator(callback = this, action = "RegisterFacebook", isActivateCallBack = true, key = rep.id, url = this.getString(R.string.url)).execute()
+                    CallHttpManager(callback = this, action = "RegisterFacebook", isActivateCallBack = true, key = rep.id, url = this.getString(R.string.url)).execute()
                 }
                 "ConnectGoogle" -> {
-                    CallBackGenerator(callback = this, action = "RegisterGoogle", isActivateCallBack = true, key = rep.id, url = this.getString(R.string.url)).execute()
+                    CallHttpManager(callback = this, action = "RegisterGoogle", isActivateCallBack = true, key = rep.id, url = this.getString(R.string.url)).execute()
                 }
                 "RegisterGoogle" -> {
-                    CallBackGenerator(callback = this, action = "ConnectGoogle", isActivateCallBack = true, key = rep.id, url = this.getString(R.string.url)).execute()
+                    CallHttpManager(callback = this, action = "ConnectGoogle", isActivateCallBack = true, key = rep.id, url = this.getString(R.string.url)).execute()
                 }
                 "RegisterFacebook" -> {
-                    CallBackGenerator(callback = this, action = "ConnectFacebook", isActivateCallBack = true, key = rep.id, url = this.getString(R.string.url)).execute()
+                    CallHttpManager(callback = this, action = "ConnectFacebook", isActivateCallBack = true, key = rep.id, url = this.getString(R.string.url)).execute()
                 }
                 "Connect" -> {
                     errorView.text = "Mauvais login ou mot de passe"
@@ -134,7 +133,7 @@ class MainActivity : AppCompatActivity(), CallBackDisplay {
 
     private fun changeActivity(ud: Account?) {
         val inventoryIntent = Intent(this, HomeActivity::class.java)
-        CallBackGenerator(MainActivity(), false)
+        CallHttpManager(MainActivity(), false)
         inventoryIntent.putExtra("connectWith", ud?.connectWith)
         inventoryIntent.putExtra("name", ud?.name)
         inventoryIntent.putExtra("lastname", ud?.surname)

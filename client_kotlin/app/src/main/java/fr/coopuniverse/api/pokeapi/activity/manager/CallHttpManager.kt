@@ -1,9 +1,10 @@
-package fr.coopuniverse.api.pokeapi.activity.httpRequestManager
+package fr.coopuniverse.api.pokeapi.activity.manager
 
 import android.os.AsyncTask
 import android.widget.TextView
 import fr.coopuniverse.api.pokeapi.activity.callback.CallBackDisplay
 import fr.coopuniverse.api.pokeapi.activity.data.Reponse
+import fr.coopuniverse.api.pokeapi.activity.route.CoopUniverseService
 
 import java.io.IOException
 
@@ -12,7 +13,7 @@ import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class CallBackGenerator(
+class CallHttpManager(
         private var callback: CallBackDisplay,
         private var isActivateCallBack: Boolean? = false,
         private var typeFilter: String? = "",

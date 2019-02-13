@@ -1,4 +1,4 @@
-package fr.coopuniverse.api.pokeapi.activity.activity
+package fr.coopuniverse.api.pokeapi.activity.enum
 
 enum class Destination {
     Home,

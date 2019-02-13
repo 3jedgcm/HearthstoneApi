@@ -1,4 +1,4 @@
-package fr.coopuniverse.api.pokeapi.activity.httpRequestManager
+package fr.coopuniverse.api.pokeapi.activity.route
 
 import fr.coopuniverse.api.pokeapi.activity.data.Reponse
 import retrofit2.Call

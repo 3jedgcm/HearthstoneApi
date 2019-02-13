@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.home_fragment.*
 class MarketFragment : androidx.fragment.app.Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val adapter = MarketPagerAdapter(context, childFragmentManager, Account(id = this.arguments?.getString("id")!!, money = this.arguments?.getString("money"))!!)
+        val adapter = MarketPagerAdapter(context, childFragmentManager)
         viewer.adapter = adapter
         tab_navigation.setupWithViewPager(viewer)
 

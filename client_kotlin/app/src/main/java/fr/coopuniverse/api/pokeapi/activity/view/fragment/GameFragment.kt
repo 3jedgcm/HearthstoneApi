@@ -8,11 +8,11 @@ import kotlinx.android.synthetic.main.home_fragment.*
 import HomePagerAdapter
 import fr.coopuniverse.api.pokeapi.activity.data.Account
 
-class HomeFragment : androidx.fragment.app.Fragment() {
+class GameFragment : androidx.fragment.app.Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val adapter = HomePagerAdapter(context, childFragmentManager, Account(id = this.getArguments()?.getString("id")!!, money = this.getArguments()?.getString("money"))!!)
+        val adapter = HomePagerAdapter(context, childFragmentManager)
         viewer.adapter = adapter
         tab_navigation.setupWithViewPager(viewer)
 

@@ -8,7 +8,7 @@ import fr.coopuniverse.api.pokeapi.activity.data.Account
 import fr.coopuniverse.api.pokeapi.activity.view.fragment.ShopFragment
 
 
-class MarketPagerAdapter(private val mContext: Context?, fm: FragmentManager, var acc: Account): FragmentPagerAdapter(fm) {
+class MarketPagerAdapter(private val mContext: Context?, fm: FragmentManager): FragmentPagerAdapter(fm) {
 
     override fun getItem(position: Int): Fragment {
 
@@ -22,10 +22,6 @@ class MarketPagerAdapter(private val mContext: Context?, fm: FragmentManager, va
             ShopFragment()
         }
         */
-        var b = Bundle()
-        b?.putString(mContext?.getString(R.string.idUser),this.acc.id)
-        b?.putString(mContext?.getString(R.string.idMoney),this.acc.money)
-        fr.arguments = b
         return fr
     }
 

@@ -32,6 +32,4 @@ class ExchangeFragment : androidx.fragment.app.Fragment() {
         callback = null
     }
 
-
-
 }

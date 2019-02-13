@@ -15,7 +15,6 @@ import kotlinx.android.synthetic.main.quizz_fragment.*
 
 class QuizzFragment : androidx.fragment.app.Fragment() , CallBackDisplay {
 
-    private var acc: Account = Account()
     private var hashAnswer: String = ""
 
     override fun display(rep: Reponse, action: String) {
@@ -34,12 +33,12 @@ class QuizzFragment : androidx.fragment.app.Fragment() , CallBackDisplay {
             }
             "GetOneMoney" ->
             {
-                this.acc.money = (rep.data.money!!.toInt() - 10).toString()
-                currentMoney.text = this.activity?.getString(R.string.you_have) + this.acc.money + " " + this.activity?.getString(R.string.golds)
-                if(this.acc.money!!.toInt() >= 0)
+                Account.money = (rep.data.money!!.toInt() - 10).toString()
+                currentMoney.text = this.activity?.getString(R.string.you_have) + Account.money + " " + this.activity?.getString(R.string.golds)
+                if(Account.money.toInt() >= 0)
                 {
                     info.text = ""
-                    CallHttpManager(callback = this, action = "SetOneMoney", isActivateCallBack = true, idUser = this.acc.id, value = this.acc.money, url = this.activity?.getString(R.string.url)).execute()
+                    CallHttpManager(callback = this, action = "SetOneMoney", isActivateCallBack = true, idUser = Account.id, value = Account.money, url = this.activity?.getString(R.string.url)).execute()
                 }
                 else
                 {
@@ -62,10 +61,10 @@ class QuizzFragment : androidx.fragment.app.Fragment() , CallBackDisplay {
                 this.enableButton()
                 if(rep.result == true)
                 {
-                    this.acc.money = (this.acc.money!!.toInt() + 20).toString()
-                    currentMoney.text = this.activity?.getString(R.string.you_have) + this.acc.money + " " + this.activity?.getString(R.string.golds)
+                    Account.money = (Account.money.toInt() + 20).toString()
+                    currentMoney.text = this.activity?.getString(R.string.you_have) + Account.money + " " + this.activity?.getString(R.string.golds)
                     info.text = this.activity?.getString(R.string.good_answer)
-                    CallHttpManager(callback = this, action = "SetOneMoney", isActivateCallBack = false, idUser = this.acc.id, value = this.acc.money, url = this.activity?.getString(R.string.url)).execute()
+                    CallHttpManager(callback = this, action = "SetOneMoney", isActivateCallBack = false, idUser = Account.id, value = Account.money, url = this.activity?.getString(R.string.url)).execute()
                 }
                 else
                 {
@@ -83,14 +82,12 @@ class QuizzFragment : androidx.fragment.app.Fragment() , CallBackDisplay {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         this.enableButton()
-        this.acc.id = this.getArguments()?.getString(this.activity?.getString(R.string.idUser))!!
-        this.acc.money = this.getArguments()?.getString(this.activity?.getString(R.string.idMoney))
-        currentMoney.text = this.activity?.getString(R.string.you_have) + this.acc.money + " " + this.activity?.getString(R.string.golds)
+        currentMoney.text = this.activity?.getString(R.string.you_have) + Account.money + " " + this.activity?.getString(R.string.golds)
 
 
         went.setOnClickListener {
             this.disableButton()
-            CallHttpManager(callback = this, action = "GetOneMoney", isActivateCallBack = true, idUser = this.acc.id, url = this.activity?.getString(R.string.url)).execute()
+            CallHttpManager(callback = this, action = "GetOneMoney", isActivateCallBack = true, idUser = Account.id, url = this.activity?.getString(R.string.url)).execute()
         }
         reponse_one.setOnClickListener {
             CallHttpManager(callback = this, action = "SetAnswer", isActivateCallBack = true, answser = this.hashAnswer, value = reponse_one.text.toString(), url = this.activity?.getString(R.string.url)).execute()

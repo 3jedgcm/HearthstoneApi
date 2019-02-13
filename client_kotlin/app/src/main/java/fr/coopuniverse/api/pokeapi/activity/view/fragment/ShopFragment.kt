@@ -27,7 +27,6 @@ class ShopFragment : androidx.fragment.app.Fragment(), CallBackDisplay, CallBack
     private var userCards_total = 0
     private var userMoney_total = 0
     private var flagUpdateListofItems = true
-    private var acc = Account()
 
     override fun onClickCard(idCard: String, cost: Int,costStr:String) {
         this.cost = cost
@@ -41,7 +40,7 @@ class ShopFragment : androidx.fragment.app.Fragment(), CallBackDisplay, CallBack
             }
             this.userCards_total++
             setTextCards(this.userCards_total.toString())
-            CallHttpManager(callback = this, action = "SetOneCard", isActivateCallBack = true, idUser = this.acc.id, idCard = idCard, url = this.activity?.getString(R.string.url)).execute()
+            CallHttpManager(callback = this, action = "SetOneCard", isActivateCallBack = true, idUser = Account.id, idCard = idCard, url = this.activity?.getString(R.string.url)).execute()
         }
     }
 
@@ -69,7 +68,7 @@ class ShopFragment : androidx.fragment.app.Fragment(), CallBackDisplay, CallBack
                     }
                     setTextCredits(money.toString())
                 }
-                CallHttpManager(callback = this, action = "GetCardByUserId", isActivateCallBack = true, idUser = this.acc.id, url = this.activity?.getString(R.string.url)).execute()
+                CallHttpManager(callback = this, action = "GetCardByUserId", isActivateCallBack = true, idUser = Account.id, url = this.activity?.getString(R.string.url)).execute()
             }
             "GetCardByUserId" -> {
                 if (userCards != null) {
@@ -93,7 +92,7 @@ class ShopFragment : androidx.fragment.app.Fragment(), CallBackDisplay, CallBack
             "SetOneCard" -> {
                 this.userMoney_total = this.userMoney_total.minus(this.cost)
                 setTextCredits(this.userMoney_total.toString())
-                CallHttpManager(callback = this, action = "SetOneMoney", isActivateCallBack = true, idUser = this.acc.id, value = userMoney_total.toString(), url = "https://api.coopuniverse.fr/").execute()
+                CallHttpManager(callback = this, action = "SetOneMoney", isActivateCallBack = true, idUser = Account.id, value = userMoney_total.toString(), url = "https://api.coopuniverse.fr/").execute()
             }
         }
     }
@@ -103,14 +102,12 @@ class ShopFragment : androidx.fragment.app.Fragment(), CallBackDisplay, CallBack
                               savedInstanceState: Bundle?): View? {
         this.tCredits = inflater.inflate(R.layout.inventory_fragment, container, false).findViewById(R.id.tCredits);
         this.tCards = inflater.inflate(R.layout.inventory_fragment, container, false).findViewById(R.id.tCards)
-        this.acc.id = this.getArguments()?.getString(this.activity?.getString(R.string.idUser))!!
-        this.acc.money = this.getArguments()?.getString(this.activity?.getString(R.string.idMoney))
         this.getUserData()
         return inflater.inflate(fr.coopuniverse.api.pokeapi.R.layout.inventory_fragment, container, false)
     }
 
     fun getUserData() {
-        CallHttpManager(callback = this, action = "GetOneMoney", isActivateCallBack = true, idUser = this.acc.id, url = this.activity?.getString(R.string.url)).execute()
+        CallHttpManager(callback = this, action = "GetOneMoney", isActivateCallBack = true, idUser = Account.id, url = this.activity?.getString(R.string.url)).execute()
     }
 
     fun setTextCredits(credits: String) {

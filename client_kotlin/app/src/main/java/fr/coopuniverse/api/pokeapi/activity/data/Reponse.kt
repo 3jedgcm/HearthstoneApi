@@ -1,7 +1,7 @@
 package fr.coopuniverse.api.pokeapi.activity.data
 
 
-class Reponse(var id: String,
+class Reponse(
               var result: Boolean? = null,
               var connect: Boolean = false,
               var user: User = User("","","","","",""),

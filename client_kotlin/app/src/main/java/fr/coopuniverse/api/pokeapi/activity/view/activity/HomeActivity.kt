@@ -20,12 +20,12 @@ import kotlinx.android.synthetic.main.app_bar_home.*
 
 class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, CallBackFragment
 {
-    private var acc = Account()
+
 
     override fun setFragment(dest: Destination) {
         var fragment = when(dest)
         {
-            Destination.Home -> HomeFragment()
+            Destination.Home -> GameFragment()
             Destination.Market -> MarketFragment()
             Destination.Craft -> CraftFragment()
             Destination.Melt -> MeltFragment()
@@ -36,7 +36,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             Destination.Inventory -> InventoryFragment()
             Destination.CardDetail -> CardDetailFragment()
         }
-        fragment.arguments = this.getBundle()
+
         supportFragmentManager.beginTransaction().replace(R.id.contentHome,fragment).commit()
     }
 
@@ -53,21 +53,15 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val header: View
         val userNameField: TextView
         val connectWithField: TextView
-        this.acc?.money = intent.extras.getString("money")
-        this.acc?.name = intent.extras.getString("name")
-        this.acc?.surname = intent.extras.getString("lastname")
-        this.acc?.id = intent.extras.getString("id")
-        this.acc?.urlPicture = intent.extras.getString("url")
-        this.acc?.connectWith = intent.extras.getString("connectWith")
 
-        defaultFragment.arguments = this.getBundle()
+
         supportFragmentManager.beginTransaction().add(R.id.contentHome,defaultFragment).commit()
         nav_view.setNavigationItemSelectedListener(this)
         header = nav_view.getHeaderView(0)
         userNameField = header.findViewById(R.id.userNameField)
         connectWithField = header.findViewById(R.id.connectWithField)
-        userNameField.text = acc?.name
-        connectWithField.text = "Connect with " + acc?.connectWith
+        userNameField.text = Account.name
+        connectWithField.text = "Connect with " + Account.connectWith
     }
 
     override fun onBackPressed()
@@ -121,13 +115,5 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
-    }
-
-    private fun getBundle(): Bundle?
-    {
-        val bundle: Bundle? = Bundle()
-        bundle?.putString("id",acc?.id)
-        bundle?.putString("money",acc?.money)
-        return bundle
     }
 }

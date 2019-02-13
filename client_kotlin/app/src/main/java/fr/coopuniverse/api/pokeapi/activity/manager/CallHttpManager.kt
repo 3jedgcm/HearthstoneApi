@@ -72,7 +72,7 @@ class CallHttpManager(
         } catch (e: IOException) {
             e.printStackTrace()
         }
-        return Reponse(key!!)
+        return Reponse()
     }
 
     override fun doInBackground(vararg TextViews: TextView?): Reponse? {
@@ -81,7 +81,7 @@ class CallHttpManager(
 
     override fun onPostExecute(result: Reponse) {
         if (isActivateCallBack == true) {
-            result.id = key!!
+
             callback.display(result, this.action!!)
         }
     }

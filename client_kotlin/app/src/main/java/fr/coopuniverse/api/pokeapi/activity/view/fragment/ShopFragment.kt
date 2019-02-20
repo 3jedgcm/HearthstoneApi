@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import fr.coopuniverse.api.pokeapi.R
 import fr.coopuniverse.api.pokeapi.activity.adapter.CardsListAdapterStore
 import fr.coopuniverse.api.pokeapi.activity.callback.CallBackDisplay
@@ -15,10 +17,12 @@ import fr.coopuniverse.api.pokeapi.activity.data.Account
 import fr.coopuniverse.api.pokeapi.activity.data.Card
 import fr.coopuniverse.api.pokeapi.activity.data.Reponse
 import fr.coopuniverse.api.pokeapi.activity.manager.CallHttpManager
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.inventory_fragment.*
+import fr.coopuniverse.api.pokeapi.activity.view.viewModel.ShopViewModel
 
 
-class ShopFragment : androidx.fragment.app.Fragment(), CallBackDisplay, CallBackOnClickCard {
+class ShopFragment : androidx.fragment.app.Fragment() {
 
     private var tCredits: TextView? = null
     private var tCards: TextView? = null
@@ -28,87 +32,72 @@ class ShopFragment : androidx.fragment.app.Fragment(), CallBackDisplay, CallBack
     private var userMoney_total = 0
     private var flagUpdateListofItems = true
 
-    override fun onClickCard(idCard: String, cost: Int,costStr:String) {
-        this.cost = cost
-        this.idCard = idCard
-        if (this.idCard != null) {
-            if (this.userMoney_total < this.cost) {
-                Toast.makeText(context, this.activity?.getString(R.string.insufficient_credit), Toast.LENGTH_LONG).show()
-                return
-            } else if (this.userMoney_total == this.cost) {
-                Toast.makeText(context, this.activity?.getString(R.string.attention_credit), Toast.LENGTH_LONG).show()
-            }
-            this.userCards_total++
-            setTextCards(this.userCards_total.toString())
-            CallHttpManager(callback = this, action = "SetOneCard", isActivateCallBack = true, idUser = Account.id, idCard = idCard, url = this.activity?.getString(R.string.url)).execute()
-        }
-    }
-
-    override fun display(rep: Reponse, action: String) {
-
-        var data: ArrayList<Card>? = null
-        var money: String? = null
-        var userCards: ArrayList<Card>? = null
-        if (rep != null && rep.data != null) {
-            data = rep.data.cards
-            money = rep.data.money
-            userCards = rep.data.inventory
-        }
-
-        when (action) {
-            "GetAllCard" -> {
-                var adapterReclViewcard = CardsListAdapterStore(data, targetFragment, this)
-                recView_Inventory?.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this.context)
-                recView_Inventory?.adapter = adapterReclViewcard
-            }
-            "GetOneMoney" -> {
-                if (money != null) {
-                    if (money.toIntOrNull() != null) {
-                        this.userMoney_total = money.toIntOrNull()!!
-                    }
-                    setTextCredits(money.toString())
-                }
-                CallHttpManager(callback = this, action = "GetCardByUserId", isActivateCallBack = true, idUser = Account.id, url = this.activity?.getString(R.string.url)).execute()
-            }
-            "GetCardByUserId" -> {
-                if (userCards != null) {
-                    var userCardsCount = userCards.size
-                    if (userCards != null) {
-                        this.userCards_total = userCardsCount
-                    }
-                    setTextCards(userCardsCount.toString())
-                } else {
-                    setTextCards("0")
-                }
-                if (flagUpdateListofItems) {
-                    CallHttpManager(callback = this, action = "GetAllCard", isActivateCallBack = true, url = this.activity?.getString(R.string.url)).execute()
-                }
-            }
-            "SetOneMoney" -> {
-                if (this.cost != null) {
-                    flagUpdateListofItems = false
-                }
-            }
-            "SetOneCard" -> {
-                this.userMoney_total = this.userMoney_total.minus(this.cost)
-                setTextCredits(this.userMoney_total.toString())
-                CallHttpManager(callback = this, action = "SetOneMoney", isActivateCallBack = true, idUser = Account.id, value = userMoney_total.toString(), url = "https://api.coopuniverse.fr/").execute()
-            }
-        }
-    }
+    var data: ArrayList<Card>? = null
+    var infoCreditView: TextView? = null
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        this.tCredits = inflater.inflate(R.layout.inventory_fragment, container, false).findViewById(R.id.tCredits);
+        this.tCredits = inflater.inflate(R.layout.inventory_fragment, container, false).findViewById(R.id.tCredits)
         this.tCards = inflater.inflate(R.layout.inventory_fragment, container, false).findViewById(R.id.tCards)
-        this.getUserData()
+        //this.getUserData()
+
+        val view = inflater.inflate(fr.coopuniverse.api.pokeapi.R.layout.inventory_fragment, container, false)
+        infoCreditView = view!!.findViewById(fr.coopuniverse.api.pokeapi.R.id.tCredits) as TextView
+
+        if (Account.money != null) {
+            userMoney_total = Account.money.toInt()
+        } else {
+            userMoney_total = 0
+        }
+        //  setTextCredits(userMoney_total.toString())
+
+        ShopViewModel.initDataUser()
+
+
+        ////Observe////
+
+        ShopViewModel.nbCardsUser.observe(this, Observer {
+
+            userCards_total = it
+            setTextCards(userCards_total.toString())
+        })
+
+        ShopViewModel.dataAllCards.observe(this, Observer {
+            data = it
+            val adapterReclViewcard = CardsListAdapterStore(data, targetFragment, ShopViewModel) //ShopViewModel extends mon listener donc je peux l'en mettre à la place de  listener
+            recView_Inventory?.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this.context)
+            recView_Inventory?.adapter = adapterReclViewcard
+
+        })
+
+        ShopViewModel.dataMoneyUser.observe(this, Observer {
+            userMoney_total = it
+            setTextCredits(it.toString())
+
+        })
+        ShopViewModel.comunicate.observe(this, Observer {
+
+            Toast.makeText(context, this.activity?.getString(it), Toast.LENGTH_LONG).show()
+
+        })
+
+        ShopViewModel.userCards_total_Mutable.observe(this, Observer {
+            userCards_total = it
+            setTextCards(it.toString())
+
+
+        })
+        ShopViewModel.userMoney_total_Mutable.observe(this, Observer {
+            userMoney_total = it
+            setTextCredits(it.toString())
+
+        })
+
+
         return inflater.inflate(fr.coopuniverse.api.pokeapi.R.layout.inventory_fragment, container, false)
     }
 
-    fun getUserData() {
-        CallHttpManager(callback = this, action = "GetOneMoney", isActivateCallBack = true, idUser = Account.id, url = this.activity?.getString(R.string.url)).execute()
-    }
 
     fun setTextCredits(credits: String) {
         val infoCreditView = view!!.findViewById(fr.coopuniverse.api.pokeapi.R.id.tCredits) as TextView

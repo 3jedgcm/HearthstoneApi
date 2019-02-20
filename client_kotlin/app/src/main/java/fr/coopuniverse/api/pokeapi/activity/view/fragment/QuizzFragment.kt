@@ -25,7 +25,7 @@ class QuizzFragment : androidx.fragment.app.Fragment() {
         this.enableButton()
 
 
-        currentMoney.text = "You have " + Account.money + " golds"
+        currentMoney.text = this.context!!.getString(R.string.you_have) + " " + Account.money + " " + this.context!!.getString(R.string.golds)
 
         QuizzViewModel.money.observe(this, Observer{
             currentMoney.text = this.context!!.getString(R.string.you_have) + " " + it + " " + this.context!!.getString(R.string.golds)

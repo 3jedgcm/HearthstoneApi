@@ -14,7 +14,7 @@ import fr.coopuniverse.api.pokeapi.activity.data.Account
 import fr.coopuniverse.api.pokeapi.activity.data.Card
 import fr.coopuniverse.api.pokeapi.activity.data.Config
 import fr.coopuniverse.api.pokeapi.activity.data.Reponse
-import fr.coopuniverse.api.pokeapi.activity.enum.Route
+import fr.coopuniverse.api.pokeapi.activity.enums.Route
 import fr.coopuniverse.api.pokeapi.activity.manager.CallHttpManager
 import kotlinx.android.synthetic.main.inventory_fragment.*
 

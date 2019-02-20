@@ -7,17 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import fr.coopuniverse.api.pokeapi.R
 import fr.coopuniverse.api.pokeapi.activity.adapter.CardsListAdapterStore
-import fr.coopuniverse.api.pokeapi.activity.callback.CallBackDisplay
-import fr.coopuniverse.api.pokeapi.activity.callback.CallBackOnClickCard
 import fr.coopuniverse.api.pokeapi.activity.data.Account
 import fr.coopuniverse.api.pokeapi.activity.data.Card
-import fr.coopuniverse.api.pokeapi.activity.data.Reponse
-import fr.coopuniverse.api.pokeapi.activity.manager.CallHttpManager
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.inventory_fragment.*
 import fr.coopuniverse.api.pokeapi.activity.view.viewModel.ShopViewModel
 
@@ -40,7 +34,6 @@ class ShopFragment : androidx.fragment.app.Fragment() {
                               savedInstanceState: Bundle?): View? {
         this.tCredits = inflater.inflate(R.layout.inventory_fragment, container, false).findViewById(R.id.tCredits)
         this.tCards = inflater.inflate(R.layout.inventory_fragment, container, false).findViewById(R.id.tCards)
-        //this.getUserData()
 
         val view = inflater.inflate(fr.coopuniverse.api.pokeapi.R.layout.inventory_fragment, container, false)
         infoCreditView = view!!.findViewById(fr.coopuniverse.api.pokeapi.R.id.tCredits) as TextView

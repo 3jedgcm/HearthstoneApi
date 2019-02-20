@@ -78,10 +78,10 @@ interface CoopUniverseService {
     //////////////////////////
     //////// SPECIAL ////////
     @FormUrlEncoded
-    @POST("other/meltCard/{idUser}")
+    @POST("other/meltcard/{idUser}")
     fun MeltCards(@Path("idUser") idUser: String, @Field("idCard") idCard: String): Call<Reponse>
     @FormUrlEncoded
-    @POST("other/craftCard/{idUser}")
+    @POST("other/craftcard/{idUser}")
     fun CraftOneCard(@Path("idUser") idUser: String, @Field("idCardOne") idCardOne: String, @Field("idCardTwo") idCardTwo: String, @Field("idCardThree") idCardThree: String): Call<Reponse>
     //////////////////////////
     //////// QUESTION ////////

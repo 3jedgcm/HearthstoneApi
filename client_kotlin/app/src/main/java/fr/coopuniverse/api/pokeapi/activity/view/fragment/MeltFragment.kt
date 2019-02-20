@@ -1,13 +1,17 @@
 package fr.coopuniverse.api.pokeapi.activity.view.fragment
 
-
+import android.app.AlertDialog
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import androidx.lifecycle.Observer
 
 import fr.coopuniverse.api.pokeapi.R
+import fr.coopuniverse.api.pokeapi.activity.view.viewModel.MeltViewModel
+import kotlinx.android.synthetic.main.home_fragment.view.*
+import kotlinx.android.synthetic.main.melt_fragment.*
 
 
 class MeltFragment : androidx.fragment.app.Fragment() {
@@ -15,5 +19,28 @@ class MeltFragment : androidx.fragment.app.Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.melt_fragment, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        MeltViewModel.initData()
+        MeltViewModel.listName.observe(this, Observer {
+            melt_button.isEnabled = it.size != 0
+
+            spinner_cards.adapter = ArrayAdapter<String>(this.context,R.layout.support_simple_spinner_dropdown_item,it)
+        })
+
+        melt_button.setOnClickListener {
+
+            MeltViewModel.meltCard(spinner_cards.selectedItemPosition)
+        }
+
+        MeltViewModel.result.observe(this, Observer {
+            val builder = AlertDialog.Builder(this.context)
+            builder.setTitle("Melt result")
+            builder.setMessage(it)
+            val dialog: AlertDialog = builder.create()
+            dialog.show()
+        })
     }
 }

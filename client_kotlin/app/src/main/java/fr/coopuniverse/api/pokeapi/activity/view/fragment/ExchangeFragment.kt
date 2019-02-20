@@ -18,6 +18,9 @@ class ExchangeFragment : androidx.fragment.app.Fragment() {
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.exchange_fragment, container, false)
+
+
+
     }
 
     override fun onAttach(context: Context?) {

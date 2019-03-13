@@ -6,5 +6,5 @@ class Reponse(
               var connect: Boolean = false,
               var user: User = User("","","","","",""),
               var exitCode: Int = -1,
-              var data: Data = Data(-1))
+              var data: Data = Data())
 

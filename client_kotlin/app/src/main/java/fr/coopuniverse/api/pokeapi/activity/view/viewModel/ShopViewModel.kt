@@ -2,21 +2,18 @@
 
 package fr.coopuniverse.api.pokeapi.activity.view.viewModel
 
-import android.provider.ContactsContract
-import android.widget.TextView
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import fr.coopuniverse.api.pokeapi.R
-import fr.coopuniverse.api.pokeapi.activity.adapter.CardsListAdapterStore
 import fr.coopuniverse.api.pokeapi.activity.callback.CallBackDisplay
 import fr.coopuniverse.api.pokeapi.activity.callback.CallBackOnClickCard
 import fr.coopuniverse.api.pokeapi.activity.data.Account
 import fr.coopuniverse.api.pokeapi.activity.data.Card
 import fr.coopuniverse.api.pokeapi.activity.data.Config
-import fr.coopuniverse.api.pokeapi.activity.data.Reponse
+import fr.coopuniverse.api.pokeapi.activity.data.Response.ResponseSimple
 import fr.coopuniverse.api.pokeapi.activity.enums.Route
 import fr.coopuniverse.api.pokeapi.activity.manager.CallHttpManager
-import kotlinx.android.synthetic.main.inventory_fragment.*
+import okhttp3.Response
 
 object ShopViewModel : CallBackDisplay, CallBackOnClickCard {
 
@@ -35,14 +32,69 @@ object ShopViewModel : CallBackDisplay, CallBackOnClickCard {
     private var userCards_total = 0
     private var userMoney_total = 0
     private var flagUpdateListofItems = true
+    private lateinit var responseObserver: Observer<String>
+    private lateinit var actionObserver: Observer<String>
 
 
     fun initDataUser() {
 
         if (flagUpdateListofItems) {
-            CallHttpManager(callback = this, action = Route.GET_ALL_CARD.get, isActivateCallBack = true, url = Config.url).execute()
+           getAllCard()
         }
     }
+
+    fun getAllCard()
+    {
+        var call = CallHttpManager(action = Route.GET_ALL_CARD.get, url = Config.url)
+        var currentAction = ""
+        actionObserver = Observer {
+            currentAction = it
+        }
+        call.currentAction.observeForever(observer)
+
+        call.liveResponse.observeForever {
+            var response = it as (ResponseSimple)
+            when(currentAction)
+            {
+                Route.GET_ALL_CARD.get-> {
+                    //TODO rep.data.cards
+                    dataAllCards.postValue(ArrayList())
+
+                    call.currentAction.removeObserver(observer)
+                }
+            }
+        }
+        call.execute()
+    }
+
+
+    fun getOneMoney()
+    {
+        var call = CallHttpManager(action = Route.GET_ONE_MONEY.get, url = Config.url)
+        var currentAction = ""
+        observer = Observer {
+            currentAction = it
+        }
+        call.currentAction.observeForever(observer)
+
+        call.liveResponse.observeForever {
+            var response = it as (ResponseSimple)
+            when(currentAction)
+            {
+                Route.GET_ONE_MONEY.get-> {
+                    //TODO rep.data.cards
+                    dataAllCards.postValue(ArrayList())
+
+                    call.currentAction.removeObserver(observer)
+                }
+            }
+        }
+        call.execute()
+    }
+
+
+
+
 
 
     override fun display(rep: Reponse, action: String) {
@@ -53,7 +105,7 @@ object ShopViewModel : CallBackDisplay, CallBackOnClickCard {
         var money: String? = null
         var userCards: ArrayList<Card>? = null
         if (rep != null && rep.data != null) {
-            data = rep.data.cards
+            data =
             money = rep.data.money
             userCards = rep.data.inventory
         }
@@ -62,22 +114,14 @@ object ShopViewModel : CallBackDisplay, CallBackOnClickCard {
         if (!rep.connect) {
             when (action) {
                 "GetAllCard" -> {
-                    dataAllCards.postValue(data)
+
 
                     CallHttpManager(callback = this, action = Route.GET_ONE_MONEY.get, isActivateCallBack = true, idUser = Account.id, url = Config.url).execute()
 
                 }
                 "GetOneMoney" -> {
 
-                    if (money == null) {
-                        money = "0"
-                    }
-                    dataMoneyUser.postValue(Integer.valueOf(money))
 
-                    Account.money = money.toString() //(?) update Account
-
-                    this.userMoney_total = money.toIntOrNull()!!
-                    this.userMoney_total_Mutable.postValue(money.toIntOrNull()!!)
                     CallHttpManager(callback = this, action = Route.GET_CARD_BY_USER_ID.get, isActivateCallBack = true, idUser = Account.id, url = Config.url).execute()
 
                 }

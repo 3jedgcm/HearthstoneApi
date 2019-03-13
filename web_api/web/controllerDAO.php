@@ -199,18 +199,7 @@ function exchangeCard($pDAO,$idUser,$idUser_secondary,$idCard,$idCard_secondary)
     return $resultat["error"] = EXIT_CODE_INCORRECT_ID_USER;
 
   }
-  $resultatCardsOne = $pDAO["Card"]->checkIdCard($idCard);
-  $resultatCardsTwo = $pDAO["Card"]->checkIdCard($idCard_secondary);
-  if(!$resultatCardsOne)
-  {
-    $resultat["error"] = EXIT_CODE_CARDS_IS_MISSING_IN_DB;
-    return $resultat;
-  }
-  if(!$resultatCardsTwo)
-  {
-    $resultat["error"] = EXIT_CODE_CARDS_IS_MISSING_IN_DB;
-    return $resultat;
-  }
+
   $resultatCardsPlayer = $pDAO["Inventory"]->checkInventoryExist($idCard,$idUser); //Check InventoryidUserOne
   if($resultatCardsPlayer)
   {
@@ -252,11 +241,7 @@ function exchangeCard($pDAO,$idUser,$idUser_secondary,$idCard,$idCard_secondary)
 function getRandomCard($pDAO) //100%
 {
   $resultat["error"] = EXIT_CODE_OK;
-    $resultat["randomCard"] = $pDAO["Card"]->getRandomCard($idUser);
-    if($resultat["randomCard"] == -1)
-    {
-      $resultat["error"] = EXIT_CODE_ERROR_SQL;
-    }
+  $resultat["randomCard"] = $pDAO["Card"]->getRandomCard($idUser);
   return $resultat;
 };
 
@@ -312,7 +297,8 @@ function craftOneCard($pDAO,$idUser,$idCardOne,$idCardTwo,$idCardThree) //100%
     $newCard = $pDAO["Card"]->getRandomCard();
     $pDAO["Inventory"]->insert($newCard["id"],$idUser);
     $resultat["error"] = EXIT_CODE_OK;
-    $resultat["result"] = $newCard;
+    $resultat["result"] = true;
+    $resultat["name"] = $newCard["name"];
     return $resultat;
   }
   else
@@ -332,11 +318,13 @@ function meltCard($pDAO,$idUser,$idCard) //100%
     {
       $newCard = $pDAO["Card"]->getRandomCard();
       $pDAO["Inventory"]->insert($newCard["id"],$idUser);
-      $resultat["result"] = $newCard["name"];
+      $resultat["result"] = true;
+      $resultat["name"] = $newCard["name"];
     }
     else
     {
       $resultat["result"] = false;
+      $resultat["name"] = "";
     }
     $resultat["error"] = EXIT_CODE_OK;
     return $resultat;

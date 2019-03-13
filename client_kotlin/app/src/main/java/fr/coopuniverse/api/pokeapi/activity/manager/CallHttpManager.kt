@@ -2,8 +2,9 @@ package fr.coopuniverse.api.pokeapi.activity.manager
 
 import android.os.AsyncTask
 import android.widget.TextView
-import fr.coopuniverse.api.pokeapi.activity.callback.CallBackDisplay
-import fr.coopuniverse.api.pokeapi.activity.data.Reponse
+import androidx.lifecycle.MutableLiveData
+import fr.coopuniverse.api.pokeapi.activity.data.Response.Response
+import fr.coopuniverse.api.pokeapi.activity.data.Response.ResponseSimple
 import fr.coopuniverse.api.pokeapi.activity.route.CoopUniverseService
 
 import java.io.IOException
@@ -14,8 +15,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class CallHttpManager(
-        private var callback: CallBackDisplay,
-        private var isActivateCallBack: Boolean? = false,
         private var typeFilter: String? = "",
         private var valueFilter: String? = "",
         private var url: String? = "",
@@ -32,14 +31,22 @@ class CallHttpManager(
         private var action: String? = "",
         private var key: String? = "",
         private var login: String? = "",
-        private var pass: String? = "")
-    : AsyncTask<TextView, Void, Reponse>() {
+        private var pass: String? = ""
 
-    private fun generateCallBack(): Reponse {
-        val response: Reponse?
+)
+    : AsyncTask<TextView, Void, Response>() {
+
+    var currentAction = MutableLiveData<String>()
+    var liveResponse = MutableLiveData<Response>()
+
+
+    private fun generateCallBack(): Response {
+
+
+        var response : Response
         val retrofit = Retrofit.Builder().baseUrl(url).addConverterFactory(GsonConverterFactory.create()).build()
         val service = retrofit.create(CoopUniverseService::class.java)
-        val rep: Call<Reponse>
+        val rep: Call<Response>
         when (action) {
             "GetOneMoney" -> rep = service.GetOneMoney(idUser!!)
             "GetAllMoney" -> rep = service.GetAllMoney()
@@ -72,17 +79,15 @@ class CallHttpManager(
         } catch (e: IOException) {
             e.printStackTrace()
         }
-        return Reponse()
+        return ResponseSimple()
     }
 
-    override fun doInBackground(vararg TextViews: TextView?): Reponse? {
+    override fun doInBackground(vararg TextViews: TextView?): Response? {
         return generateCallBack()
     }
 
-    override fun onPostExecute(result: Reponse) {
-        if (isActivateCallBack == true) {
-
-            callback.display(result, this.action!!)
-        }
+    override fun onPostExecute(result: Response) {
+        currentAction.postValue(action)
+        liveResponse.postValue(result)
     }
 }

@@ -106,6 +106,8 @@ if(!$errorCode)
             $resultat = meltCard($DAO,$arrayUri[3],$_POST['idCard']);
             $errorCode = $resultat["error"];
             $result = $resultat["result"];
+            $name = $resultat["name"];
+
           }
           else
           {
@@ -119,6 +121,7 @@ if(!$errorCode)
             $resultat = craftOneCard($DAO,$arrayUri[3],$_POST['idCardOne'],$_POST['idCardTwo'],$_POST['idCardThree']);
             $errorCode = $resultat["error"];
             $result = $resultat["result"];
+            $name = $resultat["name"];
           }
           else
           {
@@ -309,9 +312,9 @@ if(!$errorCode)
   $newInventory = getInventory($DAO,$arrayUri[2]);
 }
 
-sendHttpRespond($arrayUri[1],$DAO,$arrayUri[2],$money,$inventory,$errorCode,$typeReqHttp,$param,$card,$user,$connect,$result);
+sendHttpRespond($arrayUri[1],$DAO,$arrayUri[2],$money,$inventory,$errorCode,$typeReqHttp,$param,$card,$user,$connect,$result,$name);
 
-function sendHttpRespond($firstArgR,$pDAO,$secondArgR,$pMoney,$pInventory,$pErrorCode,$typeReqHttp,$pParam,$pCard,$pUser,$pConnect,$pResult)
+function sendHttpRespond($firstArgR,$pDAO,$secondArgR,$pMoney,$pInventory,$pErrorCode,$typeReqHttp,$pParam,$pCard,$pUser,$pConnect,$pResult,$pName)
 {
   header('Content-type: application/json');
   if($pErrorCode == EXIT_CODE_OK)
@@ -321,19 +324,12 @@ function sendHttpRespond($firstArgR,$pDAO,$secondArgR,$pMoney,$pInventory,$pErro
       switch($firstArgR)
       {
         case ROUTE_INVENTORY:
-        if($secondArgR != null)
-        {
-          $data = ["user"=>$pUser,"inventory"=>$pInventory];
-        }
-        else
-        {
-          $data = ["inventory"=>$pInventory];
-        }
+          $data = ["inventory"=>["user"=>$pUser,"inventory"=>$pInventory]];
         break;
         case ROUTE_MONEY:
         if($secondArgR != null)
         {
-          $data = ["user"=>$pUser,"money"=>$pMoney];
+          $data = ["money"=>["user"=>$pUser,"money"=>$pMoney]];
         }
         else
         {
@@ -347,13 +343,20 @@ function sendHttpRespond($firstArgR,$pDAO,$secondArgR,$pMoney,$pInventory,$pErro
         break;
         case ROUTE_CARD:
         {
+          if($secondArgR == "random")
+          {
+            $data = ["card"=>$pCard];
+          }
+          else
+          {
+            $data = $pCard;
+          }
 
-          $data = $pCard;
         }
         break;
         case ROUTE_USER:
         {
-          $data = $pUser;
+          $data = ["user"=>$pUser];
         }
         break;
         case ROUTE_OTHER:
@@ -372,11 +375,27 @@ function sendHttpRespond($firstArgR,$pDAO,$secondArgR,$pMoney,$pInventory,$pErro
     {
       if($firstArgR == ROUTE_CONNECT)
       {
-        echo json_encode(["exitCode"=>$pErrorCode,"connect"=>$pConnect,"user"=>$pUser]);
+        echo json_encode(["exitCode"=>$pErrorCode,"data" => ["connect"=>$pConnect,"user"=>$pUser]]);
       }
       else if($firstArgR == ROUTE_OTHER)
       {
-        echo json_encode(["exitCode"=>$pErrorCode,"result"=>$pResult]);
+        if($secondArgR == SUB_ROUTE_MELT)
+        {
+          echo json_encode(["exitCode"=>$pErrorCode,"data" => ["result"=>$pResult,"name"=>$pName]]);
+        }
+        else if($secondArgR == SUB_ROUTE_QUIZZ)
+        {
+          echo json_encode(["exitCode"=>$pErrorCode,"data" => ["result"=>$pResult]]);
+        }
+        else if($secondArgR == SUB_ROUTE_CRAFTCARD)
+        {
+          echo json_encode(["exitCode"=>$pErrorCode,"data" => ["result"=>$pResult,"name"=>$pName]]);
+        }
+        else
+        {
+          echo json_encode(["exitCode"=>$pErrorCode,"data" => ["result"=>$pResult]]);
+        }
+
       }
       else
       {

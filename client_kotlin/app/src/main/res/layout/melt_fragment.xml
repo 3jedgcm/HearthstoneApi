@@ -17,7 +17,7 @@
             android:layout_width="265dp"
             android:layout_height="46dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="28dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
             android:background="@drawable/shape"
             android:fontFamily="@font/roboto_slab_bold"
@@ -34,12 +34,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
             android:text="@string/melt_step_two"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.496"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/spinner_cards" />
 
@@ -48,7 +47,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
             android:fontFamily="@font/roboto_slab_bold"
             android:text="@string/title_melt"
@@ -64,7 +63,7 @@
             android:layout_width="309dp"
             android:layout_height="42dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="12dp"
             android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -75,7 +74,7 @@
             android:layout_width="341dp"
             android:layout_height="126dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="48dp"
+            android:layout_marginTop="24dp"
             android:layout_marginEnd="8dp"
             android:text="@string/rules_melt"
             android:textSize="20sp"
@@ -89,7 +88,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="24dp"
             android:layout_marginEnd="8dp"
             android:text="@string/melt_step_one"
             android:textSize="24sp"
@@ -97,6 +96,30 @@
             app:layout_constraintHorizontal_bias="0.495"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/rule" />
+
+        <pl.droidsonroids.gif.GifImageView
+            android:id="@+id/gifImageView"
+            android:layout_width="match_parent"
+            android:layout_height="422dp"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/melt_giph"
+            android:visibility="invisible"
+            app:layout_constraintTop_toBottomOf="@+id/titleLabel"
+            tools:layout_editor_absoluteX="0dp" />
+
+        <TextView
+            android:id="@+id/meltProgressLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="@font/roboto_slab_bold"
+            android:text="Melting in progress ..."
+            android:textSize="24sp"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/gifImageView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

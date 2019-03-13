@@ -1,6 +1,7 @@
 package fr.coopuniverse.api.pokeapi.activity.view.viewModel
 
 import android.app.AlertDialog
+import android.os.Handler
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import fr.coopuniverse.api.pokeapi.activity.callback.CallBackDisplay
@@ -16,6 +17,8 @@ object MeltViewModel : CallBackDisplay {
     var inventory = ArrayList<Card>()
     var listName = MutableLiveData<ArrayList<String>>()
     var result = MutableLiveData<String>()
+    var stateButton = MutableLiveData<Boolean>()
+    var viewInProgress = MutableLiveData<Boolean>()
 
     override fun display(rep: Reponse, action: String) {
         when(action) {
@@ -34,7 +37,7 @@ object MeltViewModel : CallBackDisplay {
             Route.MELT_CARDS.get -> {
                 if(rep.result === false)
                 {
-                    result.postValue("You have inadvertently dropped your card, your card has become illegible and unusable sorry 🤪")
+                    result.postValue("You have inadvertently dropped your card, your card has become illegible and unusable sorry \uD83D\uDE31")
                 }
                 else
                 {
@@ -52,7 +55,12 @@ object MeltViewModel : CallBackDisplay {
     }
 
     fun meltCard(position:Int) {
-        CallHttpManager(callback = this, action = Route.MELT_CARDS.get, isActivateCallBack = true, idUser = Account.id, idCard = inventory[position].id, url = Config.url).execute()
+        viewInProgress.postValue(true)
+        stateButton.postValue(false)
+        Handler().postDelayed({
+            CallHttpManager(callback = this, action = Route.MELT_CARDS.get, isActivateCallBack = true, idUser = Account.id, idCard = inventory[position].id, url = Config.url).execute()
+        }, 3000)
+
     }
 
 

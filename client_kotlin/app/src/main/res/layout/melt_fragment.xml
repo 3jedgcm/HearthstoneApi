@@ -17,7 +17,7 @@
             android:layout_width="265dp"
             android:layout_height="46dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:background="@drawable/shape"
             android:fontFamily="@font/roboto_slab_bold"
@@ -26,6 +26,7 @@
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.523"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/sub_title" />
 
@@ -34,13 +35,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:text="@string/melt_step_two"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spinner_cards" />
+            app:layout_constraintTop_toBottomOf="@+id/spinner_card" />
 
         <TextView
             android:id="@+id/titleLabel"
@@ -59,7 +60,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Spinner
-            android:id="@+id/spinner_cards"
+            android:id="@+id/spinner_card"
             android:layout_width="309dp"
             android:layout_height="42dp"
             android:layout_marginStart="8dp"

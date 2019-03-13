@@ -254,15 +254,22 @@ if(!$errorCode)
         }
       break;
       case ROUTE_CARD:
+
         if(SUB_ROUTE_RANDOM == $arrayUri[2])
         {
           $resultat = getRandomCard($DAO);
           $errorCode = $resultat["error"];
           $card = $resultat["randomCard"];
         }
-        else
+        else if(SUB_ROUTE_EMPTY == $arrayUri[2])
         {
           $resultat = getCard($DAO,"",$_GET["filter"],$_GET["value_filter"]);
+          $errorCode = $resultat["error"];
+          $card = $resultat["card"];
+        }
+        else
+        {
+          $resultat = getCard($DAO,$arrayUri[2],"","");
           $errorCode = $resultat["error"];
           $card = $resultat["card"];
         }
@@ -346,7 +353,7 @@ function sendHttpRespond($firstArgR,$pDAO,$secondArgR,$pMoney,$pInventory,$pErro
         break;
         case ROUTE_USER:
         {
-          $data = ["user"=>$pUser];
+          $data = $pUser;
         }
         break;
         case ROUTE_OTHER:

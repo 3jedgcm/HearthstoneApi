@@ -1,9 +1,7 @@
 package fr.coopuniverse.api.pokeapi.activity.view.fragment
 
 import android.app.AlertDialog
-import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +10,6 @@ import androidx.lifecycle.Observer
 
 import fr.coopuniverse.api.pokeapi.R
 import fr.coopuniverse.api.pokeapi.activity.view.viewModel.MeltViewModel
-import kotlinx.android.synthetic.main.home_fragment.view.*
 import kotlinx.android.synthetic.main.melt_fragment.*
 
 
@@ -35,7 +32,7 @@ class MeltFragment : androidx.fragment.app.Fragment() {
         super.onViewCreated(view, savedInstanceState)
         MeltViewModel.initData()
         MeltViewModel.listName.observe(this, Observer {
-            spinner_cards.adapter = ArrayAdapter<String>(this.context,R.layout.support_simple_spinner_dropdown_item,it)
+            spinner_card.adapter = ArrayAdapter<String>(this.context,R.layout.support_simple_spinner_dropdown_item,it)
             if(it.size != 0)
             {
                 MeltViewModel.stateButton.postValue(true)
@@ -50,7 +47,7 @@ class MeltFragment : androidx.fragment.app.Fragment() {
 
         melt_button.setOnClickListener {
 
-            MeltViewModel.meltCard(spinner_cards.selectedItemPosition)
+            MeltViewModel.meltCard(spinner_card.selectedItemPosition)
         }
 
         MeltViewModel.result.observe(this, Observer {

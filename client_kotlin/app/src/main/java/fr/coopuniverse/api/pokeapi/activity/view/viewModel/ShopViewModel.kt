@@ -2,6 +2,9 @@
 
 package fr.coopuniverse.api.pokeapi.activity.view.viewModel
 
+import android.provider.ContactsContract
+import android.widget.TextView
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import fr.coopuniverse.api.pokeapi.R
@@ -13,7 +16,8 @@ import fr.coopuniverse.api.pokeapi.activity.data.Config
 import fr.coopuniverse.api.pokeapi.activity.data.Response.ResponseSimple
 import fr.coopuniverse.api.pokeapi.activity.enums.Route
 import fr.coopuniverse.api.pokeapi.activity.manager.CallHttpManager
-import okhttp3.Response
+import kotlinx.android.synthetic.main.inventory_fragment.*
+
 
 object ShopViewModel : CallBackDisplay, CallBackOnClickCard {
 
@@ -113,19 +117,20 @@ object ShopViewModel : CallBackDisplay, CallBackOnClickCard {
 
         if (!rep.connect) {
             when (action) {
-                "GetAllCard" -> {
+                Route.GET_ALL_CARD.get -> {
+                    dataAllCards.postValue(data)
 
 
                     CallHttpManager(callback = this, action = Route.GET_ONE_MONEY.get, isActivateCallBack = true, idUser = Account.id, url = Config.url).execute()
 
                 }
-                "GetOneMoney" -> {
+                Route.GET_ONE_MONEY.get -> {
 
 
                     CallHttpManager(callback = this, action = Route.GET_CARD_BY_USER_ID.get, isActivateCallBack = true, idUser = Account.id, url = Config.url).execute()
 
                 }
-                "GetCardByUserId" -> {
+                Route.GET_CARD_BY_USER_ID.get -> {
 
                     var userCardsCount = 0
                     if (userCards != null) {
@@ -135,17 +140,16 @@ object ShopViewModel : CallBackDisplay, CallBackOnClickCard {
                             this.userCards_total = userCards.count()
                         }
                     }
-
                     nbCardsUser.postValue(userCardsCount)
 
 
                 }
-                "SetOneMoney" -> {
+                Route.SET_ONE_MONEY.get -> {
                     if (this.cost != null) {
                         flagUpdateListofItems = false
                     }
                 }
-                "SetOneCard" -> {
+                Route.SET_ONE_CARD.get -> {
                     this.userMoney_total = this.userMoney_total.minus(this.cost)
                     userMoney_total_Mutable.postValue(this.userMoney_total)
                     //setTextCredits(this.userMoney_total.toString())
@@ -157,11 +161,11 @@ object ShopViewModel : CallBackDisplay, CallBackOnClickCard {
     }
 
 
-    override fun onClickCard(idCard: String, cost: Int, costStr: String) {
+    override fun onClickCard(cardId: String, cardCost: Int, cardCostStr: String) {
 
 
-        this.cost = cost
-        this.idCard = idCard
+        this.cost = cardCost
+        this.idCard = cardId
         if (this.idCard != null) {
             if (this.userMoney_total < this.cost) {
                 comunicate.postValue(R.string.insufficient_credit)
@@ -172,7 +176,7 @@ object ShopViewModel : CallBackDisplay, CallBackOnClickCard {
             this.userCards_total++
 
             userCards_total_Mutable.postValue(this.userCards_total)
-            CallHttpManager(callback = this, action = Route.SET_ONE_CARD.get, isActivateCallBack = true, idUser = Account.id, idCard = idCard, url = Config.url).execute()
+            CallHttpManager(callback = this, action = Route.SET_ONE_CARD.get, isActivateCallBack = true, idUser = Account.id, idCard = this.idCard, url = Config.url).execute()
         }
 
 

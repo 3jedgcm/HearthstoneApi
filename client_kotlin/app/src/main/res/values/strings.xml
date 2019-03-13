@@ -70,5 +70,6 @@
     <string name="networkError">Awe :3 You have a network error</string>
     <string name="insufficient_credit">Attention: Your Credit is insufficient! The operation canceled</string>
     <string name="attention_credit">Attention: Your will use all your Credit!</string>
+    <string name="EXCHANGE">Exchange</string>
 </resources>
 

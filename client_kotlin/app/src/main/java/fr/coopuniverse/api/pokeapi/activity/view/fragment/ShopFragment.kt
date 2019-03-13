@@ -34,7 +34,6 @@ class ShopFragment : androidx.fragment.app.Fragment() {
                               savedInstanceState: Bundle?): View? {
         this.tCredits = inflater.inflate(R.layout.inventory_fragment, container, false).findViewById(R.id.tCredits)
         this.tCards = inflater.inflate(R.layout.inventory_fragment, container, false).findViewById(R.id.tCards)
-        //this.getUserData()
 
         val view = inflater.inflate(fr.coopuniverse.api.pokeapi.R.layout.inventory_fragment, container, false)
         infoCreditView = view!!.findViewById(fr.coopuniverse.api.pokeapi.R.id.tCredits) as TextView

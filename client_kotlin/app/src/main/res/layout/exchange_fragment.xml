@@ -1,14 +1,141 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.view.fragment.ExchangeFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
+        android:layout_height="match_parent">
+
+        <Spinner
+            android:id="@+id/spinnerUser1Cards"
+            android:layout_width="177dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="113dp"
+            android:layout_marginBottom="351dp"
+            android:layout_weight="1"
+            app:layout_constraintBottom_toTopOf="@+id/spinnerUser2Cards"
+            app:layout_constraintEnd_toStartOf="@+id/divider"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtV_description_actions" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="9dp"
+            android:layout_height="362dp"
+            android:layout_marginTop="8dp"
+
+            android:layout_marginBottom="8dp"
+            android:layout_weight="1"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintBottom_toTopOf="@+id/spinnerUser2Cards"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtV_description_actions" />
+        <!-- app:layout_constraintBottom_toTopOf="@+id/imageView_arrow"-->
+       <!-- <ImageView
+            android:id="@+id/imageView_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:src="@android:drawable/arrow_down_float"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider" />
+-->
+        <Spinner
+            android:id="@+id/spinnerUsers"
+            android:layout_width="196dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="217dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="247dp"
+
+            android:layout_weight="1"
+            app:layout_constraintBottom_toTopOf="@+id/spinnerUser2Cards"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.571"
+            app:layout_constraintStart_toEndOf="@+id/divider"
+            app:layout_constraintTop_toBottomOf="@+id/txtV_description_actions" />
+        <!-- app:layout_constraintBottom_toTopOf="@+id/imageView_arrow"-->
+
+        <Spinner
+            android:id="@+id/spinnerUser2Cards"
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:layout_weight="1"
+            app:layout_constraintBottom_toTopOf="@+id/btnExchange"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider" />
+
+        <Button
+            android:id="@+id/btnExchange"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="33dp"
+            android:background="@color/colorPrimary"
+            android:gravity="center"
+            android:text="@string/EXCHANGE"
+            android:textColor="@android:color/white"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spinnerUser2Cards" />
+
+        <TextView
+            android:id="@+id/txtV_description_actions"
+            android:layout_width="320dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="44dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="44dp"
+            android:layout_marginBottom="8dp"
+            android:text="To complete the exchange, follow the steps indicated by the arrow pointer"
+            android:textAlignment="center"
+            android:visibility="visible"
+            app:layout_constraintBottom_toTopOf="@+id/divider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="to complete the exchange, follow the steps indicated by the arrow pointer" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:clickable="true"
+        android:src="@drawable/ic_menu_share" />
+
+    <ImageView
+        android:id="@+id/imageView_arrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+
+        android:layout_marginStart="200dp"
+        android:layout_marginLeft="200dp"
+        android:layout_marginTop="150dp"
+        android:layout_marginEnd="200dp"
+        android:layout_marginRight="200dp"
+        android:layout_marginBottom="200dp"
+        android:src="@android:drawable/arrow_down_float"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </FrameLayout>

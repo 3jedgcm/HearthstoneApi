@@ -1,5 +1,5 @@
 package fr.coopuniverse.api.pokeapi.activity.data.Response
 
-interface Response {
-
+class ResponseRegister {
+    val exitCode : Int? = 0
 }

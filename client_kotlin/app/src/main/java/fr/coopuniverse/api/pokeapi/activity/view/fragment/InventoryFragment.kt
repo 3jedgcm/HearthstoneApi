@@ -7,10 +7,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 
 import fr.coopuniverse.api.pokeapi.R
-import fr.coopuniverse.api.pokeapi.activity.callback.CallBackDisplay
-import fr.coopuniverse.api.pokeapi.activity.callback.CallBackOnClickCard
 import fr.coopuniverse.api.pokeapi.activity.adapter.CardsListAdapter
-import fr.coopuniverse.api.pokeapi.activity.data.Account
 import fr.coopuniverse.api.pokeapi.activity.data.Card
 import fr.coopuniverse.api.pokeapi.activity.data.Response.Response
 import fr.coopuniverse.api.pokeapi.activity.data.Response.ResponseSimple
@@ -23,17 +20,6 @@ class InventoryFragment : androidx.fragment.app.Fragment(), CallBackOnClickCard 
     var recView_Inventory: androidx.recyclerview.widget.RecyclerView? = null;
     private var anotherView: View? = null
     private var cards: ArrayList<Card> = ArrayList()
-    override fun onClickCard(cardId: String,cost:Int ,costStr:String) {
-        var fragment = CardDetailFragment()
-        for (c: Card in cards)
-        {
-            if (c.id.equals(cardId))
-           {
-            fragment.card = c
-            activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.contentHome,fragment)?.commit()
-           }
-        }
-    }
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,

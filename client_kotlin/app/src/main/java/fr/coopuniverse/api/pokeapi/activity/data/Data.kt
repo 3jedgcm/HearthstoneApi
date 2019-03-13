@@ -1,6 +1,7 @@
 package fr.coopuniverse.api.pokeapi.activity.data
 
- class Data(var user: Int,
+ class Data(//var user: Int,
+           var user:ArrayList<User>? = ArrayList(),
            var question: ArrayList<Any> = ArrayList(),
            var money: String? = null,
            var cards: ArrayList<Card> = ArrayList(),

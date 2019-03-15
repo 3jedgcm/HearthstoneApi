@@ -1,8 +1,8 @@
 package fr.coopuniverse.api.pokeapi.activity.data.Response
 
-class ResponseGetQuestion {
+class ResponseGetQuestion : Response {
     val exitCode : Int? = 0
-    val data :  DataGetOneMoney? = null
+    val data :  DataGetQuestion? = null
 
 }
 data class DataGetQuestion(

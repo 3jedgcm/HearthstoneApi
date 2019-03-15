@@ -1,6 +1,6 @@
 package fr.coopuniverse.api.pokeapi.activity.data.Response
 
-class ResponseRegisterFacebook{
+class ResponseRegisterFacebook : Response {
 
     val exitCode : Int? = 0
 }

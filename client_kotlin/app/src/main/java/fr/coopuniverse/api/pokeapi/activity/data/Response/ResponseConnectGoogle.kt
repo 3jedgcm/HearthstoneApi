@@ -2,7 +2,7 @@ package fr.coopuniverse.api.pokeapi.activity.data.Response
 
 import fr.coopuniverse.api.pokeapi.activity.data.User
 
-class ResponseConnectGoogle {
+class ResponseConnectGoogle: Response  {
 
 
     val exitCode : Int? = 0

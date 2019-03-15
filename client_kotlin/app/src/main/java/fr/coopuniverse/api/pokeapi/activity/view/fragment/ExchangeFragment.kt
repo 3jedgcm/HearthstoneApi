@@ -17,6 +17,7 @@ import fr.coopuniverse.api.pokeapi.R
 import fr.coopuniverse.api.pokeapi.activity.callback.CallBackFragment
 import fr.coopuniverse.api.pokeapi.activity.data.Account.id
 import fr.coopuniverse.api.pokeapi.activity.data.Card
+import fr.coopuniverse.api.pokeapi.activity.data.User
 import fr.coopuniverse.api.pokeapi.activity.view.viewModel.ExchangeViewModel
 
 
@@ -44,7 +45,7 @@ class ExchangeFragment : androidx.fragment.app.Fragment(),AdapterView.OnItemSele
 
     private var arrayofCardsUserCurrent : ArrayList<Card>? = null
     private var arrayofCardsUserSecond : ArrayList<Card>? = null
-    private var arrayofUsers : ArrayList<Any>? = null
+    private var arrayofUsers : ArrayList<User>? = null
 
 //    private var aAdapterUserCards : ArrayAdapter
 

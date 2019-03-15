@@ -1,4 +1,4 @@
 package fr.coopuniverse.api.pokeapi.activity.data.Response
 
-class ResponseSetOneCard {
+class ResponseSetOneCard : Response {
 }

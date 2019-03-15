@@ -1,4 +1,4 @@
 package fr.coopuniverse.api.pokeapi.activity.data.Response
 
-class ResponseGetOneUser {
+class ResponseGetOneUser : Response  {
 }

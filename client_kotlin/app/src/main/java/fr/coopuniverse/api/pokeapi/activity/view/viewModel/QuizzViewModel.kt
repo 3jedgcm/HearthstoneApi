@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import fr.coopuniverse.api.pokeapi.activity.callback.CallBackDisplay
 import fr.coopuniverse.api.pokeapi.activity.data.Account
 import fr.coopuniverse.api.pokeapi.activity.data.Config
+import fr.coopuniverse.api.pokeapi.activity.data.Response.*
 import fr.coopuniverse.api.pokeapi.activity.enums.Info
 import fr.coopuniverse.api.pokeapi.activity.enums.Route
 import fr.coopuniverse.api.pokeapi.activity.manager.CallHttpManager
@@ -26,36 +27,40 @@ object QuizzViewModel : CallBackDisplay {
         CallHttpManager(callback = this, action = Route.GET_ONE_MONEY.get, isActivateCallBack = true, idUser = Account.id, url = Config.url).execute()
     }
 
-    override fun display(rep: Reponse, action: String) {
+    override fun display(abstractRep: Response, action: String) {
+        var rep: Response
+
         when (action) {
             Route.GET_QUESTION.get -> {
-                this.answer.postValue(rep.data.question[0].toString())
-                this.hashAnswer = rep.data.question[2] as String
-                var reps: ArrayList<String> = rep.data.question[1] as ArrayList<String>
+                rep = abstractRep as ResponseGetQuestion
+
+                this.answer.postValue(rep.data!!.question!![0].toString())
+                this.hashAnswer = rep.data!!.question!![2] as String
+                var reps: ArrayList<String> = rep.data!!.question!![1] as ArrayList<String>
                 response.postValue(reps)
             }
             Route.GET_ONE_MONEY.get -> {
-                Account.money = (rep.data.money!!.toInt() - 10).toString()
+                rep = abstractRep as ResponseGetOneMoney
+                Account.money = (rep.data!!.money!!.money!!.toInt() - 10).toString()
                 this.money.postValue(Account.money.toInt())
-
                 if (Account.money.toInt() >= 0) {
-
                     info.postValue(Info.VOID)
                     CallHttpManager(callback = this, action = Route.SET_ONE_MONEY.get, isActivateCallBack = true, idUser = Account.id, value = Account.money, url = Config.url).execute()
                 } else {
                     info.postValue(Info.NO_MUCH_MONEY)
                 }
-
             }
             Route.SET_ONE_MONEY.get -> {
+                rep = abstractRep as ResponseSetOneMoney
                 if (rep.exitCode == 0) {
                     CallHttpManager(callback = this, action = Route.GET_QUESTION.get, isActivateCallBack = true, url = Config.url).execute()
                 } else info.postValue(Info.ERROR)
 
             }
             Route.SET_ANSWER.get -> {
+                rep = abstractRep as ResponseSetAnswer
                 this.enableButton.postValue(true)
-                if (rep.result == true) {
+                if (rep.data!!.result == true) {
                     Account.money = (Account.money.toInt() + 30).toString()
                     this.money.postValue(Account.money.toInt())
                     this.info.postValue(Info.RIGHT_ANSWER)

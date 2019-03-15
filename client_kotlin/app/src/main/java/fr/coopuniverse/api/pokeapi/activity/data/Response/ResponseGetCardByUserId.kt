@@ -4,13 +4,17 @@ import fr.coopuniverse.api.pokeapi.activity.data.Card
 import fr.coopuniverse.api.pokeapi.activity.data.User
 
 
-class ResponseGetCardByUserId {
+class ResponseGetCardByUserId : Response {
 
     val exitCode : Int? = 0
     val data :DataGetCardByUserId ? = null
 
 }
 data class DataGetCardByUserId(
-        val user : String? = null, //: ArrayList<User>? = null,
+        val inventory: InventoryGetCardByUserId
+)
+
+data class InventoryGetCardByUserId(
+        val user : String? = null,
         val inventory : ArrayList<Card>
 )

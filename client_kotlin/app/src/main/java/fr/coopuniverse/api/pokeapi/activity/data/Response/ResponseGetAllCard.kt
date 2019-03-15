@@ -2,7 +2,7 @@ package fr.coopuniverse.api.pokeapi.activity.data.Response
 
 import fr.coopuniverse.api.pokeapi.activity.data.Card
 
-class ResponseGetAllCard {
+class ResponseGetAllCard: Response  {
 
     val exitCode : Int? = 0
 

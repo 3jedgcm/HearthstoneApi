@@ -6,6 +6,9 @@ import fr.coopuniverse.api.pokeapi.activity.callback.CallBackDisplay
 import fr.coopuniverse.api.pokeapi.activity.data.Account
 import fr.coopuniverse.api.pokeapi.activity.data.Card
 import fr.coopuniverse.api.pokeapi.activity.data.Config
+import fr.coopuniverse.api.pokeapi.activity.data.Response.Response
+import fr.coopuniverse.api.pokeapi.activity.data.Response.ResponseGetCardByUserId
+import fr.coopuniverse.api.pokeapi.activity.data.Response.ResponseMeltCards
 import fr.coopuniverse.api.pokeapi.activity.enums.Route
 import fr.coopuniverse.api.pokeapi.activity.manager.CallHttpManager
 
@@ -17,10 +20,13 @@ object CraftViewModel : CallBackDisplay {
     var stateButton = MutableLiveData<Boolean>()
     var viewInProgress = MutableLiveData<Boolean>()
 
-    override fun display(rep: Reponse, action: String) {
+    override fun display(abstractRep: Response, action: String) {
+        var rep: Response
+
         when(action) {
             Route.GET_CARD_BY_USER_ID.get -> {
-                this.inventory = rep.data.inventory
+                rep = abstractRep as ResponseGetCardByUserId
+                this.inventory = rep.data!!.inventory.inventory
 
                 var i = 0
                 var arrayS = ArrayList<String>()
@@ -30,15 +36,17 @@ object CraftViewModel : CallBackDisplay {
                     i++
                 }
                 listNameCard.postValue(arrayS)
+
             }
             Route.MELT_CARDS.get -> {
-                if(rep.result === false)
+                rep = abstractRep as ResponseMeltCards
+                if(rep.data!!.result === false)
                 {
                     result.postValue("You have inadvertently dropped your card, your card has become illegible and unusable sorry \uD83D\uDE31")
                 }
                 else
                 {
-                    val castedCard = rep.result as String
+                    val castedCard = rep.data!!.name
                     result.postValue("🎉 Congratulations, you created " + castedCard)
                 }
                 CallHttpManager(callback = this, action = Route.GET_CARD_BY_USER_ID.get, isActivateCallBack = true, idUser = Account.id, url = Config.url).execute()

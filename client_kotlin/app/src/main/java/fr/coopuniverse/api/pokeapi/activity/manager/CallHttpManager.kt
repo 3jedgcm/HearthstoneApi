@@ -2,9 +2,8 @@ package fr.coopuniverse.api.pokeapi.activity.manager
 
 import android.os.AsyncTask
 import android.widget.TextView
-import androidx.lifecycle.MutableLiveData
-import fr.coopuniverse.api.pokeapi.activity.data.Response.Response
-import fr.coopuniverse.api.pokeapi.activity.data.Response.ResponseSimple
+import fr.coopuniverse.api.pokeapi.activity.callback.CallBackDisplay
+import fr.coopuniverse.api.pokeapi.activity.data.Response.*
 import fr.coopuniverse.api.pokeapi.activity.route.CoopUniverseService
 
 import java.io.IOException
@@ -15,6 +14,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class CallHttpManager(
+        private var callback: CallBackDisplay,
+        private var isActivateCallBack: Boolean? = false,
         private var typeFilter: String? = "",
         private var valueFilter: String? = "",
         private var url: String? = "",
@@ -31,50 +32,88 @@ class CallHttpManager(
         private var action: String? = "",
         private var key: String? = "",
         private var login: String? = "",
-        private var pass: String? = ""
-
-)
+        private var pass: String? = "")
     : AsyncTask<TextView, Void, Response>() {
-
-    var currentAction = MutableLiveData<String>()
-    var liveResponse = MutableLiveData<Response>()
-
 
     private fun generateCallBack(): Response {
 
-
-        var response : Response
         val retrofit = Retrofit.Builder().baseUrl(url).addConverterFactory(GsonConverterFactory.create()).build()
         val service = retrofit.create(CoopUniverseService::class.java)
-        val rep: Call<Response>
-        when (action) {
-            "GetOneMoney" -> rep = service.GetOneMoney(idUser!!)
-            "GetAllMoney" -> rep = service.GetAllMoney()
-            "GetOneUser" -> rep = service.GetOneUser(idUser!!)
-            "GetAllUser" -> rep = service.GetAllUser()
-            "GetCardByUserId" -> rep = service.GetCardByUserId(idUser!!)
-            "GetAllCard" -> rep = service.GetAllCard()
-            "GetRandomCard" -> rep = service.GetRandomCard()
-            "GetAllParameter" -> rep = service.GetAllParameter()
-            "GetQuestion" -> rep = service.GetQuestion()
-            "GetCardByFilter" -> rep = service.GetCardByFilter(typeFilter!!, valueFilter!!)
-            "SetOneCard" -> rep = service.SetOneCard(idUser!!, idCard!!)
-            "SetOneMoney" -> rep = service.SetOneMoney(idUser!!, value!!)
-            "SetAnswer" -> rep = service.SetAnswer(answser!!, value!!)
-            "ExchangeCards" -> rep = service.ExchangeCards(idUser!!, idUserTwo!!, cardUserOne!!.toString(), cardUserTwo!!.toString())
-            "MeltCards" -> rep = service.MeltCards(idUser!!, idCard!!)
-            "CraftOneCard" -> rep = service.CraftOneCard(idUser!!, idCardOne!!, idCardTwo!!, idCardThree!!)
-            "Connect" -> rep = service.SimpleLogin(login!!, pass!!)
-            "ConnectFacebook" -> rep = service.FacebookLogin(key!!)
-            "ConnectGoogle" -> rep = service.GoogleLogin(key!!)
-            "Register" -> rep = service.SimpleRegister(login!!, pass!!)
-            "RegisterFacebook" -> rep = service.FacebookRegister(key!!)
-            "RegisterGoogle" -> rep = service.GoogleRegister(key!!)
-            else -> rep = service.GetAllCard()
-        }
         try {
-            response = rep.execute().body()
-            return response
+            var response : Response?
+        when (action) {
+            "GetOneMoney" -> {
+                response = service.GetOneMoney(idUser!!).execute().body()
+            }
+            "GetOneUser" -> {
+                response = service.GetOneUser(idUser!!).execute().body()
+            }
+            "GetAllUser" -> {
+                response = service.GetAllUser().execute().body()
+            }
+            "GetCardByUserId" -> {
+                response = service.GetCardByUserId(idUser!!).execute().body()
+            }
+            "GetAllCard" -> {
+                response = service.GetAllCard().execute().body()
+            }
+            "GetRandomCard" -> {
+                response = service.GetRandomCard().execute().body()
+            }
+            "GetAllParameter" -> {
+                response = service.GetAllParameter().execute().body()
+            }
+            "GetQuestion" -> {
+                response = service.GetQuestion().execute().body()
+            }
+            "GetCardByFilter" -> {
+                response = service.GetCardByFilter(typeFilter!!, valueFilter!!).execute().body()
+            }
+            "SetOneCard" -> {
+                response = service.SetOneCard(idUser!!, idCard!!).execute().body()
+            }
+            "SetOneMoney" -> {
+                response = service.SetOneMoney(idUser!!, value!!).execute().body()
+            }
+            "SetAnswer" -> {
+                response = service.SetAnswer(answser!!, value!!).execute().body()
+            }
+            "ExchangeCards" -> {
+                response = service.ExchangeCards(idUser!!, idUserTwo!!, cardUserOne!!.toString(), cardUserTwo!!.toString()).execute().body() as ResponseExchangeCards
+            }
+            "MeltCards" -> {
+
+                response = service.MeltCards(idUser!!, idCard!!).execute().body()
+            }
+            "CraftOneCard" -> {
+                response = service.CraftOneCard(idUser!!, idCardOne!!, idCardTwo!!, idCardThree!!).execute().body() as ResponseCraftOneCard
+            }
+            "Connect" -> {
+                response = service.SimpleLogin(login!!, pass!!).execute().body()
+            }
+            "ConnectFacebook" -> {
+                response =  service.FacebookLogin(key!!).execute().body() as ResponseConnectFacebook
+            }
+            "ConnectGoogle" -> {
+                response = service.GoogleLogin(key!!).execute().body() as ResponseConnectGoogle
+            }
+            "Register" -> {
+                response = service.SimpleRegister(login!!, pass!!).execute().body() as ResponseRegister
+            }
+            "RegisterFacebook" -> {
+                response = service.FacebookRegister(key!!).execute().body() as ResponseRegisterFacebook
+            }
+            "RegisterGoogle" -> {
+                response = service.GoogleRegister(key!!).execute().body()
+            }
+            else -> {
+
+                response = service.GetAllCard().execute().body()
+            }
+        }
+
+
+            return response!!
 
         } catch (e: IOException) {
             e.printStackTrace()
@@ -87,7 +126,8 @@ class CallHttpManager(
     }
 
     override fun onPostExecute(result: Response) {
-        currentAction.postValue(action)
-        liveResponse.postValue(result)
+        if (isActivateCallBack == true) {
+            callback.display(result, this.action!!)
+        }
     }
 }

@@ -84,13 +84,11 @@ class CraftFragment : androidx.fragment.app.Fragment() {
         CraftViewModel.viewInProgress.observe(this, Observer {
             if(it)
             {
-                //meltProgressLabel.visibility = View.VISIBLE
-                //gifImageView.visibility = View.VISIBLE
+                gifImageViewCraft.visibility = View.VISIBLE
             }
             else
             {
-                //meltProgressLabel.visibility = View.INVISIBLE
-                //gifImageView.visibility = View.INVISIBLE
+                gifImageViewCraft.visibility = View.INVISIBLE
             }
         })
 

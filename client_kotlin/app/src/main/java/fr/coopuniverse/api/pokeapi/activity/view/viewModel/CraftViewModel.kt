@@ -7,6 +7,7 @@ import fr.coopuniverse.api.pokeapi.activity.data.Account
 import fr.coopuniverse.api.pokeapi.activity.data.Card
 import fr.coopuniverse.api.pokeapi.activity.data.Config
 import fr.coopuniverse.api.pokeapi.activity.data.Response.Response
+import fr.coopuniverse.api.pokeapi.activity.data.Response.ResponseCraftOneCard
 import fr.coopuniverse.api.pokeapi.activity.data.Response.ResponseGetCardByUserId
 import fr.coopuniverse.api.pokeapi.activity.data.Response.ResponseMeltCards
 import fr.coopuniverse.api.pokeapi.activity.enums.Route
@@ -38,17 +39,9 @@ object CraftViewModel : CallBackDisplay {
                 listNameCard.postValue(arrayS)
 
             }
-            Route.MELT_CARDS.get -> {
-                rep = abstractRep as ResponseMeltCards
-                if(rep.data!!.result === false)
-                {
-                    result.postValue("You have inadvertently dropped your card, your card has become illegible and unusable sorry \uD83D\uDE31")
-                }
-                else
-                {
-                    val castedCard = rep.data!!.name
-                    result.postValue("🎉 Congratulations, you created " + castedCard)
-                }
+            Route.CRAFT_ONE_CARDS.get -> {
+                rep = abstractRep as ResponseCraftOneCard
+                result.postValue("🎉 Congratulations, you have crafted " + rep.data!!.name)
                 CallHttpManager(callback = this, action = Route.GET_CARD_BY_USER_ID.get, isActivateCallBack = true, idUser = Account.id, url = Config.url).execute()
             }
         }
@@ -63,8 +56,8 @@ object CraftViewModel : CallBackDisplay {
         viewInProgress.postValue(true)
         stateButton.postValue(false)
         Handler().postDelayed({
-            CallHttpManager(callback = this, action = Route.MELT_CARDS.get, isActivateCallBack = true, idUser = Account.id, idCardOne = inventory[positionCardOne].id, idCardTwo = inventory[positionCardTwo].id, idCardThree = inventory[positionCardThree].id, url = Config.url).execute()
-        }, 1000)
+            CallHttpManager(callback = this, action = Route.CRAFT_ONE_CARDS.get, isActivateCallBack = true, idUser = Account.id, idCardOne = inventory[positionCardOne].id, idCardTwo = inventory[positionCardTwo].id, idCardThree = inventory[positionCardThree].id, url = Config.url).execute()
+        }, 3000)
 
     }
 }

@@ -151,12 +151,25 @@ class ExchangeFragment : androidx.fragment.app.Fragment(), AdapterView.OnItemSel
         })
         btnExchange.setOnClickListener {
 
+
+            idUserTwo = ""
+            idCard    = ""
+            idCardTwo = ""
+
             curenUserID = Account.id
-            idUserTwo = (spinnerUsers.selectedItem as User).IdUser
 
-            idCard = (spinnerUser1Cards.selectedItem as Card).id.toString()
+            if(spinnerUsers.selectedItem!= null){
+                idUserTwo = (spinnerUsers.selectedItem!! as User).IdUser
+            }
 
-            idCardTwo = (spinnerUser2Cards.selectedItem as Card).id.toString()
+
+            if(spinnerUser1Cards.selectedItem!= null){
+                idCard = (spinnerUser1Cards.selectedItem!! as Card).id.toString()
+            }
+
+            if(spinnerUser2Cards.selectedItem!= null){
+                idCardTwo = ((spinnerUser2Cards.selectedItem!! as Card).id.toString())
+            }
 
             //  Toast.makeText(context, "Selected user"  + " has no cards", Toast.LENGTH_LONG).show()
 

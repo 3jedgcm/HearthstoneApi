@@ -8,7 +8,6 @@ enum class Destination {
     Quizz,
     Shop,
     Exchange,
-    Settings,
     Inventory,
     CardDetail
 }

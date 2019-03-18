@@ -1,5 +1,6 @@
 package fr.coopuniverse.api.pokeapi.activity.view.viewModel
 
+import android.os.Handler
 import androidx.lifecycle.MutableLiveData
 import fr.coopuniverse.api.pokeapi.activity.callback.CallBackDisplay
 import fr.coopuniverse.api.pokeapi.activity.data.Account
@@ -16,6 +17,7 @@ object QuizzViewModel : CallBackDisplay {
     var money = MutableLiveData<Int>()
     var info = MutableLiveData<Info>()
     var enableButton = MutableLiveData<Boolean>()
+    var viewInProgress = MutableLiveData<String>()
     private var hashAnswer = ""
 
 
@@ -61,12 +63,23 @@ object QuizzViewModel : CallBackDisplay {
                 rep = abstractRep as ResponseSetAnswer
                 this.enableButton.postValue(true)
                 if (rep.data!!.result == true) {
-                    Account.money = (Account.money.toInt() + 30).toString()
-                    this.money.postValue(Account.money.toInt())
-                    this.info.postValue(Info.RIGHT_ANSWER)
-                    CallHttpManager(callback = this, action = Route.SET_ONE_MONEY.get, isActivateCallBack = false, idUserOne = Account.id, value = Account.money, url = Config.url).execute()
+                    viewInProgress.postValue("win")
+                    Handler().postDelayed({
+                        Account.money = (Account.money.toInt() + 30).toString()
+                        this.money.postValue(Account.money.toInt())
+                        this.info.postValue(Info.RIGHT_ANSWER)
+                        CallHttpManager(callback = this, action = Route.SET_ONE_MONEY.get, isActivateCallBack = false, idUserOne = Account.id, value = Account.money, url = Config.url).execute()
+                        viewInProgress.postValue("")
+                    }, 3000)
+
                 } else {
-                    info.postValue(Info.WRONG_ANSWER)
+
+                    viewInProgress.postValue("loose")
+                    Handler().postDelayed({
+                        info.postValue(Info.WRONG_ANSWER)
+                        viewInProgress.postValue("")
+                    }, 3000)
+
                 }
             }
         }

@@ -85,6 +85,26 @@ class QuizzFragment : androidx.fragment.app.Fragment() {
         reponse_four.setOnClickListener {
             QuizzViewModel.setResponse(4)
         }
+
+
+        QuizzViewModel.viewInProgress.observe(this, Observer {
+            if(it == "win")
+            {
+                gifImageViewQuizz.setImageResource(R.drawable.quizz_win)
+                gifImageViewQuizz.visibility = View.VISIBLE
+            }
+            else if(it == "loose")
+            {
+                gifImageViewQuizz.setImageResource(R.drawable.quizz_lose)
+                gifImageViewQuizz.visibility = View.VISIBLE
+            }
+            else
+            {
+                gifImageViewQuizz.visibility = View.INVISIBLE
+            }
+        })
+
+
     }
 
     private fun enableButton()

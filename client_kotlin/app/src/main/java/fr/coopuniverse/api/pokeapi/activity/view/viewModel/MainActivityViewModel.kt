@@ -54,10 +54,30 @@ object MainActivityViewModel : CallBackDisplay {
                 }
             }
         } else {
-            rep = abstractRep as ResponseConnect
-            Account.id = rep.data!!.user!!.IdUser
-            Account.money = rep.data!!.user!!.Money
-            Account.user = rep.data!!.user  //EBE add
+
+            when (action)
+            {
+                Route.CONNECT_WITH_FACEBOOK.get -> {
+                    rep  = abstractRep as ResponseConnectFacebook
+                    Account.id = rep.data!!.user!!.IdUser
+                    Account.money = rep.data!!.user!!.Money
+                    Account.user = rep.data!!.user  //EBE add
+                }
+                Route.CONNECT_WITH_GOOGLE.get -> {
+                    rep  = abstractRep as ResponseConnectGoogle
+                    Account.id = rep.data!!.user!!.IdUser
+                    Account.money = rep.data!!.user!!.Money
+                    Account.user = rep.data!!.user  //EBE add
+                }
+                Route.CONNECT.get -> {
+                    rep  = abstractRep as ResponseConnect
+                    Account.id = rep.data!!.user!!.IdUser
+                    Account.money = rep.data!!.user!!.Money
+                    Account.user = rep.data!!.user  //EBE add
+                }
+            }
+
+
             this.changeActivity.postValue(true)
         }
     }

@@ -32,7 +32,6 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             Destination.Quizz -> QuizzFragment()
             Destination.Shop -> ShopFragment()
             Destination.Exchange -> ExchangeFragment()
-            Destination.Settings -> SettingsFragment()
             Destination.Inventory -> InventoryFragment()
             Destination.CardDetail -> CardDetailFragment()
         }
@@ -72,20 +71,6 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean
-    {
-        menuInflater.inflate(R.menu.home, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean
-    {
-        return when (item.itemId)
-        {
-            R.id.action_settings -> true
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean
     {
@@ -98,10 +83,6 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.nav_market ->
             {
                 this.setFragment(Destination.Market)
-            }
-            R.id.nav_settings ->
-            {
-                this.setFragment(Destination.Settings)
             }
             R.id.nav_game ->
             {

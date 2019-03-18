@@ -46,21 +46,21 @@ object MeltViewModel : CallBackDisplay {
                     val castedCard = rep.data!!.name
                     result.postValue("🎉 Congratulations, you created " + castedCard)
                 }
-                CallHttpManager(callback = this, action = Route.GET_CARD_BY_USER_ID.get, isActivateCallBack = true, idUser = Account.id, url = Config.url).execute()
+                CallHttpManager(callback = this, action = Route.GET_CARD_BY_USER_ID.get, isActivateCallBack = true, idUserOne = Account.id, url = Config.url).execute()
             }
         }
 
     }
 
     fun initData() {
-        CallHttpManager(callback = this, action = Route.GET_CARD_BY_USER_ID.get, isActivateCallBack = true, idUser = Account.id, url = Config.url).execute()
+        CallHttpManager(callback = this, action = Route.GET_CARD_BY_USER_ID.get, isActivateCallBack = true, idUserOne = Account.id, url = Config.url).execute()
     }
 
     fun meltCard(position:Int) {
         viewInProgress.postValue(true)
         stateButton.postValue(false)
         Handler().postDelayed({
-            CallHttpManager(callback = this, action = Route.MELT_CARDS.get, isActivateCallBack = true, idUser = Account.id, idCard = inventory[position].id, url = Config.url).execute()
+            CallHttpManager(callback = this, action = Route.MELT_CARDS.get, isActivateCallBack = true, idUserOne = Account.id, idCard = inventory[position].id, url = Config.url).execute()
         }, 3000)
 
     }

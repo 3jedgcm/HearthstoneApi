@@ -48,7 +48,7 @@ object ShopViewModel : CallBackDisplay, CallBackOnClickCard {
                 "GetAllCard" -> {
                     rep = abstractRep as ResponseGetAllCard
                     dataAllCards.postValue(rep.data!!.cards)
-                    CallHttpManager(callback = this, action = Route.GET_ONE_MONEY.get, isActivateCallBack = true, idUser = Account.id, url = Config.url).execute()
+                    CallHttpManager(callback = this, action = Route.GET_ONE_MONEY.get, isActivateCallBack = true, idUserOne = Account.id, url = Config.url).execute()
 
                 }
                 "GetOneMoney" -> {
@@ -60,7 +60,7 @@ object ShopViewModel : CallBackDisplay, CallBackOnClickCard {
                     Account.money = rep.data!!.money!!.money!!
                     this.userMoney_total = rep.data!!.money!!.money!!.toIntOrNull()!!
                     this.userMoney_total_Mutable.postValue(rep.data!!.money!!.money!!.toIntOrNull()!!)
-                    CallHttpManager(callback = this, action = Route.GET_CARD_BY_USER_ID.get, isActivateCallBack = true, idUser = Account.id, url = Config.url).execute()
+                    CallHttpManager(callback = this, action = Route.GET_CARD_BY_USER_ID.get, isActivateCallBack = true, idUserOne = Account.id, url = Config.url).execute()
 
                 }
                 "GetCardByUserId" -> {
@@ -81,7 +81,7 @@ object ShopViewModel : CallBackDisplay, CallBackOnClickCard {
                 "SetOneCard" -> {
                     this.userMoney_total = this.userMoney_total.minus(this.cost)
                     userMoney_total_Mutable.postValue(this.userMoney_total)
-                    CallHttpManager(callback = this, action = Route.SET_ONE_MONEY.get, isActivateCallBack = true, idUser = Account.id, value = userMoney_total.toString(), url = Config.url).execute()
+                    CallHttpManager(callback = this, action = Route.SET_ONE_MONEY.get, isActivateCallBack = true, idUserOne = Account.id, value = userMoney_total.toString(), url = Config.url).execute()
                 }
 
 
@@ -101,7 +101,7 @@ object ShopViewModel : CallBackDisplay, CallBackOnClickCard {
             }
             this.userCards_total++
             userCards_total_Mutable.postValue(this.userCards_total)
-            CallHttpManager(callback = this, action = Route.SET_ONE_CARD.get, isActivateCallBack = true, idUser = Account.id, idCard = idCard, url = Config.url).execute()
+            CallHttpManager(callback = this, action = Route.SET_ONE_CARD.get, isActivateCallBack = true, idUserOne = Account.id, idCard = idCard, url = Config.url).execute()
         }
 
 

@@ -43,10 +43,10 @@ object ExchangeViewModel : CallBackDisplay {
         if (_idUser != null && _idUserTwo != null && _idCard != null && _idCardTwo != null) {
 
             CallHttpManager(callback = this, action = Route.EXCHANGE_CARDS.get, isActivateCallBack = true,
-                    idUser = _idUser, //Account.id,
+                    idUserOne = _idUser, //Account.id,
                     idUserTwo = _idUserTwo,
-                    idCard = _idCard,
-                    idCardTwo = _idCardTwo,
+                    cardUserOne = _idCard,
+                    cardUserTwo = _idCardTwo,
                     url = Config.url).execute()
         }
     }
@@ -57,7 +57,7 @@ object ExchangeViewModel : CallBackDisplay {
     }
 
     fun getCardofUser(_idUser: String) {
-        CallHttpManager(callback = this, action = Route.GET_CARD_BY_USER_ID.get, isActivateCallBack = true, idUser = _idUser, url = Config.url).execute()
+        CallHttpManager(callback = this, action = Route.GET_CARD_BY_USER_ID.get, isActivateCallBack = true, idUserOne = _idUser, url = Config.url).execute()
     }
 
 
@@ -105,7 +105,7 @@ object ExchangeViewModel : CallBackDisplay {
                 Account.money = rep.data!!.money!!.money!!
                 this.userMoney_total = rep.data!!.money!!.money!!.toIntOrNull()!!
                 this.userMoney_total_Mutable.postValue(rep.data!!.money!!.money!!.toIntOrNull()!!)
-                CallHttpManager(callback = this, action = Route.GET_CARD_BY_USER_ID.get, isActivateCallBack = true, idUser = Account.id, url = Config.url).execute()
+                CallHttpManager(callback = this, action = Route.GET_CARD_BY_USER_ID.get, isActivateCallBack = true, idUserOne = Account.id, url = Config.url).execute()
 
             }
             Route.GET_CARD_BY_USER_ID.get -> {

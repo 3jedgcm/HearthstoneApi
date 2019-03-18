@@ -11,6 +11,8 @@ import android.widget.AdapterView
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import fr.coopuniverse.api.pokeapi.R
+import fr.coopuniverse.api.pokeapi.activity.adapter.CardsAdapter
+import fr.coopuniverse.api.pokeapi.activity.adapter.UsersAdapter
 import fr.coopuniverse.api.pokeapi.activity.callback.CallBackFragment
 import fr.coopuniverse.api.pokeapi.activity.data.Account
 import fr.coopuniverse.api.pokeapi.activity.data.Card
@@ -160,7 +162,7 @@ class ExchangeFragment : androidx.fragment.app.Fragment(), AdapterView.OnItemSel
 
             if (curenUserID != "" && idUserTwo != "" && idCard != "" && idCardTwo != "" && !idCard.equals(idCardTwo)) {
 
-                ExchangeViewModel.exchangeCards(_idUser = curenUserID, _idUserTwo = idUserTwo, _idCard = idCard, _idCardTwo = idCardTwo)
+                ExchangeViewModel.exchangeCards(_idUser = curenUserID, _idUserTwo = idUserTwo, _idCard = idCard , _idCardTwo = idCardTwo)
             }
 
 

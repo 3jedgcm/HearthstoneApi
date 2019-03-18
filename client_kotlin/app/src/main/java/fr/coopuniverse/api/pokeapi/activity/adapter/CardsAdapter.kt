@@ -1,19 +1,21 @@
-package fr.coopuniverse.api.pokeapi.activity.view.fragment
+package fr.coopuniverse.api.pokeapi.activity.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import com.bumptech.glide.Glide
 import fr.coopuniverse.api.pokeapi.R
-import fr.coopuniverse.api.pokeapi.activity.data.User
+import fr.coopuniverse.api.pokeapi.activity.data.Card
 
 
-class UsersAdapter(private val context: Context?,
-                   private val dataSource: ArrayList<User>) : BaseAdapter() {
+class CardsAdapter(private val context: Context?,
+                   private val dataSource: ArrayList<Card>) : BaseAdapter() {
 
     private val inflater: LayoutInflater = context!!.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
@@ -44,6 +46,7 @@ class UsersAdapter(private val context: Context?,
             holder = ViewHolder()
             holder.idTextView = view.findViewById(R.id.textViewId) as TextView
             holder.nameTextView = view.findViewById(R.id.textViewName) as TextView
+            holder.imgVCard = view.findViewById(R.id.imgVCard) as ImageView
             view.tag = holder
 
         } else {
@@ -54,18 +57,26 @@ class UsersAdapter(private val context: Context?,
 
         val idTxtView = holder.idTextView
         val nameTxtView = holder.nameTextView
-        val user: User = getItem(position) as User
-        idTxtView.text = "User " + user.IdUser
-        nameTxtView.text = user.Login
+        val imgVCard = holder.imgVCard
+        val card: Card = getItem(position) as Card
+        idTxtView.text = card.id
+        nameTxtView.text = card.name
+        imgVCard.visibility = View.VISIBLE
+        Glide.with(imgVCard)
+                .load(card.getImage())
+                .thumbnail(Glide
+                        .with(imgVCard)
+                        .load(R.drawable.card_default))
+                .into(imgVCard)
+
 
         val idTypeFace = ResourcesCompat.getFont(context!!, R.font.roboto_slab_bold)
         idTxtView.typeface = idTypeFace
 
         idTxtView.setTextColor(
-                ContextCompat.getColor(context, LABEL_COLORS[user.IdUser] ?: R.color.colorPrimary))
+                ContextCompat.getColor(context, LABEL_COLORS[card.id] ?: R.color.colorPrimary))
         nameTxtView.setTextColor(
-                ContextCompat.getColor(context, LABEL_COLORS[user.Login]
-                        ?: R.color.abc_btn_colored_borderless_text_material))
+                ContextCompat.getColor(context, LABEL_COLORS[card.name] ?: R.color.colorTitleText))
 
 
 
@@ -87,7 +98,6 @@ class UsersAdapter(private val context: Context?,
     private class ViewHolder {
         lateinit var idTextView: TextView
         lateinit var nameTextView: TextView
-
-
+        lateinit var imgVCard: ImageView
     }
 }

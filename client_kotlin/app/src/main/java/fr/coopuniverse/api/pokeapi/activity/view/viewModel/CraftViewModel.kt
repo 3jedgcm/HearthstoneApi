@@ -9,7 +9,6 @@ import fr.coopuniverse.api.pokeapi.activity.data.Config
 import fr.coopuniverse.api.pokeapi.activity.data.Response.Response
 import fr.coopuniverse.api.pokeapi.activity.data.Response.ResponseCraftOneCard
 import fr.coopuniverse.api.pokeapi.activity.data.Response.ResponseGetCardByUserId
-import fr.coopuniverse.api.pokeapi.activity.data.Response.ResponseMeltCards
 import fr.coopuniverse.api.pokeapi.activity.enums.Route
 import fr.coopuniverse.api.pokeapi.activity.manager.CallHttpManager
 
@@ -42,21 +41,21 @@ object CraftViewModel : CallBackDisplay {
             Route.CRAFT_ONE_CARDS.get -> {
                 rep = abstractRep as ResponseCraftOneCard
                 result.postValue("🎉 Congratulations, you have crafted " + rep.data!!.name)
-                CallHttpManager(callback = this, action = Route.GET_CARD_BY_USER_ID.get, isActivateCallBack = true, idUser = Account.id, url = Config.url).execute()
+                CallHttpManager(callback = this, action = Route.GET_CARD_BY_USER_ID.get, isActivateCallBack = true, idUserOne = Account.id, url = Config.url).execute()
             }
         }
 
     }
 
     fun initData() {
-        CallHttpManager(callback = this, action = Route.GET_CARD_BY_USER_ID.get, isActivateCallBack = true, idUser = Account.id, url = Config.url).execute()
+        CallHttpManager(callback = this, action = Route.GET_CARD_BY_USER_ID.get, isActivateCallBack = true, idUserOne = Account.id, url = Config.url).execute()
     }
 
     fun craftCard(positionCardOne:Int,positionCardTwo: Int,positionCardThree: Int) {
         viewInProgress.postValue(true)
         stateButton.postValue(false)
         Handler().postDelayed({
-            CallHttpManager(callback = this, action = Route.CRAFT_ONE_CARDS.get, isActivateCallBack = true, idUser = Account.id, idCardOne = inventory[positionCardOne].id, idCardTwo = inventory[positionCardTwo].id, idCardThree = inventory[positionCardThree].id, url = Config.url).execute()
+            CallHttpManager(callback = this, action = Route.CRAFT_ONE_CARDS.get, isActivateCallBack = true, idUserOne = Account.id, idCardOne = inventory[positionCardOne].id, idCardTwo = inventory[positionCardTwo].id, idCardThree = inventory[positionCardThree].id, url = Config.url).execute()
         }, 3000)
 
     }

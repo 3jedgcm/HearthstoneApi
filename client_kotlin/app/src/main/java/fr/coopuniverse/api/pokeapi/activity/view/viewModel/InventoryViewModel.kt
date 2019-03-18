@@ -21,7 +21,7 @@ object InventoryViewModel : CallBackDisplay, CallBackOnClickCard {
     var cardsUserInventory = MutableLiveData<ArrayList<Card>>()
 
     fun initData() {
-        CallHttpManager(callback = this, action = Route.GET_CARD_BY_USER_ID.get, idUser = Account.id, isActivateCallBack = true, url = Config.url).execute()
+        CallHttpManager(callback = this, action = Route.GET_CARD_BY_USER_ID.get, idUserOne = Account.id, isActivateCallBack = true, url = Config.url).execute()
     }
 
     override fun display(abstractRep: Response, action: String) {

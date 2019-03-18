@@ -24,7 +24,7 @@ object QuizzViewModel : CallBackDisplay {
     }
 
     fun getAnswer() {
-        CallHttpManager(callback = this, action = Route.GET_ONE_MONEY.get, isActivateCallBack = true, idUser = Account.id, url = Config.url).execute()
+        CallHttpManager(callback = this, action = Route.GET_ONE_MONEY.get, isActivateCallBack = true, idUserOne = Account.id, url = Config.url).execute()
     }
 
     override fun display(abstractRep: Response, action: String) {
@@ -45,7 +45,7 @@ object QuizzViewModel : CallBackDisplay {
                 this.money.postValue(Account.money.toInt())
                 if (Account.money.toInt() >= 0) {
                     info.postValue(Info.VOID)
-                    CallHttpManager(callback = this, action = Route.SET_ONE_MONEY.get, isActivateCallBack = true, idUser = Account.id, value = Account.money, url = Config.url).execute()
+                    CallHttpManager(callback = this, action = Route.SET_ONE_MONEY.get, isActivateCallBack = true, idUserOne = Account.id, value = Account.money, url = Config.url).execute()
                 } else {
                     info.postValue(Info.NO_MUCH_MONEY)
                 }
@@ -64,7 +64,7 @@ object QuizzViewModel : CallBackDisplay {
                     Account.money = (Account.money.toInt() + 30).toString()
                     this.money.postValue(Account.money.toInt())
                     this.info.postValue(Info.RIGHT_ANSWER)
-                    CallHttpManager(callback = this, action = Route.SET_ONE_MONEY.get, isActivateCallBack = false, idUser = Account.id, value = Account.money, url = Config.url).execute()
+                    CallHttpManager(callback = this, action = Route.SET_ONE_MONEY.get, isActivateCallBack = false, idUserOne = Account.id, value = Account.money, url = Config.url).execute()
                 } else {
                     info.postValue(Info.WRONG_ANSWER)
                 }

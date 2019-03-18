@@ -57,6 +57,7 @@ object MainActivityViewModel : CallBackDisplay {
             rep = abstractRep as ResponseConnect
             Account.id = rep.data!!.user!!.IdUser
             Account.money = rep.data!!.user!!.Money
+            Account.user = rep.data!!.user  //EBE add
             this.changeActivity.postValue(true)
         }
     }

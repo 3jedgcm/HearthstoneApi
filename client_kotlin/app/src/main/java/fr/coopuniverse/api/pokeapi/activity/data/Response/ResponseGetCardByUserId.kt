@@ -15,6 +15,6 @@ data class DataGetCardByUserId(
 )
 
 data class InventoryGetCardByUserId(
-        val user : String? = null,
+        val user : String? = null, //EBE TODO to change to userId? to be more explicite?
         val inventory : ArrayList<Card>
 )

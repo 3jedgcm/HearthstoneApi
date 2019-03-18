@@ -32,11 +32,18 @@ class ShopFragment : androidx.fragment.app.Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        this.tCredits = inflater.inflate(R.layout.inventory_fragment, container, false).findViewById(R.id.tCredits)
-        this.tCards = inflater.inflate(R.layout.inventory_fragment, container, false).findViewById(R.id.tCards)
 
-        val view = inflater.inflate(fr.coopuniverse.api.pokeapi.R.layout.inventory_fragment, container, false)
-        infoCreditView = view!!.findViewById(fr.coopuniverse.api.pokeapi.R.id.tCredits) as TextView
+        return inflater.inflate(fr.coopuniverse.api.pokeapi.R.layout.inventory_fragment, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        this.tCredits = view.findViewById(R.id.tCredits)
+        this.tCards   = view.findViewById(R.id.tCards)
+
+      // val view = inflater.inflate(fr.coopuniverse.api.pokeapi.R.layout.inventory_fragment, container, false)
+        infoCreditView = view.findViewById(fr.coopuniverse.api.pokeapi.R.id.tCredits) as TextView
 
         if (Account.money != null) {
             userMoney_total = Account.money.toInt()
@@ -88,18 +95,16 @@ class ShopFragment : androidx.fragment.app.Fragment() {
         })
 
 
-        return inflater.inflate(fr.coopuniverse.api.pokeapi.R.layout.inventory_fragment, container, false)
     }
-
 
     fun setTextCredits(credits: String) {
         val infoCreditView = view!!.findViewById(fr.coopuniverse.api.pokeapi.R.id.tCredits) as TextView
-        infoCreditView.text = tCredits!!.text.toString() + " " + credits + " credits "
+        infoCreditView.text = "You have"+ " " + credits + " credits " //tCredits!!.text.toString() + " " + credits + " credits "
     }
 
     fun setTextCards(cards: String) {
         val textView = view!!.findViewById(fr.coopuniverse.api.pokeapi.R.id.tCards) as TextView
-        textView.text = tCards!!.text.toString() + " " + cards + " cards "
+        textView.text = "You have" + " " + cards + " cards "    //tCards!!.text.toString() + " " + cards + " cards "
     }
 
     companion object {

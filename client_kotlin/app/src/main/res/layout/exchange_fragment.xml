@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".activity.view.fragment.ExchangeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
+
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -17,98 +18,69 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="348dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="8dp"
             android:text="My Cards"
             android:textStyle="bold|italic"
-            app:layout_constraintBottom_toTopOf="@+id/spinnerUser1Cards"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.023"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtV_description_actions"
-            app:layout_constraintVertical_bias="0.97" />
+            app:layout_constraintTop_toBottomOf="@+id/txtV_description_actions" />
 
         <Spinner
             android:id="@+id/spinnerUser1Cards"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="259dp"
+            android:layout_height="122dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="8dp"
             android:layout_weight="1"
-            app:layout_constraintBottom_toTopOf="@+id/divider"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.058"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtV_description_actions" />
-        <!--"@+id/divider"-->
+            app:layout_constraintTop_toBottomOf="@+id/labelCardsU1" />
 
-        <View
-            android:id="@+id/divider"
-            android:layout_width="9dp"
-            android:layout_height="169dp"
-
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="8dp"
-            android:layout_weight="1"
-            android:background="?android:attr/listDivider"
-            app:layout_constraintBottom_toTopOf="@+id/spinnerUser2Cards"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spinnerUser1Cards" />
-        <!-- app:layout_constraintBottom_toTopOf="@+id/imageView_arrow"-->
-       <!-- <ImageView
-            android:id="@+id/imageView_arrow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
-            android:src="@android:drawable/arrow_down_float"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/divider" />
--->
         <Spinner
             android:id="@+id/spinnerUsers"
-            android:layout_width="196dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="247dp"
-            android:layout_marginBottom="247dp"
+            android:layout_width="329dp"
+            android:layout_height="36dp"
 
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
             android:layout_weight="1"
-            app:layout_constraintBottom_toTopOf="@+id/spinnerUser2Cards"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toEndOf="@+id/divider"
-            app:layout_constraintTop_toBottomOf="@+id/txtV_description_actions"
-            app:layout_constraintVertical_bias="0.294" />
-        <!-- app:layout_constraintBottom_toTopOf="@+id/imageView_arrow"-->
+            app:layout_constraintHorizontal_bias="0.827"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/labelPartner" />
 
         <Spinner
             android:id="@+id/spinnerUser2Cards"
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_width="259dp"
+            android:layout_height="122dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="8dp"
             android:layout_weight="1"
-            app:layout_constraintBottom_toTopOf="@+id/btnExchange"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.875"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/divider" />
+            app:layout_constraintTop_toBottomOf="@+id/LabelCardsU2" />
 
         <Button
             android:id="@+id/btnExchange"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
-            android:layout_marginBottom="33dp"
+            android:layout_marginEnd="8dp"
             android:background="@color/colorPrimary"
             android:gravity="center"
             android:text="@string/EXCHANGE"
             android:textColor="@android:color/white"
             android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/spinnerUser2Cards" />
 
@@ -116,15 +88,14 @@
             android:id="@+id/txtV_description_actions"
             android:layout_width="320dp"
             android:layout_height="34dp"
-            android:layout_marginStart="44dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="44dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
             android:text="To complete the exchange, follow the steps indicated by the arrow pointer"
             android:textAlignment="center"
             android:visibility="visible"
-            app:layout_constraintBottom_toTopOf="@+id/spinnerUser1Cards"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.493"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="to complete the exchange, follow the steps indicated by the arrow pointer" />
@@ -132,59 +103,42 @@
         <TextView
             android:id="@+id/labelPartner"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="16dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="72dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
             android:text="Choose Your Partner"
             android:textStyle="bold|italic"
-            app:layout_constraintBottom_toTopOf="@+id/spinnerUsers"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/divider"
-            app:layout_constraintTop_toBottomOf="@+id/spinnerUser1Cards"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintHorizontal_bias="0.932"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spinnerUser1Cards" />
 
         <TextView
             android:id="@+id/LabelCardsU2"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="17dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="292dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="8dp"
             android:text="Your Partner Cards"
             android:textStyle="bold|italic"
-            app:layout_constraintBottom_toTopOf="@+id/spinnerUser2Cards"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.935"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/divider"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintTop_toBottomOf="@+id/spinnerUsers" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:clickable="true"
-        android:src="@drawable/ic_menu_share" />
-
-    <ImageView
-        android:id="@+id/imageView_arrow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top"
-
-        android:layout_marginStart="200dp"
-        android:layout_marginLeft="200dp"
-        android:layout_marginTop="300dp"
-        android:layout_marginEnd="200dp"
-        android:layout_marginRight="200dp"
-        android:layout_marginBottom="200dp"
-        android:src="@android:drawable/arrow_down_float"
-        android:visibility="visible"
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/gifImageViewExchange"
+        android:layout_width="match_parent"
+        android:layout_height="422dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/exchange"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleLabel"
+        tools:layout_editor_absoluteX="0dp" />
 
 </FrameLayout>

@@ -44,7 +44,7 @@ class CardsAdapter(private val context: Context?,
             view = inflater.inflate(R.layout.spinner_dropdown_item, parent, false)
 
             holder = ViewHolder()
-            holder.idTextView = view.findViewById(R.id.textViewId) as TextView
+
             holder.nameTextView = view.findViewById(R.id.textViewName) as TextView
             holder.imgVCard = view.findViewById(R.id.imgVCard) as ImageView
             view.tag = holder
@@ -55,11 +55,11 @@ class CardsAdapter(private val context: Context?,
             holder = convertView.tag as ViewHolder
         }
 
-        val idTxtView = holder.idTextView
+
         val nameTxtView = holder.nameTextView
         val imgVCard = holder.imgVCard
         val card: Card = getItem(position) as Card
-        idTxtView.text = card.id
+
         nameTxtView.text = card.name
         imgVCard.visibility = View.VISIBLE
         Glide.with(imgVCard)
@@ -71,10 +71,7 @@ class CardsAdapter(private val context: Context?,
 
 
         val idTypeFace = ResourcesCompat.getFont(context!!, R.font.roboto_slab_bold)
-        idTxtView.typeface = idTypeFace
 
-        idTxtView.setTextColor(
-                ContextCompat.getColor(context, LABEL_COLORS[card.id] ?: R.color.colorPrimary))
         nameTxtView.setTextColor(
                 ContextCompat.getColor(context, LABEL_COLORS[card.name] ?: R.color.colorTitleText))
 

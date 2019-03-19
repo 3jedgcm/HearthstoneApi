@@ -34,7 +34,7 @@ class CallHttpManager(
         private var pass: String? = "")
     : AsyncTask<TextView, Void, Response>() {
 
-    private fun generateCallBack(): Response {
+    private fun generateCallBack(): Response? {
 
         val retrofit = Retrofit.Builder().baseUrl(url).addConverterFactory(GsonConverterFactory.create()).build()
         val service = retrofit.create(CoopUniverseService::class.java)
@@ -110,14 +110,12 @@ class CallHttpManager(
                 response = service.GetAllCard().execute().body()
             }
         }
-
-
             return response!!
 
         } catch (e: IOException) {
             e.printStackTrace()
         }
-        return ResponseSimple()
+        return null
     }
 
     override fun doInBackground(vararg TextViews: TextView?): Response? {

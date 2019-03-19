@@ -36,13 +36,12 @@ class UsersAdapter(private val context: Context?,
         val view: View
         val holder: ViewHolder
 
-
         if (convertView == null) {
 
             view = inflater.inflate(R.layout.spinner_dropdown_item, parent, false)
 
             holder = ViewHolder()
-            holder.idTextView = view.findViewById(R.id.textViewId) as TextView
+
             holder.nameTextView = view.findViewById(R.id.textViewName) as TextView
             view.tag = holder
 
@@ -52,17 +51,22 @@ class UsersAdapter(private val context: Context?,
             holder = convertView.tag as ViewHolder
         }
 
-        val idTxtView = holder.idTextView
         val nameTxtView = holder.nameTextView
         val user: User = getItem(position) as User
-        idTxtView.text = "User " + user.IdUser
-        nameTxtView.text = user.Login
+        if(user.Login == "")
+        {
+            nameTxtView.text = "Id User :" + user.IdUser
+        }
+        else
+        {
+            nameTxtView.text = "Id User :" + user.IdUser + "Login :" + user.Login
+        }
+
+
 
         val idTypeFace = ResourcesCompat.getFont(context!!, R.font.roboto_slab_bold)
-        idTxtView.typeface = idTypeFace
 
-        idTxtView.setTextColor(
-                ContextCompat.getColor(context, LABEL_COLORS[user.IdUser] ?: R.color.colorPrimary))
+
         nameTxtView.setTextColor(
                 ContextCompat.getColor(context, LABEL_COLORS[user.Login]
                         ?: R.color.abc_btn_colored_borderless_text_material))
@@ -85,7 +89,7 @@ class UsersAdapter(private val context: Context?,
     }
 
     private class ViewHolder {
-        lateinit var idTextView: TextView
+
         lateinit var nameTextView: TextView
 
 

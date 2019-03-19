@@ -39,7 +39,14 @@ class QuizzFragment : androidx.fragment.app.Fragment() {
         })
 
         QuizzViewModel.enableButton.observe(this, Observer {
-            if(it)this.enableButton()
+            if(it)
+            {
+                this.enableButton()
+            }
+            else
+            {
+                this.disableButton()
+            }
         })
 
         QuizzViewModel.answer.observe(this, Observer {
@@ -69,7 +76,7 @@ class QuizzFragment : androidx.fragment.app.Fragment() {
 
 
         went.setOnClickListener {
-            this.disableButton()
+            went.isEnabled = false
             QuizzViewModel.getAnswer()
 
         }

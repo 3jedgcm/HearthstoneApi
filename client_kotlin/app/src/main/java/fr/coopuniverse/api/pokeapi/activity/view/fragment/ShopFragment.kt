@@ -111,4 +111,9 @@ class ShopFragment : androidx.fragment.app.Fragment() {
         fun newInstance() = ShopFragment()
     }
 
+    override fun onResume() {
+        super.onResume()
+        ShopViewModel.initDataUser()
+    }
+
 }

@@ -31,19 +31,12 @@ class ExchangeFragment : androidx.fragment.app.Fragment(), AdapterView.OnItemSel
     private var idUserTwo = ""
     private var idCard = ""
     private var idCardTwo = ""
-
-
     private var arrayofCardsUserCurrent: ArrayList<Card>? = null
     private var arrayofCardsUserSecond: ArrayList<Card>? = null
     private var arrayofUsers: ArrayList<User>? = null
 
-//    private var aAdapterUserCards : ArrayAdapter
-
     override fun onNothingSelected(parent: AdapterView<*>?) {
-
-
         Log.d("ItemNothingSelected", "adapterview= " + parent.toString())
-
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
@@ -156,7 +149,7 @@ class ExchangeFragment : androidx.fragment.app.Fragment(), AdapterView.OnItemSel
             idCard    = ""
             idCardTwo = ""
 
-            curenUserID = Account.id
+
 
             if(spinnerUsers.selectedItem!= null){
                 idUserTwo = (spinnerUsers.selectedItem!! as User).IdUser
@@ -173,13 +166,26 @@ class ExchangeFragment : androidx.fragment.app.Fragment(), AdapterView.OnItemSel
 
             //  Toast.makeText(context, "Selected user"  + " has no cards", Toast.LENGTH_LONG).show()
 
-            if (curenUserID != "" && idUserTwo != "" && idCard != "" && idCardTwo != "" && !idCard.equals(idCardTwo)) {
+            if (Account.id != "" && idUserTwo != "" && idCard != "" && idCardTwo != "" && !idCard.equals(idCardTwo)) {
 
-                ExchangeViewModel.exchangeCards(_idUser = curenUserID, _idUserTwo = idUserTwo, _idCard = idCard , _idCardTwo = idCardTwo)
+                ExchangeViewModel.exchangeCards(_idUser = Account.id, _idUserTwo = idUserTwo, _idCard = idCard , _idCardTwo = idCardTwo)
             }
 
 
         }
+
+        ExchangeViewModel.viewInProgress.observe(this, Observer {
+            if(it)
+            {
+
+                gifImageViewExchange.visibility = View.VISIBLE
+            }
+            else
+            {
+
+                gifImageViewExchange.visibility = View.INVISIBLE
+            }
+        })
 
 
     }
@@ -196,5 +202,13 @@ class ExchangeFragment : androidx.fragment.app.Fragment(), AdapterView.OnItemSel
         callback = null
         //ExchangeViewModel.result.postValue("")
     }
+
+    override fun onResume() {
+        super.onResume()
+        ExchangeViewModel.getCardofUser(curenUserID)
+        ExchangeViewModel.getAllUsers(curenUserID)
+    }
+
+
 
 }

@@ -75,6 +75,8 @@ object ShopViewModel : CallBackDisplay, CallBackOnClickCard {
                 }
                 "SetOneMoney" -> {
                     if (this.cost != null) {
+                        ExchangeViewModel.getCardofUser(Account.id)
+                        ExchangeViewModel.getAllUsers(Account.id)
                         flagUpdateListofItems = false
                     }
                 }

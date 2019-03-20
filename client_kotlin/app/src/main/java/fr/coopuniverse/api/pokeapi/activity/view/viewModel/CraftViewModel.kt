@@ -2,6 +2,7 @@ package fr.coopuniverse.api.pokeapi.activity.view.viewModel
 
 import android.os.Handler
 import androidx.lifecycle.MutableLiveData
+import fr.coopuniverse.api.pokeapi.R
 import fr.coopuniverse.api.pokeapi.activity.callback.CallBackDisplay
 import fr.coopuniverse.api.pokeapi.activity.data.Account
 import fr.coopuniverse.api.pokeapi.activity.data.Card
@@ -22,29 +23,20 @@ object CraftViewModel : CallBackDisplay {
 
     override fun display(abstractRep: Response, action: String) {
         var rep: Response
-
         when(action) {
             Route.GET_CARD_BY_USER_ID.get -> {
                 rep = abstractRep as ResponseGetCardByUserId
                 this.inventory = rep.data!!.inventory.inventory
-
-                var i = 0
-                var arrayS = ArrayList<String>()
-                while(i < inventory.size)
-                {
-                    arrayS.add(inventory[i].name.toString())
-                    i++
-                }
-                listNameCard.postValue(arrayS)
-
+                MeltViewModel.inventory = this.inventory
+                MeltViewModel.updateCard()
+                this.updateCard()
             }
             Route.CRAFT_ONE_CARDS.get -> {
                 rep = abstractRep as ResponseCraftOneCard
-                result.postValue("🎉 Congratulations, you have crafted " + rep.data!!.name)
+                result.postValue(rep.data!!.name)
                 CallHttpManager(callback = this, action = Route.GET_CARD_BY_USER_ID.get, isActivateCallBack = true, idUserOne = Account.id, url = Config.url).execute()
             }
         }
-
     }
 
     fun initData() {
@@ -57,6 +49,16 @@ object CraftViewModel : CallBackDisplay {
         Handler().postDelayed({
             CallHttpManager(callback = this, action = Route.CRAFT_ONE_CARDS.get, isActivateCallBack = true, idUserOne = Account.id, idCardOne = inventory[positionCardOne].id, idCardTwo = inventory[positionCardTwo].id, idCardThree = inventory[positionCardThree].id, url = Config.url).execute()
         }, 3000)
+    }
 
+
+    fun updateCard() {
+        var i = 0
+        var arrayS = ArrayList<String>()
+        while(i < inventory.size) {
+            arrayS.add(inventory[i].name.toString())
+            i++
+        }
+        listNameCard.postValue(arrayS)
     }
 }

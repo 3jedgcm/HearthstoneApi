@@ -13,9 +13,6 @@ import fr.coopuniverse.api.pokeapi.activity.manager.CallHttpManager
 
 object InventoryViewModel : CallBackDisplay, CallBackOnClickCard {
 
-
-    var dataCardsByUserID = MutableLiveData<ArrayList<Card>>()
-    var nbCardsUser = MutableLiveData<Int>()
     var idCardClicked = MutableLiveData<String>()
     var costCardClicked = MutableLiveData<String>()
     var cardsUserInventory = MutableLiveData<ArrayList<Card>>()
@@ -26,7 +23,7 @@ object InventoryViewModel : CallBackDisplay, CallBackOnClickCard {
 
     override fun display(abstractRep: Response, action: String) {
         var rep : Response
-        if (action.equals(Route.GET_CARD_BY_USER_ID.get)) {
+        if (action == Route.GET_CARD_BY_USER_ID.get) {
             rep = abstractRep as ResponseGetCardByUserId
             cardsUserInventory.postValue(rep.data!!.inventory.inventory)
         }
@@ -36,7 +33,6 @@ object InventoryViewModel : CallBackDisplay, CallBackOnClickCard {
     override fun onClickCard(cardId: String, cardCost: Int, cardCostStr: String) {
         idCardClicked.postValue(cardId)
         costCardClicked.postValue(cardCostStr)
-
     }
 }
 

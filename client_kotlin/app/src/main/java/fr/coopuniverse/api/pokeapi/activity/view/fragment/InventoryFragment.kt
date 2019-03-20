@@ -18,32 +18,21 @@ class InventoryFragment : androidx.fragment.app.Fragment() {
     private var anotherView: View? = null
     private var cards: ArrayList<Card> = ArrayList()
 
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         this.anotherView = inflater.inflate(R.layout.inventory_fragment, container, false)
         val linearL: View = anotherView!!.findViewById(R.id.layoutText)
         linearL.visibility = View.GONE
-
         InventoryViewModel.initData()
-
-
-        /// Observation ///
         InventoryViewModel.idCardClicked.observe(this, Observer {
-
             var cardId = it
             var fragment = CardDetailFragment()
-
             for (c: Card in cards) {
                 if (c.id.equals(cardId)) {
                     fragment.card = c
                     activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.contentHome, fragment)?.commit()
                 }
             }
-        })
-
-        InventoryViewModel.costCardClicked.observe(this, Observer {
-            // Value money of card
         })
 
         InventoryViewModel.cardsUserInventory.observe(this, Observer {
@@ -54,7 +43,6 @@ class InventoryFragment : androidx.fragment.app.Fragment() {
             recView_Inventory?.layoutManager = androidx.recyclerview.widget.GridLayoutManager(this.context, 3)
             recView_Inventory?.adapter = adapterReclView
         })
-
         return this.anotherView
     }
 }

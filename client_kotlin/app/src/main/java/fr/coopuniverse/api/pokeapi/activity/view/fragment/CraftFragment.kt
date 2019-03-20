@@ -20,16 +20,13 @@ class CraftFragment : androidx.fragment.app.Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-
         return inflater.inflate(R.layout.craft_fragment, container, false)
-
     }
 
     override fun onDetach() {
         super.onDetach()
         CraftViewModel.result.postValue("")
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -38,12 +35,10 @@ class CraftFragment : androidx.fragment.app.Fragment() {
             spinner_card_one.adapter = ArrayAdapter<String>(this.context,R.layout.support_simple_spinner_dropdown_item,it)
             spinner_card_two.adapter = ArrayAdapter<String>(this.context,R.layout.support_simple_spinner_dropdown_item,it)
             spinner_card_three.adapter = ArrayAdapter<String>(this.context,R.layout.support_simple_spinner_dropdown_item,it)
-            if(it.size != 0)
-            {
+            if(it.size != 0) {
                 CraftViewModel.stateButton.postValue(true)
             }
-            else
-            {
+            else {
                 CraftViewModel.stateButton.postValue(false)
             }
             CraftViewModel.viewInProgress.postValue(false)
@@ -51,46 +46,35 @@ class CraftFragment : androidx.fragment.app.Fragment() {
         })
 
         craft_button.setOnClickListener {
-            if(spinner_card_one.selectedItemPosition != spinner_card_two.selectedItemPosition && spinner_card_two.selectedItemPosition != spinner_card_three.selectedItemPosition && spinner_card_one.selectedItemPosition != spinner_card_three.selectedItemPosition)
-            {
+            if(spinner_card_one.selectedItemPosition != spinner_card_two.selectedItemPosition && spinner_card_two.selectedItemPosition != spinner_card_three.selectedItemPosition && spinner_card_one.selectedItemPosition != spinner_card_three.selectedItemPosition) {
                 CraftViewModel.craftCard(spinner_card_one.selectedItemPosition,spinner_card_two.selectedItemPosition,spinner_card_three.selectedItemPosition)
             }
-            else
-            {
-                error.text = "Info : Select three different card"
+            else {
+                error.text = this.context!!.resources.getText(R.string.info_craft).toString()
             }
         }
 
-
-
         CraftViewModel.result.observe(this, Observer {
-            if(it != "")
-            {
+            if(it != "") {
                 val builder = AlertDialog.Builder(this.context)
-                builder.setTitle("Melt result")
-                builder.setMessage(it)
+                builder.setTitle(this.context!!.resources.getText(R.string.result_craft_title).toString())
+                builder.setMessage(this.context!!.resources.getText(R.string.winning_label_craft).toString() + " " + it)
                 val dialog: AlertDialog = builder.create()
                 dialog.show()
-
             }
         })
 
         CraftViewModel.stateButton.observe(this, Observer {
             craft_button.isEnabled = it
-
         })
 
-
         CraftViewModel.viewInProgress.observe(this, Observer {
-            if(it)
-            {
+            if(it) {
                 gifImageViewCraft.visibility = View.VISIBLE
             }
-            else
-            {
+            else {
                 gifImageViewCraft.visibility = View.INVISIBLE
             }
         })
-
     }
 }

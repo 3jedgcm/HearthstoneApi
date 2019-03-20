@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.SpinnerAdapter
 import androidx.lifecycle.Observer
 
 import fr.coopuniverse.api.pokeapi.R
@@ -17,9 +18,7 @@ class MeltFragment : androidx.fragment.app.Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-
         return inflater.inflate(R.layout.melt_fragment, container, false)
-
     }
 
     override fun onDetach() {
@@ -33,12 +32,10 @@ class MeltFragment : androidx.fragment.app.Fragment() {
         MeltViewModel.initData()
         MeltViewModel.listName.observe(this, Observer {
             spinner_card.adapter = ArrayAdapter<String>(this.context,R.layout.support_simple_spinner_dropdown_item,it)
-            if(it.size != 0)
-            {
+            if(it.size != 0) {
                 MeltViewModel.stateButton.postValue(true)
             }
-            else
-            {
+            else {
                 MeltViewModel.stateButton.postValue(false)
             }
             MeltViewModel.viewInProgress.postValue(false)
@@ -50,31 +47,26 @@ class MeltFragment : androidx.fragment.app.Fragment() {
         }
 
         MeltViewModel.result.observe(this, Observer {
-            if(it != "")
-            {
+            if(it != "") {
                 val builder = AlertDialog.Builder(this.context)
-                builder.setTitle("Melt result")
+                builder.setTitle(this.context!!.resources.getText(R.string.result_melt_title).toString())
                 builder.setMessage(it)
                 val dialog: AlertDialog = builder.create()
                 dialog.show()
-
             }
         })
 
         MeltViewModel.stateButton.observe(this, Observer {
             melt_button.isEnabled = it
-
         })
 
 
         MeltViewModel.viewInProgress.observe(this, Observer {
-            if(it)
-            {
+            if(it) {
                 meltProgressLabel.visibility = View.VISIBLE
                 gifImageView.visibility = View.VISIBLE
             }
-            else
-            {
+            else {
                 meltProgressLabel.visibility = View.INVISIBLE
                 gifImageView.visibility = View.INVISIBLE
             }

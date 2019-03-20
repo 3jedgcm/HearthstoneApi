@@ -23,8 +23,6 @@ class QuizzFragment : androidx.fragment.app.Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         this.isOnResponse(false)
-
-
         currentMoney.text = this.context!!.getString(R.string.you_have) + " " + Account.money + " " + this.context!!.getString(R.string.golds)
 
         QuizzViewModel.money.observe(this, Observer{
@@ -39,12 +37,10 @@ class QuizzFragment : androidx.fragment.app.Fragment() {
         })
 
         QuizzViewModel.enableButton.observe(this, Observer {
-            if(it)
-            {
+            if(it) {
                 this.isOnResponse(false)
             }
-            else
-            {
+            else {
                 this.isOnResponse(true)
             }
         })
@@ -54,8 +50,7 @@ class QuizzFragment : androidx.fragment.app.Fragment() {
         })
 
         QuizzViewModel.info.observe(this, Observer {
-            when(it)
-            {
+            when(it) {
                 Info.NO_MUCH_MONEY -> {
                     info.text = this.context!!.getString(R.string.insufficient_credit)
                 }
@@ -74,11 +69,9 @@ class QuizzFragment : androidx.fragment.app.Fragment() {
             }
         })
 
-
         went.setOnClickListener {
             went.isEnabled = false
             QuizzViewModel.getAnswer()
-
         }
         reponse_one.setOnClickListener {
             this.disableButton()
@@ -99,30 +92,21 @@ class QuizzFragment : androidx.fragment.app.Fragment() {
 
 
         QuizzViewModel.viewInProgress.observe(this, Observer {
-            if(it == "win")
-            {
+            if(it == context!!.resources.getText(R.string.win).toString()) {
                 gifImageViewQuizz.setImageResource(R.drawable.quizz_win)
                 gifImageViewQuizz.visibility = View.VISIBLE
             }
-            else if(it == "loose")
-            {
+            else if(it == context!!.resources.getText(R.string.loose).toString()) {
                 gifImageViewQuizz.setImageResource(R.drawable.quizz_lose)
                 gifImageViewQuizz.visibility = View.VISIBLE
             }
-            else
-            {
+            else {
                 gifImageViewQuizz.visibility = View.INVISIBLE
             }
         })
-
-
     }
 
-
-
-
-    private fun isOnResponse(b: Boolean)
-    {
+    private fun isOnResponse(b: Boolean) {
         reponse_one.isEnabled = b
         reponse_two.isEnabled = b
         reponse_three.isEnabled = b
@@ -130,14 +114,11 @@ class QuizzFragment : androidx.fragment.app.Fragment() {
         went.isEnabled = !b
     }
 
-    private fun disableButton()
-    {
+    private fun disableButton() {
         reponse_one.isEnabled = false
         reponse_two.isEnabled = false
         reponse_three.isEnabled = false
         reponse_four.isEnabled = false
         went.isEnabled = false
     }
-
-
 }

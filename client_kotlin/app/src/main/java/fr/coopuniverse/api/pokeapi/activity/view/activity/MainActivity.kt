@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
 
     private var callbackManager: CallbackManager? = null
     private var mGoogleSignInClient: GoogleSignInClient? = null
-
+    private var isConnected = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -86,34 +86,30 @@ class MainActivity : AppCompatActivity() {
                     }
                 })
 
-        ////Observe////
+
         MainActivityViewModel.simpleSignInStateButton.observe(this, Observer { sign_in_simple.isEnabled = it })
         MainActivityViewModel.infoError.observe(this, Observer { errorView.text = it })
         MainActivityViewModel.changeActivity.observe(this, Observer { if(it)this.changeActivity()})
-        //////////////
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         this.callbackManager?.onActivityResult(requestCode, resultCode, data)
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 1) {
+        if (requestCode == 1 && !isConnected) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             handleSignInResult(task)
         }
     }
 
-    private fun googleSignIn()
-    {
+    private fun googleSignIn() {
         startActivityForResult(this.mGoogleSignInClient?.signInIntent, 1)
     }
 
-    private fun submit()
-    {
+    private fun submit() {
         MainActivityViewModel.signIn()
     }
 
-    private fun changeActivity()
-    {
+    private fun changeActivity() {
         startActivityForResult(Intent(this, HomeActivity::class.java), 1)
     }
 
@@ -121,12 +117,13 @@ class MainActivity : AppCompatActivity() {
         try {
             val acct = completedTask.getResult<ApiException>(ApiException::class.java)
             if (acct != null) {
+                isConnected = true
                 Account.name = acct.displayName.toString()
                 Account.surname = acct.familyName.toString()
                 Account.id = acct.id.toString()
                 Account.urlPicture = acct.photoUrl
-                Account.connectWith = this.getString(R.string.google)
-                this.googleSignIn()
+                Account.connectWith = this.resources.getText(R.string.google).toString()
+                this.submit()
             }
         }
         catch (e: ApiException) {

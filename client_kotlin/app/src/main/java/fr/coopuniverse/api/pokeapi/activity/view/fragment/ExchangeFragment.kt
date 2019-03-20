@@ -62,6 +62,7 @@ class ExchangeFragment : androidx.fragment.app.Fragment(), AdapterView.OnItemSel
             arrayofCards = arrayofCardsUserSecond!!.clone() as ArrayList<Card>
             val aAdapterUserCards = CardsAdapter(context, arrayofCards)
             spinnerUser2Cards!!.adapter = aAdapterUserCards
+            btnExchange.isEnabled = true
         })
 
         ExchangeViewModel.dataCardsCurrentUser.observe(this, Observer {
@@ -88,7 +89,7 @@ class ExchangeFragment : androidx.fragment.app.Fragment(), AdapterView.OnItemSel
 
         ExchangeViewModel.nbCardsUser.observe(this, Observer {
             if (it.equals(0)) {
-                Toast.makeText(context, "Selected user" + " has no cards", Toast.LENGTH_LONG).show()
+                //Toast.makeText(context, "Selected user" + " has no cards", Toast.LENGTH_LONG).show()
             }
         })
 

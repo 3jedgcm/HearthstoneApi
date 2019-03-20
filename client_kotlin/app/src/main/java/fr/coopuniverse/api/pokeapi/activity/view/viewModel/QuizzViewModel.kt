@@ -59,6 +59,7 @@ object QuizzViewModel : CallBackDisplay {
                 }
                 Route.SET_ONE_MONEY.get -> {
                     rep = abstractRep as ResponseSetOneMoney
+
                     if (rep.exitCode == 0) {
                         CallHttpManager(callback = this, action = Route.GET_QUESTION.get, isActivateCallBack = true, url = Config.url).execute()
                     } else info.postValue(Info.ERROR)
@@ -66,7 +67,6 @@ object QuizzViewModel : CallBackDisplay {
                 }
                 Route.SET_ANSWER.get -> {
                     rep = abstractRep as ResponseSetAnswer
-                    this.enableButton.postValue(true)
                     if (rep.data!!.result == true) {
                         viewInProgress.postValue("win")
                         Handler().postDelayed({
@@ -75,14 +75,15 @@ object QuizzViewModel : CallBackDisplay {
                             this.info.postValue(Info.RIGHT_ANSWER)
                             CallHttpManager(callback = this, action = Route.SET_ONE_MONEY.get, isActivateCallBack = false, idUserOne = Account.id, value = Account.money, url = Config.url).execute()
                             viewInProgress.postValue("")
+                            this.enableButton.postValue(true)
                         }, 3000)
 
                     } else {
-
                         viewInProgress.postValue("loose")
                         Handler().postDelayed({
                             info.postValue(Info.WRONG_ANSWER)
                             viewInProgress.postValue("")
+                            this.enableButton.postValue(true)
                         }, 3000)
 
                     }

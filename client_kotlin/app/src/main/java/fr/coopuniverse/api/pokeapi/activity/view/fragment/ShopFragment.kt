@@ -17,11 +17,9 @@ import fr.coopuniverse.api.pokeapi.activity.view.viewModel.ShopViewModel
 
 
 class ShopFragment : androidx.fragment.app.Fragment() {
-
-
     private var userCards_total = 0
     private var userMoney_total = 0
-    var data: ArrayList<Card>? = null
+    private var data: ArrayList<Card>? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -31,35 +29,29 @@ class ShopFragment : androidx.fragment.app.Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
         if (Account.money != null) {
             userMoney_total = Account.money.toInt()
         } else {
             userMoney_total = 0
         }
-
-
         ShopViewModel.initDataUser()
-
         ShopViewModel.nbCardsUser.observe(this, Observer {
-
             userCards_total = it
             setTextCards(userCards_total.toString())
         })
 
         ShopViewModel.dataAllCards.observe(this, Observer {
             data = it
-            val adapterReclViewcard = CardsListAdapterStore(data, targetFragment, ShopViewModel) //ShopViewModel extends mon listener donc je peux l'en mettre à la place de  listener
+            val adapterReclViewcard = CardsListAdapterStore(data, targetFragment, ShopViewModel)
             recView_Inventory?.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this.context)
             recView_Inventory?.adapter = adapterReclViewcard
         })
-
 
         ShopViewModel.dataMoneyUser.observe(this, Observer {
             userMoney_total = it
             setTextCredits(it.toString())
         })
+
         ShopViewModel.comunicate.observe(this, Observer {
             Toast.makeText(context, this.activity?.getString(it), Toast.LENGTH_LONG).show()
         })
@@ -76,11 +68,11 @@ class ShopFragment : androidx.fragment.app.Fragment() {
     }
 
     fun setTextCredits(credits: String) {
-        tCredits!!.text = "You have"+ " " + credits + " credits "
+        tCredits!!.text = this.context!!.resources.getText(R.string.label_StateAccount).toString() + " " + credits + " " + this.context!!.resources.getText(R.string.idMoney).toString()
     }
 
     fun setTextCards(cards: String) {
-        tCards!!.text = "You have" + " " + cards + " cards "
+        tCards!!.text = this.context!!.resources.getText(R.string.label_StateAccount).toString()  + " " + cards + " " + this.context!!.resources.getText(R.string.content_description).toString()
     }
 
     override fun onResume() {

@@ -22,10 +22,10 @@ class CardDetailFragment : androidx.fragment.app.Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Glide.with(this.context!!).load(this.card!!.getImage()).into(cardImage)
-        cardType.text = "Type: " + this.card?.type
-        rarity.text =  "Rarity: " + this.card?.rarity
-        classCard.text =  "Class: " + this.card?.cardClass
-        idCard.text =  "Id: " + this.card?.id
+        cardType.text = R.string.types.toString() + this.card?.type
+        rarity.text =  R.string.rarity.toString() + this.card?.rarity
+        classCard.text =  R.string.classCard.toString() + this.card?.cardClass
+        idCard.text =  R.string.id.toString() + this.card?.id
         super.onViewCreated(view, savedInstanceState)
     }
 }

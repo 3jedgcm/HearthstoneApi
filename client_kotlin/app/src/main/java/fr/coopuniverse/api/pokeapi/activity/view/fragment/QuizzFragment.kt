@@ -22,7 +22,7 @@ class QuizzFragment : androidx.fragment.app.Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        this.enableButton()
+        this.isOnResponse(false)
 
 
         currentMoney.text = this.context!!.getString(R.string.you_have) + " " + Account.money + " " + this.context!!.getString(R.string.golds)
@@ -41,11 +41,11 @@ class QuizzFragment : androidx.fragment.app.Fragment() {
         QuizzViewModel.enableButton.observe(this, Observer {
             if(it)
             {
-                this.enableButton()
+                this.isOnResponse(false)
             }
             else
             {
-                this.disableButton()
+                this.isOnResponse(true)
             }
         })
 
@@ -81,15 +81,19 @@ class QuizzFragment : androidx.fragment.app.Fragment() {
 
         }
         reponse_one.setOnClickListener {
+            this.disableButton()
             QuizzViewModel.setResponse(1)
         }
         reponse_two.setOnClickListener {
+            this.disableButton()
             QuizzViewModel.setResponse(2)
         }
         reponse_three.setOnClickListener {
+            this.disableButton()
             QuizzViewModel.setResponse(3)
         }
         reponse_four.setOnClickListener {
+            this.disableButton()
             QuizzViewModel.setResponse(4)
         }
 
@@ -114,21 +118,26 @@ class QuizzFragment : androidx.fragment.app.Fragment() {
 
     }
 
-    private fun enableButton()
+
+
+
+    private fun isOnResponse(b: Boolean)
+    {
+        reponse_one.isEnabled = b
+        reponse_two.isEnabled = b
+        reponse_three.isEnabled = b
+        reponse_four.isEnabled = b
+        went.isEnabled = !b
+    }
+
+    private fun disableButton()
     {
         reponse_one.isEnabled = false
         reponse_two.isEnabled = false
         reponse_three.isEnabled = false
         reponse_four.isEnabled = false
-        went.isEnabled = true
-    }
-
-    private fun disableButton()
-    {
-        reponse_one.isEnabled = true
-        reponse_two.isEnabled = true
-        reponse_three.isEnabled = true
-        reponse_four.isEnabled = true
         went.isEnabled = false
     }
+
+
 }

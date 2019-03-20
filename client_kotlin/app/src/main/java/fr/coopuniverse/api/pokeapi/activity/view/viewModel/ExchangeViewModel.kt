@@ -2,6 +2,7 @@ package fr.coopuniverse.api.pokeapi.activity.view.viewModel
 
 
 import android.os.Handler
+import android.view.View
 import androidx.lifecycle.MutableLiveData
 import fr.coopuniverse.api.pokeapi.activity.callback.CallBackDisplay
 import fr.coopuniverse.api.pokeapi.activity.data.Account
@@ -22,7 +23,6 @@ object ExchangeViewModel : CallBackDisplay {
     var dataMoneyUser = MutableLiveData<Int>()
     var userMoney_total_Mutable = MutableLiveData<Int>()
     var listofUsers_Mutable = MutableLiveData<ArrayList<User>>()
-    var reloadData_Mutable = MutableLiveData<Boolean>()
     var viewInProgress = MutableLiveData<Boolean>()
 
     private var userCards_total = 0
@@ -30,17 +30,21 @@ object ExchangeViewModel : CallBackDisplay {
     private var currentUserID: String = ""
     private var currentUsr: User? = null
     private var listofUsers: ArrayList<User>? = null
+    private var idUserTwo = ""
+    private var idUserOne = ""
 
-    fun exchangeCards(_idUser: String, _idUserTwo: String, _idCard: String, _idCardTwo: String) {
+    fun exchangeCards(idUser: String, idUserTwo: String, idCard: String, idCardTwo: String) {
         viewInProgress.postValue(true)
-        Handler().postDelayed({
-            if (_idUser != null && _idUserTwo != null && _idCard != null && _idCardTwo != null) {
+        this.idUserTwo = idUserTwo
+        this.idUserOne = idUser
 
+        Handler().postDelayed({
+            if (idUser != null && idUserTwo != null && idCard != null && idCardTwo != null) {
                 CallHttpManager(callback = this, action = Route.EXCHANGE_CARDS.get, isActivateCallBack = true,
-                        idUserOne = _idUser, //Account.id,
-                        idUserTwo = _idUserTwo,
-                        cardUserOne = _idCard,
-                        cardUserTwo = _idCardTwo,
+                        idUserOne = idUser,
+                        idUserTwo = idUserTwo,
+                        cardUserOne = idCard,
+                        cardUserTwo = idCardTwo,
                         url = Config.url).execute()
             }
            }, 3000)
@@ -107,7 +111,8 @@ object ExchangeViewModel : CallBackDisplay {
             Route.EXCHANGE_CARDS.get -> {
                 rep = abstractRep as ResponseExchangeCards
                 if (rep.exitCode!!.equals(0)) {
-                    reloadData_Mutable.postValue(true)
+                    getCardofUser(this.idUserOne)
+                    getCardofUser(this.idUserTwo)
                 }
                 viewInProgress.postValue(false)
             }

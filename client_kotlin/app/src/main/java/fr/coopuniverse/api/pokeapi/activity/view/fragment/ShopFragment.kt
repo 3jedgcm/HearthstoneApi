@@ -18,17 +18,10 @@ import fr.coopuniverse.api.pokeapi.activity.view.viewModel.ShopViewModel
 
 class ShopFragment : androidx.fragment.app.Fragment() {
 
-    private var tCredits: TextView? = null
-    private var tCards: TextView? = null
-    private var cost = 0
-    private var idCard = "N/A"
+
     private var userCards_total = 0
     private var userMoney_total = 0
-    private var flagUpdateListofItems = true
-
     var data: ArrayList<Card>? = null
-    var infoCreditView: TextView? = null
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -39,23 +32,15 @@ class ShopFragment : androidx.fragment.app.Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        this.tCredits = view.findViewById(R.id.tCredits)
-        this.tCards   = view.findViewById(R.id.tCards)
-
-      // val view = inflater.inflate(fr.coopuniverse.api.pokeapi.R.layout.inventory_fragment, container, false)
-        infoCreditView = view.findViewById(fr.coopuniverse.api.pokeapi.R.id.tCredits) as TextView
 
         if (Account.money != null) {
             userMoney_total = Account.money.toInt()
         } else {
             userMoney_total = 0
         }
-        //  setTextCredits(userMoney_total.toString())
+
 
         ShopViewModel.initDataUser()
-
-
-        ////Observe////
 
         ShopViewModel.nbCardsUser.observe(this, Observer {
 
@@ -68,47 +53,34 @@ class ShopFragment : androidx.fragment.app.Fragment() {
             val adapterReclViewcard = CardsListAdapterStore(data, targetFragment, ShopViewModel) //ShopViewModel extends mon listener donc je peux l'en mettre à la place de  listener
             recView_Inventory?.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this.context)
             recView_Inventory?.adapter = adapterReclViewcard
-
         })
+
 
         ShopViewModel.dataMoneyUser.observe(this, Observer {
             userMoney_total = it
             setTextCredits(it.toString())
-
         })
         ShopViewModel.comunicate.observe(this, Observer {
-
             Toast.makeText(context, this.activity?.getString(it), Toast.LENGTH_LONG).show()
-
         })
 
         ShopViewModel.userCards_total_Mutable.observe(this, Observer {
             userCards_total = it
             setTextCards(it.toString())
-
-
         })
+
         ShopViewModel.userMoney_total_Mutable.observe(this, Observer {
             userMoney_total = it
             setTextCredits(it.toString())
-
         })
-
-
     }
 
     fun setTextCredits(credits: String) {
-        val infoCreditView = view!!.findViewById(fr.coopuniverse.api.pokeapi.R.id.tCredits) as TextView
-        infoCreditView.text = "You have"+ " " + credits + " credits " //tCredits!!.text.toString() + " " + credits + " credits "
+        tCredits!!.text = "You have"+ " " + credits + " credits "
     }
 
     fun setTextCards(cards: String) {
-        val textView = view!!.findViewById(fr.coopuniverse.api.pokeapi.R.id.tCards) as TextView
-        textView.text = "You have" + " " + cards + " cards "    //tCards!!.text.toString() + " " + cards + " cards "
-    }
-
-    companion object {
-        fun newInstance() = ShopFragment()
+        tCards!!.text = "You have" + " " + cards + " cards "
     }
 
     override fun onResume() {

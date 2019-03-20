@@ -46,7 +46,6 @@ class MeltFragment : androidx.fragment.app.Fragment() {
         })
 
         melt_button.setOnClickListener {
-
             MeltViewModel.meltCard(spinner_card.selectedItemPosition)
         }
 

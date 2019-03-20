@@ -87,8 +87,10 @@ class ExchangeFragment : androidx.fragment.app.Fragment(), AdapterView.OnItemSel
         })
 
         ExchangeViewModel.nbCardsUser.observe(this, Observer {
-            if (it.equals(0)) {
-                Toast.makeText(context, "Selected user" + " has no cards", Toast.LENGTH_LONG).show()
+
+            if( it.equals(0) && getUserVisibleHint() && isVisible){
+                Toast.makeText(context, this.getString(R.string.Userhasnocards), Toast.LENGTH_SHORT).show()
+
             }
         })
 
@@ -128,5 +130,14 @@ class ExchangeFragment : androidx.fragment.app.Fragment(), AdapterView.OnItemSel
         super.onResume()
         ExchangeViewModel.getCardofUser(curenUserID)
         ExchangeViewModel.getAllUsers(curenUserID)
+
+
+
+
+
+
+
+
+
     }
 }

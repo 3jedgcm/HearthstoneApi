@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardView"
+    style="?attr/spinnerDropDownItemStyle"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    android:layout_weight="1"
+    app:barrierAllowsGoneWidgets="true">
+
+    <LinearLayout
+        android:id="@+id/layoutL"
+        android:layout_width="match_parent"
+        android:layout_height="110dp"
+        android:layout_margin="3dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/imgVCard"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:cropToPadding="false"
+            android:scaleType="fitXY"
+            android:visibility="gone"
+            app:srcCompat="@drawable/card_default" />
+
+        <TextView
+            android:id="@+id/textViewName"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="3dp"
+            android:layout_weight="1"
+            android:text="test" />
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

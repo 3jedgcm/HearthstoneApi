@@ -59,7 +59,7 @@
     <string name="idMoney">money</string>
     <string name="idUser">id</string>
     <string name="voidString"></string>
-    <string name="content_description">Card</string>
+    <string name="content_description">Cards</string>
     <string name="label_price">Price : </string>
     <string name="label_StateAccount">You have : </string>
     <string name="url">https://api.coopuniverse.fr/</string>
@@ -71,5 +71,16 @@
     <string name="insufficient_credit">Attention: Your Credit is insufficient! The operation canceled</string>
     <string name="attention_credit">Attention: Your will use all your Credit!</string>
     <string name="EXCHANGE">Exchange</string>
+    <string name="info_craft">Info : Select three different card</string>
+    <string name="result_craft_title">Craft result</string>
+    <string name="result_melt_title">Melt result</string>
+    <string name="types">Type: </string>
+    <string name="rarity">Rarity: </string>
+    <string name="classCard">Class card: </string>
+    <string name="id">Id: </string>
+    <string name="win">win</string>
+    <string name="loose">loose</string>
+    <string name="winning_label_craft">🎉 Congratulations, you have crafted </string>
+    <string name="wrong_id">Your login or password doesn’t match any account</string>
 </resources>
 

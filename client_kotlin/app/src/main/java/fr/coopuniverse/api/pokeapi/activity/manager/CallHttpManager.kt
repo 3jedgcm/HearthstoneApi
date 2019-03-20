@@ -4,11 +4,10 @@ import android.os.AsyncTask
 import android.widget.TextView
 import fr.coopuniverse.api.pokeapi.activity.callback.CallBackDisplay
 import fr.coopuniverse.api.pokeapi.activity.data.Response.*
+import fr.coopuniverse.api.pokeapi.activity.enums.Route
 import fr.coopuniverse.api.pokeapi.activity.route.CoopUniverseService
 
 import java.io.IOException
-
-import retrofit2.Call
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -19,7 +18,7 @@ class CallHttpManager(
         private var typeFilter: String? = "",
         private var valueFilter: String? = "",
         private var url: String? = "",
-        private var idUser: String? = "",
+        private var idUserOne: String? = "",
         private var idUserTwo: String? = "",
         private var idCard: String? = "",
         private var idCardOne: String? = "",
@@ -35,75 +34,75 @@ class CallHttpManager(
         private var pass: String? = "")
     : AsyncTask<TextView, Void, Response>() {
 
-    private fun generateCallBack(): Response {
+    private fun generateCallBack(): Response? {
 
         val retrofit = Retrofit.Builder().baseUrl(url).addConverterFactory(GsonConverterFactory.create()).build()
         val service = retrofit.create(CoopUniverseService::class.java)
         try {
             var response : Response?
         when (action) {
-            "GetOneMoney" -> {
-                response = service.GetOneMoney(idUser!!).execute().body()
+            Route.GET_ONE_MONEY.get -> {
+                response = service.GetOneMoney(idUserOne!!).execute().body()
             }
-            "GetOneUser" -> {
-                response = service.GetOneUser(idUser!!).execute().body()
+            Route.GET_ONE_USER.get -> {
+                response = service.GetOneUser(idUserOne!!).execute().body()
             }
-            "GetAllUser" -> {
+            Route.GET_ALL_USER.get -> {
                 response = service.GetAllUser().execute().body()
             }
-            "GetCardByUserId" -> {
-                response = service.GetCardByUserId(idUser!!).execute().body()
+            Route.GET_CARD_BY_USER_ID.get -> {
+                response = service.GetCardByUserId(idUserOne!!).execute().body()
             }
-            "GetAllCard" -> {
+            Route.GET_ALL_CARD.get -> {
                 response = service.GetAllCard().execute().body()
             }
-            "GetRandomCard" -> {
+            Route.GET_RANDOM_CARD.get -> {
                 response = service.GetRandomCard().execute().body()
             }
-            "GetAllParameter" -> {
+            Route.GET_ALL_PARAMETER.get -> {
                 response = service.GetAllParameter().execute().body()
             }
-            "GetQuestion" -> {
+            Route.GET_QUESTION.get -> {
                 response = service.GetQuestion().execute().body()
             }
-            "GetCardByFilter" -> {
+            Route.GET_CARD_BY_FILTER.get -> {
                 response = service.GetCardByFilter(typeFilter!!, valueFilter!!).execute().body()
             }
-            "SetOneCard" -> {
-                response = service.SetOneCard(idUser!!, idCard!!).execute().body()
+            Route.SET_ONE_CARD.get -> {
+                response = service.SetOneCard(idUserOne!!, idCard!!).execute().body()
             }
-            "SetOneMoney" -> {
-                response = service.SetOneMoney(idUser!!, value!!).execute().body()
+            Route.SET_ONE_MONEY.get -> {
+                response = service.SetOneMoney(idUserOne!!, value!!).execute().body()
             }
-            "SetAnswer" -> {
+            Route.SET_ANSWER.get -> {
                 response = service.SetAnswer(answser!!, value!!).execute().body()
             }
-            "ExchangeCards" -> {
-                response = service.ExchangeCards(idUser!!, idUserTwo!!, cardUserOne!!.toString(), cardUserTwo!!.toString()).execute().body() as ResponseExchangeCards
+            Route.EXCHANGE_CARDS.get -> {
+                response = service.ExchangeCards(idUserOne!!, idUserTwo!!, cardUserOne!!, cardUserTwo!!).execute().body() as ResponseExchangeCards
             }
-            "MeltCards" -> {
+            Route.MELT_CARDS.get -> {
 
-                response = service.MeltCards(idUser!!, idCard!!).execute().body()
+                response = service.MeltCards(idUserOne!!, idCard!!).execute().body()
             }
-            "CraftOneCard" -> {
-                response = service.CraftOneCard(idUser!!, idCardOne!!, idCardTwo!!, idCardThree!!).execute().body() as ResponseCraftOneCard
+            Route.CRAFT_ONE_CARDS.get -> {
+                response = service.CraftOneCard(idUserOne!!, idCardOne!!, idCardTwo!!, idCardThree!!).execute().body() as ResponseCraftOneCard
             }
-            "Connect" -> {
+            Route.CONNECT.get -> {
                 response = service.SimpleLogin(login!!, pass!!).execute().body()
             }
-            "ConnectFacebook" -> {
+            Route.CONNECT_WITH_FACEBOOK.get -> {
                 response =  service.FacebookLogin(key!!).execute().body() as ResponseConnectFacebook
             }
-            "ConnectGoogle" -> {
+            Route.CONNECT_WITH_GOOGLE.get -> {
                 response = service.GoogleLogin(key!!).execute().body() as ResponseConnectGoogle
             }
-            "Register" -> {
+            Route.REGISTER.get -> {
                 response = service.SimpleRegister(login!!, pass!!).execute().body() as ResponseRegister
             }
-            "RegisterFacebook" -> {
+            Route.REGISTER_WITH_FACEBOOK.get -> {
                 response = service.FacebookRegister(key!!).execute().body() as ResponseRegisterFacebook
             }
-            "RegisterGoogle" -> {
+            Route.REGISTER_WITH_GOOGLE.get -> {
                 response = service.GoogleRegister(key!!).execute().body()
             }
             else -> {
@@ -111,14 +110,12 @@ class CallHttpManager(
                 response = service.GetAllCard().execute().body()
             }
         }
-
-
             return response!!
 
         } catch (e: IOException) {
             e.printStackTrace()
         }
-        return ResponseSimple()
+        return null
     }
 
     override fun doInBackground(vararg TextViews: TextView?): Response? {

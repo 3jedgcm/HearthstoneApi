@@ -46,6 +46,9 @@ object MainActivityViewModel : CallBackDisplay {
                 Route.REGISTER_WITH_GOOGLE.get -> {
                     CallHttpManager(callback = this, action = Route.CONNECT_WITH_GOOGLE.get, isActivateCallBack = true, key = Account.key, url = Config.url).execute()
                 }
+                Route.REGISTER_WITH_FACEBOOK.get -> {
+                    CallHttpManager(callback = this, action = Route.CONNECT_WITH_FACEBOOK.get, isActivateCallBack = true, key = Account.key, url = Config.url).execute()
+                }
                 Route.CONNECT_WITH_FACEBOOK.get -> {
                     CallHttpManager(callback = this, action = Route.CONNECT_WITH_FACEBOOK.get, isActivateCallBack = true, key = Account.key, url = Config.url).execute()
                 }
@@ -54,9 +57,27 @@ object MainActivityViewModel : CallBackDisplay {
                 }
             }
         } else {
-            rep = abstractRep as ResponseConnect
-            Account.id = rep.data!!.user!!.IdUser
-            Account.money = rep.data!!.user!!.Money
+            when (action)
+            {
+                Route.CONNECT_WITH_FACEBOOK.get -> {
+                    rep  = abstractRep as ResponseConnectFacebook
+                    Account.id = rep.data!!.user!!.IdUser
+                    Account.money = rep.data!!.user!!.Money
+                    Account.user = rep.data!!.user
+                }
+                Route.CONNECT_WITH_GOOGLE.get -> {
+                    rep  = abstractRep as ResponseConnectGoogle
+                    Account.id = rep.data!!.user!!.IdUser
+                    Account.money = rep.data!!.user!!.Money
+                    Account.user = rep.data!!.user
+                }
+                Route.CONNECT.get -> {
+                    rep  = abstractRep as ResponseConnect
+                    Account.id = rep.data!!.user!!.IdUser
+                    Account.money = rep.data!!.user!!.Money
+                    Account.user = rep.data!!.user
+                }
+            }
             this.changeActivity.postValue(true)
         }
     }

@@ -5,7 +5,6 @@ import fr.coopuniverse.api.pokeapi.activity.data.Card
 class ResponseCraftOneCard: Response  {
 
     val exitCode : Int? = 0
-
     val data : DataCraftOneCard? = null
 }
 

@@ -16,7 +16,8 @@ class MarketPagerAdapter(private val mContext: Context?, fm: FragmentManager): F
        // var fr = ShopFragment()
 
 
-        var fr: Fragment = if (position == 0) {
+        var fr: Fragment =
+       if (position == 0) {
             ShopFragment()
         } else if (position == 1) {
            // ShopFragment()
@@ -35,8 +36,8 @@ class MarketPagerAdapter(private val mContext: Context?, fm: FragmentManager): F
     override fun getPageTitle(position: Int): CharSequence? {
         return when (position) {
             0 -> mContext?.getString(R.string.button_market)
-            1 -> mContext?.getString(R.string.button_exchange)
-            2 -> mContext?.getString(R.string.button_market)
+            1 ->  mContext?.getString(R.string.button_exchange)
+           // 2 -> mContext?.getString(R.string.button_exchange)//mContext?.getString(R.string.button_market)
             else -> null
         }
     }

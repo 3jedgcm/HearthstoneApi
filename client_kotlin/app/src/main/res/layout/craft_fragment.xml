@@ -120,6 +120,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/rule" />
 
+        <pl.droidsonroids.gif.GifImageView
+            android:id="@+id/gifImageViewCraft"
+            android:layout_width="match_parent"
+            android:layout_height="422dp"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/craft"
+            android:visibility="invisible"
+            app:layout_constraintTop_toBottomOf="@+id/titleLabel"
+            tools:layout_editor_absoluteX="0dp" />
+
         <TextView
             android:id="@+id/error"
             android:layout_width="wrap_content"

@@ -26,14 +26,9 @@ object MeltViewModel : CallBackDisplay {
             Route.GET_CARD_BY_USER_ID.get -> {
                 rep = abstractResponse as ResponseGetCardByUserId
                 this.inventory = rep.data!!.inventory.inventory
-                var i = 0
-                var arrayS = ArrayList<String>()
-                while(i < inventory.size)
-                {
-                    arrayS.add(inventory[i].name.toString())
-                    i++
-                }
-                listName.postValue(arrayS)
+                CraftViewModel.inventory = this.inventory
+                CraftViewModel.updateCard()
+                this.updateCard()
             }
             Route.MELT_CARDS.get -> {
                 rep = abstractResponse as ResponseMeltCards
@@ -46,23 +41,34 @@ object MeltViewModel : CallBackDisplay {
                     val castedCard = rep.data!!.name
                     result.postValue("🎉 Congratulations, you created " + castedCard)
                 }
-                CallHttpManager(callback = this, action = Route.GET_CARD_BY_USER_ID.get, isActivateCallBack = true, idUser = Account.id, url = Config.url).execute()
+                CallHttpManager(callback = this, action = Route.GET_CARD_BY_USER_ID.get, isActivateCallBack = true, idUserOne = Account.id, url = Config.url).execute()
+
             }
         }
 
     }
 
     fun initData() {
-        CallHttpManager(callback = this, action = Route.GET_CARD_BY_USER_ID.get, isActivateCallBack = true, idUser = Account.id, url = Config.url).execute()
+        CallHttpManager(callback = this, action = Route.GET_CARD_BY_USER_ID.get, isActivateCallBack = true, idUserOne = Account.id, url = Config.url).execute()
     }
 
     fun meltCard(position:Int) {
         viewInProgress.postValue(true)
         stateButton.postValue(false)
         Handler().postDelayed({
-            CallHttpManager(callback = this, action = Route.MELT_CARDS.get, isActivateCallBack = true, idUser = Account.id, idCard = inventory[position].id, url = Config.url).execute()
+            CallHttpManager(callback = this, action = Route.MELT_CARDS.get, isActivateCallBack = true, idUserOne = Account.id, idCard = inventory[position].id, url = Config.url).execute()
         }, 3000)
 
+    }
+
+    fun updateCard() {
+        var i = 0
+        var arrayS = ArrayList<String>()
+        while(i < inventory.size) {
+            arrayS.add(inventory[i].name.toString())
+            i++
+        }
+        listName.postValue(arrayS)
     }
 
 

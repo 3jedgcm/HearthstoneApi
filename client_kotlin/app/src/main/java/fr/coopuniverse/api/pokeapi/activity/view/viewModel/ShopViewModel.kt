@@ -24,6 +24,7 @@ object ShopViewModel : CallBackDisplay, CallBackOnClickCard {
     var comunicate = MutableLiveData<Int>()
     var userCards_total_Mutable = MutableLiveData<Int>()
     var userMoney_total_Mutable = MutableLiveData<Int>()
+    var onBuy = false
 
     private var cost = 0
     private var idCard = "N/A"
@@ -45,13 +46,13 @@ object ShopViewModel : CallBackDisplay, CallBackOnClickCard {
         var rep: Response
 
             when (action) {
-                "GetAllCard" -> {
+                Route.GET_ALL_CARD.get-> {
                     rep = abstractRep as ResponseGetAllCard
                     dataAllCards.postValue(rep.data!!.cards)
-                    CallHttpManager(callback = this, action = Route.GET_ONE_MONEY.get, isActivateCallBack = true, idUser = Account.id, url = Config.url).execute()
+                    CallHttpManager(callback = this, action = Route.GET_ONE_MONEY.get, isActivateCallBack = true, idUserOne = Account.id, url = Config.url).execute()
 
                 }
-                "GetOneMoney" -> {
+                Route.GET_ONE_MONEY.get -> {
                     rep = abstractRep as ResponseGetOneMoney
                     if (rep.data!!.money!!.money == null) {
                         money = "0"
@@ -60,10 +61,10 @@ object ShopViewModel : CallBackDisplay, CallBackOnClickCard {
                     Account.money = rep.data!!.money!!.money!!
                     this.userMoney_total = rep.data!!.money!!.money!!.toIntOrNull()!!
                     this.userMoney_total_Mutable.postValue(rep.data!!.money!!.money!!.toIntOrNull()!!)
-                    CallHttpManager(callback = this, action = Route.GET_CARD_BY_USER_ID.get, isActivateCallBack = true, idUser = Account.id, url = Config.url).execute()
+                    CallHttpManager(callback = this, action = Route.GET_CARD_BY_USER_ID.get, isActivateCallBack = true, idUserOne = Account.id, url = Config.url).execute()
 
                 }
-                "GetCardByUserId" -> {
+                Route.GET_CARD_BY_USER_ID.get -> {
                     rep = abstractRep as ResponseGetCardByUserId
                     var userCardsCount = 0
                     if (rep.data!!.inventory != null) {
@@ -71,17 +72,19 @@ object ShopViewModel : CallBackDisplay, CallBackOnClickCard {
                             this.userCards_total = rep.data!!.inventory.inventory.count()
                         }
                     nbCardsUser.postValue(userCardsCount)
-
                 }
-                "SetOneMoney" -> {
+                Route.SET_ONE_MONEY.get -> {
+                    this.onBuy = false
                     if (this.cost != null) {
+                        ExchangeViewModel.getCardofUser(Account.id)
+                        ExchangeViewModel.getAllUsers(Account.id)
                         flagUpdateListofItems = false
                     }
                 }
-                "SetOneCard" -> {
+                Route.SET_ONE_CARD.get -> {
                     this.userMoney_total = this.userMoney_total.minus(this.cost)
                     userMoney_total_Mutable.postValue(this.userMoney_total)
-                    CallHttpManager(callback = this, action = Route.SET_ONE_MONEY.get, isActivateCallBack = true, idUser = Account.id, value = userMoney_total.toString(), url = Config.url).execute()
+                    CallHttpManager(callback = this, action = Route.SET_ONE_MONEY.get, isActivateCallBack = true, idUserOne = Account.id, value = userMoney_total.toString(), url = Config.url).execute()
                 }
 
 
@@ -92,19 +95,22 @@ object ShopViewModel : CallBackDisplay, CallBackOnClickCard {
     override fun onClickCard(idCard: String, cost: Int, costStr: String) {
         this.cost = cost
         this.idCard = idCard
-        if (this.idCard != null) {
-            if (this.userMoney_total < this.cost) {
-                comunicate.postValue(R.string.insufficient_credit)
-                return
-            } else if (this.userMoney_total == this.cost) {
-                comunicate.postValue(R.string.attention_credit)
+        if(!this.onBuy)
+        {
+            this.onBuy = true
+            if (this.idCard != null) {
+                if (this.userMoney_total < this.cost) {
+                    comunicate.postValue(R.string.insufficient_credit)
+                    return
+                }
+                else if (this.userMoney_total == this.cost) {
+                    comunicate.postValue(R.string.attention_credit)
+                }
+                this.userCards_total++
+                userCards_total_Mutable.postValue(this.userCards_total)
+                CallHttpManager(callback = this, action = Route.SET_ONE_CARD.get, isActivateCallBack = true, idUserOne = Account.id, idCard = idCard, url = Config.url).execute()
             }
-            this.userCards_total++
-            userCards_total_Mutable.postValue(this.userCards_total)
-            CallHttpManager(callback = this, action = Route.SET_ONE_CARD.get, isActivateCallBack = true, idUser = Account.id, idCard = idCard, url = Config.url).execute()
         }
-
-
     }
 
 

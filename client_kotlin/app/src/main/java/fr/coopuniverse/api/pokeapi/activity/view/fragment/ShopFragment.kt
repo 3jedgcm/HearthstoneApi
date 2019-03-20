@@ -14,6 +14,7 @@ import fr.coopuniverse.api.pokeapi.activity.data.Account
 import fr.coopuniverse.api.pokeapi.activity.data.Card
 import kotlinx.android.synthetic.main.inventory_fragment.*
 import fr.coopuniverse.api.pokeapi.activity.view.viewModel.ShopViewModel
+import kotlinx.android.synthetic.main.shop_fragment.*
 
 
 class ShopFragment : androidx.fragment.app.Fragment() {
@@ -77,7 +78,10 @@ class ShopFragment : androidx.fragment.app.Fragment() {
 
     override fun onResume() {
         super.onResume()
+
         ShopViewModel.initDataUser()
     }
+
+
 
 }

@@ -18,12 +18,11 @@ object ShopViewModel : CallBackDisplay, CallBackOnClickCard {
 
     var dataAllCards = MutableLiveData<ArrayList<Card>>()
     var nbCardsUser = MutableLiveData<Int>()
-    var dataCardsUser = MutableLiveData<ArrayList<Card>>()
     var dataMoneyUser = MutableLiveData<Int>()
-
     var comunicate = MutableLiveData<Int>()
     var userCards_total_Mutable = MutableLiveData<Int>()
     var userMoney_total_Mutable = MutableLiveData<Int>()
+
     var onBuy = false
 
     private var cost = 0
@@ -34,10 +33,7 @@ object ShopViewModel : CallBackDisplay, CallBackOnClickCard {
 
 
     fun initDataUser() {
-
-        if (flagUpdateListofItems) {
-            CallHttpManager(callback = this, action = Route.GET_ALL_CARD.get, isActivateCallBack = true, url = Config.url).execute()
-        }
+        CallHttpManager(callback = this, action = Route.GET_ALL_CARD.get, isActivateCallBack = true, url = Config.url).execute()
     }
 
 

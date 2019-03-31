@@ -59,7 +59,7 @@ class UsersAdapter(private val context: Context?,
         }
         else
         {
-            nameTxtView.text = "Id User :" + user.IdUser + "Login :" + user.Login
+            nameTxtView.text = "Id User :" + user.IdUser + "      Login :" + user.Login
         }
 
 
